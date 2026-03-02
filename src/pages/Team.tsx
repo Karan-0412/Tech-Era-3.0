@@ -13,18 +13,18 @@ const Team = () => {
       </div>
 
       {/* Header / Nav */}
-      <nav className="relative z-20 flex items-center justify-between p-6 bg-gradient-to-b from-black/80 to-transparent">
-        <Link 
-          to="/" 
-          className="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.3em] text-cyan-400 hover:text-cyan-300 transition-colors group"
+      <nav className="relative z-20 flex items-center justify-between p-4 md:p-6 bg-gradient-to-b from-black/80 to-transparent">
+        <Link
+          to="/"
+          className="flex items-center gap-2 font-mono text-[10px] md:text-xs uppercase tracking-[0.2em] md:tracking-[0.3em] text-cyan-400 hover:text-cyan-300 transition-colors group"
         >
           <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
           BACK_TO_HQ
         </Link>
-        
-        <div className="flex items-center gap-3">
-          <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
-          <span className="font-mono text-xs uppercase tracking-[0.3em] text-gray-500">
+
+        <div className="flex items-center gap-2 md:gap-3">
+          <div className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-cyan-400 animate-pulse" />
+          <span className="font-mono text-[10px] md:text-xs uppercase tracking-[0.2em] md:tracking-[0.3em] text-gray-500">
             LOC: SECTOR_TEAM_ALPHA
           </span>
         </div>

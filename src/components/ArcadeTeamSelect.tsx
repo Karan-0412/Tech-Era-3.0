@@ -201,7 +201,7 @@ const CharacterCard = ({ member, isActive, onClick }: { member: TeamMember; isAc
         filter: isActive ? "brightness(1.2) contrast(1.1)" : "brightness(0.5) grayscale(0.5)",
       }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
-      className={`relative w-64 h-96 cursor-pointer rounded-2xl overflow-hidden border-2 ${
+      className={`relative w-[240px] h-[360px] md:w-64 md:h-96 cursor-pointer rounded-2xl overflow-hidden border-2 ${
         isActive ? "border-cyan-400 shadow-[0_0_30px_rgba(34,211,238,0.5)]" : "border-gray-800"
       } bg-black/80 backdrop-blur-xl group flex flex-col`}
     >
@@ -303,23 +303,23 @@ export const ArcadeTeamSelect = () => {
   };
 
   return (
-    <section className="relative min-h-screen bg-black py-20 px-4 overflow-hidden flex flex-col items-center justify-center">
+    <section className="relative min-h-screen bg-black py-12 md:py-20 px-4 overflow-hidden flex flex-col items-center justify-center">
       {/* Title */}
       <motion.div
         initial={{ opacity: 0, y: -50 }}
         whileInView={{ opacity: 1, y: 0 }}
-        className="text-center mb-16 space-y-2 z-10"
+        className="text-center mb-8 md:mb-16 space-y-2 z-10 px-4"
       >
-        <h2 className="text-5xl md:text-6xl font-black text-white tracking-tighter uppercase italic">
+        <h2 className="text-3xl sm:text-5xl md:text-6xl font-black text-white tracking-tighter uppercase italic">
           Select Your <span className="text-cyan-400">Warriors</span>
         </h2>
-        <p className="text-gray-500 font-mono text-sm uppercase tracking-[0.5em]">
+        <p className="text-gray-500 font-mono text-[10px] sm:text-sm uppercase tracking-[0.3em] sm:tracking-[0.5em]">
           Swipe to Choose • Insert Coin to Connect
         </p>
       </motion.div>
 
       {/* Main Container */}
-      <div className="w-full max-w-7xl grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <div className="w-full max-w-7xl grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 items-center">
         {/* Left Side: Stats Panel (Desktop) */}
         <div className="lg:col-span-3 order-2 lg:order-1">
           <AnimatePresence mode="wait">
@@ -363,13 +363,13 @@ export const ArcadeTeamSelect = () => {
             dragConstraints={{ left: 0, right: 0 }}
             onDragEnd={onDragEnd}
             style={{ x: dragX }}
-            className="flex items-center justify-center gap-4 relative touch-none"
+            className="flex items-center justify-center gap-2 md:gap-4 relative touch-none"
           >
             {TEAM_MEMBERS.map((member, index) => (
               <div
                 key={member.id}
                 className={`transition-all duration-500 ease-out ${
-                  index === activeIndex ? "z-20 scale-100" : "z-10 scale-75 -mx-8 md:-mx-16"
+                  index === activeIndex ? "z-20 scale-100" : "z-10 scale-75 -mx-12 md:-mx-16"
                 }`}
               >
                 <CharacterCard
