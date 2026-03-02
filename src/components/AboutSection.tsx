@@ -72,7 +72,7 @@ const AboutSection = () => {
   const titleInView = useInView(titleRef, { once: true });
 
   return (
-    <section className="relative py-24 px-6">
+    <section className="relative py-12 sm:py-24 px-6">
       <motion.div
         ref={titleRef}
         initial={{ opacity: 0, y: 20 }}

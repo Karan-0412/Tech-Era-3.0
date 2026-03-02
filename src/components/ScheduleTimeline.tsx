@@ -84,7 +84,7 @@ const ScheduleTimeline = () => {
   const selectedEvent = EVENTS.find(e => e.id === selectedEventId) || EVENTS[0];
 
   return (
-    <section className="py-24 px-6" ref={containerRef}>
+    <section className="py-12 sm:py-24 px-6" ref={containerRef}>
       <motion.div
         ref={ref}
         initial={{ opacity: 0, y: 20 }}
