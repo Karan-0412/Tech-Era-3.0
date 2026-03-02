@@ -6,12 +6,12 @@ import MissionBriefing from "@/components/MissionBriefing";
 import AboutSection from "@/components/AboutSection";
 import TeamSection from "@/components/TeamSection";
 import ArcadeTeamSelect from "@/components/ArcadeTeamSelect";
+import SpeakerCarousel from "@/components/SpeakerCarousel";
 import ScheduleTimeline from "@/components/ScheduleTimeline";
 import TerminalFooter from "@/components/TerminalFooter";
 
 // Lazy load heavy components
 const MeshBackground = lazy(() => import("@/components/MeshBackground"));
-const SpeakerCarousel = lazy(() => import("@/components/SpeakerCarousel"));
 const TerminalOverlay = lazy(() => import("@/components/TerminalOverlay"));
 
 const Index = () => {
@@ -47,9 +47,7 @@ const Index = () => {
                   <MissionBriefing visible={unlocked} onRegister={handleRegister} />
                   <AboutSection />
                   <div id="speakers">
-                    <Suspense fallback={null}>
-                      <SpeakerCarousel />
-                    </Suspense>
+                    <SpeakerCarousel />
                   </div>
                   <ArcadeTeamSelect />
                   <TeamSection onRegister={handleRegister} />
