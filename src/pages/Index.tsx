@@ -5,6 +5,7 @@ import HeroScreen from "@/components/HeroScreen";
 import MissionBriefing from "@/components/MissionBriefing";
 import AboutSection from "@/components/AboutSection";
 import TeamSection from "@/components/TeamSection";
+import ArcadeTeamSelect from "@/components/ArcadeTeamSelect";
 import ScheduleTimeline from "@/components/ScheduleTimeline";
 import TerminalFooter from "@/components/TerminalFooter";
 
@@ -50,6 +51,7 @@ const Index = () => {
                       <SpeakerCarousel />
                     </Suspense>
                   </div>
+                  <ArcadeTeamSelect />
                   <TeamSection onRegister={handleRegister} />
                   <div id="schedule">
                     <ScheduleTimeline />
