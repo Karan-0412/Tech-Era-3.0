@@ -196,12 +196,12 @@ const CharacterCard = ({ member, isActive, onClick }: { member: TeamMember; isAc
         transformStyle: "preserve-3d",
       }}
       animate={{
-        scale: isActive ? 1.1 : 0.8,
-        opacity: isActive ? 1 : 0.4,
-        filter: isActive ? "brightness(1.2) contrast(1.1)" : "brightness(0.5) grayscale(0.5)",
+        scale: isActive ? 1.05 : 0.85,
+        opacity: isActive ? 1 : 0.3,
+        filter: isActive ? "brightness(1.1) contrast(1.1)" : "brightness(0.4) grayscale(0.6)",
       }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
-      className={`relative w-[240px] h-[360px] md:w-64 md:h-96 cursor-pointer rounded-2xl overflow-hidden border-2 ${
+      className={`relative w-[220px] h-[340px] md:w-64 md:h-96 cursor-pointer rounded-2xl overflow-hidden border-2 shrink-0 ${
         isActive ? "border-cyan-400 shadow-[0_0_30px_rgba(34,211,238,0.5)]" : "border-gray-800"
       } bg-black/80 backdrop-blur-xl group flex flex-col`}
     >
@@ -282,7 +282,6 @@ const StatBar = ({ label, value, icon, index }: { label: string; value: number; 
 export const ArcadeTeamSelect = () => {
   const [activeIndex, setActiveIndex] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const dragX = useMotionValue(0);
   const activeMember = TEAM_MEMBERS[activeIndex];
 
   const handleNext = () => {
@@ -308,10 +307,10 @@ export const ArcadeTeamSelect = () => {
       <motion.div
         initial={{ opacity: 0, y: -50 }}
         whileInView={{ opacity: 1, y: 0 }}
-        className="text-center mb-8 md:mb-16 space-y-2 z-10 px-4"
+        className="text-center mb-4 md:mb-12 space-y-2 z-10 px-4"
       >
         <h2 className="text-3xl sm:text-5xl md:text-6xl font-black text-white tracking-tighter uppercase italic">
-          Select Your <span className="text-cyan-400">Warriors</span>
+          Select Your <span className="text-cyan-400 text-glow-cyan">Warriors</span>
         </h2>
         <p className="text-gray-500 font-mono text-[10px] sm:text-sm uppercase tracking-[0.3em] sm:tracking-[0.5em]">
           Swipe to Choose • Insert Coin to Connect
@@ -319,22 +318,22 @@ export const ArcadeTeamSelect = () => {
       </motion.div>
 
       {/* Main Container */}
-      <div className="w-full max-w-7xl grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 items-center">
-        {/* Left Side: Stats Panel (Desktop) */}
-        <div className="lg:col-span-3 order-2 lg:order-1">
+      <div className="w-full max-w-7xl grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-12 items-center relative">
+        {/* Left Side: Stats Panel */}
+        <div className="lg:col-span-3 order-2 lg:order-1 px-4 lg:px-0">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeMember.id}
-              initial={{ opacity: 0, x: -50 }}
+              initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -50 }}
-              className="space-y-6 bg-gray-950/50 p-6 rounded-2xl border border-gray-800/50 backdrop-blur-md"
+              exit={{ opacity: 0, x: -30 }}
+              className="space-y-4 md:space-y-6 bg-gray-950/50 p-4 md:p-6 rounded-2xl border border-gray-800/50 backdrop-blur-md"
             >
-              <div className="flex items-center gap-2 mb-4">
-                <Trophy className="text-yellow-400 w-5 h-5" />
-                <h3 className="font-mono text-white text-sm font-bold uppercase tracking-widest">Base Stats</h3>
+              <div className="flex items-center gap-2 mb-2 md:mb-4">
+                <Trophy className="text-yellow-400 w-4 h-4 md:w-5 md:h-5" />
+                <h3 className="font-mono text-white text-[10px] md:text-sm font-bold uppercase tracking-widest">Base Stats</h3>
               </div>
-              <div className="space-y-4">
+              <div className="space-y-3 md:space-y-4">
                 {activeMember.stats.map((stat, i) => (
                   <StatBar key={stat.label} {...stat} index={i} />
                 ))}
@@ -344,68 +343,87 @@ export const ArcadeTeamSelect = () => {
         </div>
 
         {/* Center: Carousel */}
-        <div className="lg:col-span-6 flex items-center justify-center gap-4 py-12 order-1 lg:order-2 overflow-visible relative">
+        <div className="lg:col-span-6 flex flex-col items-center justify-center order-1 lg:order-2 relative h-[450px] md:h-[550px] overflow-visible">
            {/* Carousel Glow */}
-           <div className="absolute inset-0 bg-cyan-500/5 blur-[120px] rounded-full pointer-events-none" />
+           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full max-w-md bg-cyan-500/5 blur-[100px] rounded-full pointer-events-none -z-10" />
 
           {/* Navigation Buttons (Desktop Only) */}
           <button
             onClick={handlePrev}
-            className="hidden md:flex absolute left-0 md:-left-8 z-30 p-2 rounded-full border border-cyan-400/30 bg-black/40 text-cyan-400 hover:bg-cyan-400 hover:text-black transition-all group"
+            className="hidden md:flex absolute left-0 z-30 p-2 rounded-full border border-cyan-400/30 bg-black/40 text-cyan-400 hover:bg-cyan-400 hover:text-black transition-all group"
             aria-label="Previous member"
           >
-            <ChevronLeft className="w-6 h-6 md:w-8 md:h-8 group-hover:scale-110 transition-transform" />
+            <ChevronLeft className="w-8 h-8 group-hover:scale-110 transition-transform" />
           </button>
 
-          {/* Swipeable Container */}
-          <motion.div
-            drag="x"
-            dragConstraints={{ left: 0, right: 0 }}
-            onDragEnd={onDragEnd}
-            style={{ x: dragX }}
-            className="flex items-center justify-center gap-2 md:gap-4 relative touch-none"
-          >
-            {TEAM_MEMBERS.map((member, index) => (
-              <div
-                key={member.id}
-                className={`transition-all duration-500 ease-out ${
-                  index === activeIndex ? "z-20 scale-100" : "z-10 scale-75 -mx-12 md:-mx-16"
-                }`}
-              >
+          {/* Swipeable Viewport */}
+          <div className="w-full h-full overflow-hidden flex items-center justify-center relative touch-none">
+            <motion.div
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              onDragEnd={onDragEnd}
+              animate={{
+                x: `calc(0px - (${activeIndex} * (var(--card-width) + var(--card-gap))))`
+              }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              style={{
+                "--card-width": "220px",
+                "--card-gap": "16px",
+                display: "flex",
+                alignItems: "center",
+                gap: "var(--card-gap)",
+                cursor: "grab"
+              } as any}
+              className="md:[--card-width:256px] md:[--card-gap:32px]"
+            >
+              {TEAM_MEMBERS.map((member, index) => (
                 <CharacterCard
+                  key={member.id}
                   member={member}
                   isActive={index === activeIndex}
                   onClick={() => setActiveIndex(index)}
                 />
-              </div>
-            ))}
-          </motion.div>
+              ))}
+            </motion.div>
+          </div>
 
-          {/* Right Navigation Button (Desktop Only) */}
           <button
             onClick={handleNext}
-            className="hidden md:flex absolute right-0 md:-right-8 z-30 p-2 rounded-full border border-cyan-400/30 bg-black/40 text-cyan-400 hover:bg-cyan-400 hover:text-black transition-all group"
+            className="hidden md:flex absolute right-0 z-30 p-2 rounded-full border border-cyan-400/30 bg-black/40 text-cyan-400 hover:bg-cyan-400 hover:text-black transition-all group"
             aria-label="Next member"
           >
-            <ChevronRight className="w-6 h-6 md:w-8 md:h-8 group-hover:scale-110 transition-transform" />
+            <ChevronRight className="w-8 h-8 group-hover:scale-110 transition-transform" />
           </button>
+
+          {/* Pagination Indicators */}
+          <div className="flex gap-2 mt-4 md:mt-8 z-10">
+            {TEAM_MEMBERS.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setActiveIndex(i)}
+                className={`h-1 rounded-full transition-all duration-300 ${
+                  i === activeIndex ? "w-8 bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.5)]" : "w-2 bg-gray-800"
+                }`}
+              />
+            ))}
+          </div>
         </div>
 
         {/* Right Side: Skills Panel */}
-        <div className="lg:col-span-3 order-3">
+        <div className="lg:col-span-3 order-3 px-4 lg:px-0">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeMember.id}
-              initial={{ opacity: 0, x: 50 }}
+              initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 50 }}
-              className="space-y-6 bg-gray-950/50 p-6 rounded-2xl border border-gray-800/50 backdrop-blur-md"
+              exit={{ opacity: 0, x: 30 }}
+              className="space-y-4 md:space-y-6 bg-gray-950/50 p-4 md:p-6 rounded-2xl border border-gray-800/50 backdrop-blur-md"
             >
-              <div className="flex items-center gap-2 mb-4">
-                <Zap className="text-cyan-400 w-5 h-5" />
-                <h3 className="font-mono text-white text-sm font-bold uppercase tracking-widest">Ultimate Moves</h3>
+              <div className="flex items-center gap-2 mb-2 md:mb-4">
+                <Zap className="text-cyan-400 w-4 h-4 md:w-5 md:h-5" />
+                <h3 className="font-mono text-white text-[10px] md:text-sm font-bold uppercase tracking-widest">Ultimate Moves</h3>
               </div>
-              <div className="space-y-6">
+              <div className="space-y-4 md:space-y-6">
                 {activeMember.skills.map((skill, i) => (
                   <motion.div
                     key={skill.name}
@@ -415,10 +433,10 @@ export const ArcadeTeamSelect = () => {
                     className="relative group"
                   >
                     <div className="flex items-start gap-3">
-                      <span className="text-2xl group-hover:scale-125 transition-transform duration-300">{skill.icon}</span>
+                      <span className="text-xl md:text-2xl group-hover:scale-125 transition-transform duration-300">{skill.icon}</span>
                       <div>
-                        <h4 className="text-cyan-300 font-mono text-xs font-bold uppercase group-hover:text-white transition-colors">{skill.name}</h4>
-                        <p className="text-gray-500 text-[10px] leading-relaxed mt-1">{skill.description}</p>
+                        <h4 className="text-cyan-300 font-mono text-[10px] md:text-xs font-bold uppercase group-hover:text-white transition-colors">{skill.name}</h4>
+                        <p className="text-gray-500 text-[9px] md:text-[10px] leading-relaxed mt-1">{skill.description}</p>
                       </div>
                     </div>
                   </motion.div>
@@ -426,17 +444,17 @@ export const ArcadeTeamSelect = () => {
               </div>
 
               {/* Summon Button */}
-              <motion.div className="pt-6">
+              <motion.div className="pt-4 md:pt-6">
                 <Button
                   onClick={() => setIsModalOpen(true)}
-                  className="w-full bg-transparent border-2 border-cyan-400/50 text-cyan-400 hover:bg-cyan-400 hover:text-black font-black uppercase italic tracking-tighter transition-all duration-300 group overflow-hidden relative"
+                  className="w-full bg-transparent border-2 border-cyan-400/50 text-cyan-400 hover:bg-cyan-400 hover:text-black text-[10px] md:text-xs font-black uppercase italic tracking-tighter transition-all duration-300 group overflow-hidden relative"
                 >
                   <motion.span
                     className="absolute inset-0 bg-cyan-400/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"
                   />
-                  <span className="relative flex items-center gap-2">
+                  <span className="relative flex items-center justify-center gap-2">
                     SUMMON {activeMember.name.split("'")[1] || activeMember.name.split(" ")[0]}
-                    <ExternalLink className="w-4 h-4" />
+                    <ExternalLink className="w-3 h-3 md:w-4 md:h-4" />
                   </span>
                 </Button>
               </motion.div>
