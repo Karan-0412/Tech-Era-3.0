@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, memo } from "react";
 import { AnimatePresence, motion, useInView, useMotionValue, useSpring } from "framer-motion";
 
 /* ── Main Component ─────────────────────────────────── */
@@ -25,14 +25,11 @@ const calculateTimeLeft = () => {
   return { days, hours, minutes, seconds };
 };
 
-const MissionBriefing = ({ visible, onRegister }: MissionBriefingProps) => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
+const formatNumber = (value: number) => value.toString().padStart(2, "0");
+
+// Isolated countdown timer component to prevent parent re-renders
+const CountdownTimer = memo(() => {
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft);
-  const cardX = useMotionValue(0);
-  const cardY = useMotionValue(0);
-  const smoothX = useSpring(cardX, { stiffness: 120, damping: 20, mass: 0.3 });
-  const smoothY = useSpring(cardY, { stiffness: 120, damping: 20, mass: 0.3 });
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -42,7 +39,60 @@ const MissionBriefing = ({ visible, onRegister }: MissionBriefingProps) => {
     return () => clearInterval(timer);
   }, []);
 
-  const formatNumber = (value: number) => value.toString().padStart(2, "0");
+  return (
+    <div className="relative flex items-end justify-center gap-2 sm:gap-3 rounded-full border border-primary/40 bg-black/40 px-4 py-3 sm:px-6 sm:py-3.5 shadow-[0_10px_40px_rgba(6,182,212,0.35)] overflow-hidden">
+      <motion.div
+        aria-hidden
+        initial={{ opacity: 0 }}
+        animate={{ opacity: [0.1, 0.3, 0.1] }}
+        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+        className="pointer-events-none absolute inset-0 bg-gradient-to-r from-cyan-500/0 via-cyan-500/15 to-cyan-500/0"
+      />
+      {[
+        { label: "Days", value: timeLeft.days },
+        { label: "Hrs", value: timeLeft.hours },
+        { label: "Mins", value: timeLeft.minutes },
+        { label: "Secs", value: timeLeft.seconds },
+      ].map((item, index, arr) => (
+        <div key={item.label} className="flex items-end gap-2 sm:gap-3">
+          <div className="flex flex-col items-center min-w-[2.4ch]">
+            <AnimatePresence mode="popLayout" initial={false}>
+              <motion.span
+                key={item.value}
+                initial={{ y: 10, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: -10, opacity: 0 }}
+                transition={{
+                  duration: 0.2,
+                  ease: [0.22, 0.61, 0.36, 1],
+                }}
+                className="font-mono tabular-nums text-lg sm:text-2xl font-semibold text-cyan-300 leading-none"
+              >
+                {formatNumber(item.value)}
+              </motion.span>
+            </AnimatePresence>
+            <span className="mt-1 text-[9px] sm:text-[10px] tracking-[0.22em] text-[#A0A6AD] uppercase">
+              {item.label}
+            </span>
+          </div>
+          {index < arr.length - 1 && (
+            <span className="mb-3 text-sm sm:text-base text-[#4B5563]">:</span>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+});
+
+CountdownTimer.displayName = "CountdownTimer";
+
+const MissionBriefing = ({ visible, onRegister }: MissionBriefingProps) => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true });
+  const cardX = useMotionValue(0);
+  const cardY = useMotionValue(0);
+  const smoothX = useSpring(cardX, { stiffness: 120, damping: 20, mass: 0.3 });
+  const smoothY = useSpring(cardY, { stiffness: 120, damping: 20, mass: 0.3 });
 
   const handleCardMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
     const rect = event.currentTarget.getBoundingClientRect();
@@ -143,47 +193,7 @@ const MissionBriefing = ({ visible, onRegister }: MissionBriefingProps) => {
           transition={{ delay: 0.12, duration: 0.6, ease: [0.22, 0.61, 0.36, 1] }}
           className="w-full max-w-md"
         >
-          <div className="relative flex items-end justify-center gap-2 sm:gap-3 rounded-full border border-primary/40 bg-black/40 px-4 py-3 sm:px-6 sm:py-3.5 shadow-[0_10px_40px_rgba(6,182,212,0.35)] overflow-hidden">
-            <motion.div
-              aria-hidden
-              initial={{ opacity: 0 }}
-              animate={{ opacity: [0.1, 0.3, 0.1] }}
-              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-              className="pointer-events-none absolute inset-0 bg-gradient-to-r from-cyan-500/0 via-cyan-500/15 to-cyan-500/0"
-            />
-            {[
-              { label: "Days", value: timeLeft.days },
-              { label: "Hrs", value: timeLeft.hours },
-              { label: "Mins", value: timeLeft.minutes },
-              { label: "Secs", value: timeLeft.seconds },
-            ].map((item, index, arr) => (
-              <div key={item.label} className="flex items-end gap-2 sm:gap-3">
-                <div className="flex flex-col items-center min-w-[2.4ch]">
-                  <AnimatePresence mode="popLayout" initial={false}>
-                    <motion.span
-                      key={item.value}
-                      initial={{ y: 10, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      exit={{ y: -10, opacity: 0 }}
-                      transition={{
-                        duration: 0.2,
-                        ease: [0.22, 0.61, 0.36, 1],
-                      }}
-                      className="font-mono tabular-nums text-lg sm:text-2xl font-semibold text-cyan-300 leading-none"
-                    >
-                      {formatNumber(item.value)}
-                    </motion.span>
-                  </AnimatePresence>
-                  <span className="mt-1 text-[9px] sm:text-[10px] tracking-[0.22em] text-[#A0A6AD] uppercase">
-                    {item.label}
-                  </span>
-                </div>
-                {index < arr.length - 1 && (
-                  <span className="mb-3 text-sm sm:text-base text-[#4B5563]">:</span>
-                )}
-              </div>
-            ))}
-          </div>
+          <CountdownTimer />
         </motion.div>
 
         <motion.div
