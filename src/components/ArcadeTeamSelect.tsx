@@ -77,6 +77,91 @@ const TEAM_MEMBERS: TeamMember[] = [
     ],
     links: { github: "#", linkedin: "#", email: "jordan@example.com" },
   },
+  {
+    id: 4,
+    name: "Elena 'The Enforcer' Rodriguez",
+    role: "Backend Security Expert",
+    image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Elena",
+    stats: [
+      { label: "Firewall Fortitude", value: 96, icon: <Zap className="w-4 h-4" /> },
+      { label: "Intrusion Detection", value: 89, icon: <Code className="w-4 h-4" /> },
+      { label: "Meeting Tolerance", value: 5, icon: <MessageSquare className="w-4 h-4" /> },
+      { label: "Syntax Error Rage", value: 75, icon: <AlertTriangle className="w-4 h-4" /> },
+    ],
+    skills: [
+      { name: "Encryption Shield", description: "Secures data with unbreakable algorithmic barriers.", icon: "🛡️" },
+      { name: "Query Optimization Strike", description: "Slashes response times by 500%.", icon: "⚡" },
+    ],
+    links: { github: "#", linkedin: "#", email: "elena@example.com" },
+  },
+  {
+    id: 5,
+    name: "Hiroshi 'The Haiku' Sato",
+    role: "Senior Frontend Developer",
+    image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Hiroshi",
+    stats: [
+      { label: "CSS Wizardry", value: 99, icon: <Zap className="w-4 h-4" /> },
+      { label: "Bundle Size Obsession", value: 92, icon: <Code className="w-4 h-4" /> },
+      { label: "Meeting Tolerance", value: 30, icon: <MessageSquare className="w-4 h-4" /> },
+      { label: "Syntax Error Rage", value: 20, icon: <AlertTriangle className="w-4 h-4" /> },
+    ],
+    skills: [
+      { name: "Animation Flow", description: "Creates interfaces smoother than silk.", icon: "✨" },
+      { name: "Framework Jump", description: "Master of React, Vue, and the next big thing.", icon: "🦘" },
+    ],
+    links: { github: "#", linkedin: "#", email: "hiroshi@example.com" },
+  },
+  {
+    id: 6,
+    name: "Maya 'The Matrix' Williams",
+    role: "Data Scientist",
+    image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Maya",
+    stats: [
+      { label: "Algorithm Insight", value: 100, icon: <Zap className="w-4 h-4" /> },
+      { label: "Pattern Recognition", value: 95, icon: <Code className="w-4 h-4" /> },
+      { label: "Meeting Tolerance", value: 15, icon: <MessageSquare className="w-4 h-4" /> },
+      { label: "Syntax Error Rage", value: 65, icon: <AlertTriangle className="w-4 h-4" /> },
+    ],
+    skills: [
+      { name: "Neural Network Pulse", description: "Predicts user behavior before they even think.", icon: "🧠" },
+      { name: "Visualization Nova", description: "Turns complex data into beautiful, actionable insights.", icon: "📊" },
+    ],
+    links: { github: "#", linkedin: "#", email: "maya@example.com" },
+  },
+  {
+    id: 7,
+    name: "Leo 'The Lightning' Kim",
+    role: "DevOps Engineer",
+    image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Leo",
+    stats: [
+      { label: "Uptime Zealotry", value: 99, icon: <Zap className="w-4 h-4" /> },
+      { label: "Pipeline Velocity", value: 94, icon: <Code className="w-4 h-4" /> },
+      { label: "Meeting Tolerance", value: 10, icon: <MessageSquare className="w-4 h-4" /> },
+      { label: "Syntax Error Rage", value: 85, icon: <AlertTriangle className="w-4 h-4" /> },
+    ],
+    skills: [
+      { name: "CI/CD Storm", description: "Deploys code faster than the speed of light.", icon: "🌩️" },
+      { name: "Cloud Infrastructure Wall", description: "Builds scalable systems that never fail.", icon: "☁️" },
+    ],
+    links: { github: "#", linkedin: "#", email: "leo@example.com" },
+  },
+  {
+    id: 8,
+    name: "Sophie 'The Spark' Dubois",
+    role: "Motion Designer",
+    image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sophie",
+    stats: [
+      { label: "Frame Precision", value: 98, icon: <Zap className="w-4 h-4" /> },
+      { label: "Aesthetic Sense", value: 97, icon: <Code className="w-4 h-4" /> },
+      { label: "Meeting Tolerance", value: 50, icon: <MessageSquare className="w-4 h-4" /> },
+      { label: "Syntax Error Rage", value: 10, icon: <AlertTriangle className="w-4 h-4" /> },
+    ],
+    skills: [
+      { name: "Keyframe Magic", description: "Brings static designs to vibrant life.", icon: "🎬" },
+      { name: "Vibe Check", description: "Ensures every interaction feels 'just right'.", icon: "💎" },
+    ],
+    links: { github: "#", linkedin: "#", email: "sophie@example.com" },
+  },
 ];
 
 const CharacterCard = ({ member, isActive, onClick }: { member: TeamMember; isActive: boolean; onClick: () => void }) => {
