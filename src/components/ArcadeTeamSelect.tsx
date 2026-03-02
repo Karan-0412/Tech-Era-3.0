@@ -118,7 +118,7 @@ const CharacterCard = ({ member, isActive, onClick }: { member: TeamMember; isAc
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
       className={`relative w-64 h-96 cursor-pointer rounded-2xl overflow-hidden border-2 ${
         isActive ? "border-cyan-400 shadow-[0_0_30px_rgba(34,211,238,0.5)]" : "border-gray-800"
-      } bg-black/80 backdrop-blur-xl group`}
+      } bg-black/80 backdrop-blur-xl group flex flex-col`}
     >
       {/* Glitch Overlay for Active Card */}
       {isActive && (
@@ -133,7 +133,7 @@ const CharacterCard = ({ member, isActive, onClick }: { member: TeamMember; isAc
       <div className="absolute inset-0 bg-gradient-to-t from-cyan-950/50 to-transparent" />
 
       {/* Character Image */}
-      <div className="absolute inset-0 flex items-center justify-center p-4">
+      <div className="flex-1 relative flex items-center justify-center p-4">
         <motion.img
           src={member.image}
           alt={member.name}
@@ -143,9 +143,23 @@ const CharacterCard = ({ member, isActive, onClick }: { member: TeamMember; isAc
       </div>
 
       {/* Name/Role Overlay */}
-      <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black to-transparent">
+      <div className="p-4 bg-gradient-to-t from-black to-transparent">
         <h3 className="text-white font-mono text-lg font-bold truncate tracking-tight">{member.name}</h3>
         <p className="text-cyan-400 font-mono text-xs uppercase tracking-widest">{member.role}</p>
+
+        {/* LinkedIn Connect Option */}
+        <motion.a
+          href={member.links.linkedin}
+          target="_blank"
+          rel="noopener noreferrer"
+          initial={{ opacity: 0, y: 10 }}
+          animate={isActive ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+          whileHover={{ scale: 1.05 }}
+          className="mt-3 flex items-center justify-center gap-2 py-2 rounded-lg bg-blue-600/20 border border-blue-500/50 text-blue-400 hover:bg-blue-600 hover:text-white transition-all duration-300"
+        >
+          <Linkedin className="w-4 h-4" />
+          <span className="font-mono text-[10px] font-bold uppercase tracking-wider">Connect</span>
+        </motion.a>
       </div>
     </motion.div>
   );
@@ -183,6 +197,7 @@ const StatBar = ({ label, value, icon, index }: { label: string; value: number; 
 export const ArcadeTeamSelect = () => {
   const [activeIndex, setActiveIndex] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const dragX = useMotionValue(0);
   const activeMember = TEAM_MEMBERS[activeIndex];
 
   const handleNext = () => {
@@ -191,6 +206,15 @@ export const ArcadeTeamSelect = () => {
 
   const handlePrev = () => {
     setActiveIndex((prev) => (prev - 1 + TEAM_MEMBERS.length) % TEAM_MEMBERS.length);
+  };
+
+  const onDragEnd = (event: any, info: any) => {
+    const threshold = 50;
+    if (info.offset.x < -threshold) {
+      handleNext();
+    } else if (info.offset.x > threshold) {
+      handlePrev();
+    }
   };
 
   return (
@@ -205,7 +229,7 @@ export const ArcadeTeamSelect = () => {
           Select Your <span className="text-cyan-400">Warriors</span>
         </h2>
         <p className="text-gray-500 font-mono text-sm uppercase tracking-[0.5em]">
-          Insert Coin to Connect
+          Swipe to Choose • Insert Coin to Connect
         </p>
       </motion.div>
 
@@ -239,34 +263,43 @@ export const ArcadeTeamSelect = () => {
            {/* Carousel Glow */}
            <div className="absolute inset-0 bg-cyan-500/5 blur-[120px] rounded-full pointer-events-none" />
 
-          {/* Left Navigation Button */}
+          {/* Navigation Buttons (Desktop Only) */}
           <button
             onClick={handlePrev}
-            className="absolute left-0 md:-left-8 z-30 p-2 rounded-full border border-cyan-400/30 bg-black/40 text-cyan-400 hover:bg-cyan-400 hover:text-black transition-all group"
+            className="hidden md:flex absolute left-0 md:-left-8 z-30 p-2 rounded-full border border-cyan-400/30 bg-black/40 text-cyan-400 hover:bg-cyan-400 hover:text-black transition-all group"
             aria-label="Previous member"
           >
             <ChevronLeft className="w-6 h-6 md:w-8 md:h-8 group-hover:scale-110 transition-transform" />
           </button>
 
-          {TEAM_MEMBERS.map((member, index) => (
-            <div
-              key={member.id}
-              className={`transition-all duration-500 ease-out ${
-                index === activeIndex ? "z-20 scale-100" : "z-10 scale-75 -mx-8 md:-mx-16"
-              }`}
-            >
-              <CharacterCard
-                member={member}
-                isActive={index === activeIndex}
-                onClick={() => setActiveIndex(index)}
-              />
-            </div>
-          ))}
+          {/* Swipeable Container */}
+          <motion.div
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            onDragEnd={onDragEnd}
+            style={{ x: dragX }}
+            className="flex items-center justify-center gap-4 relative touch-none"
+          >
+            {TEAM_MEMBERS.map((member, index) => (
+              <div
+                key={member.id}
+                className={`transition-all duration-500 ease-out ${
+                  index === activeIndex ? "z-20 scale-100" : "z-10 scale-75 -mx-8 md:-mx-16"
+                }`}
+              >
+                <CharacterCard
+                  member={member}
+                  isActive={index === activeIndex}
+                  onClick={() => setActiveIndex(index)}
+                />
+              </div>
+            ))}
+          </motion.div>
 
-          {/* Right Navigation Button */}
+          {/* Right Navigation Button (Desktop Only) */}
           <button
             onClick={handleNext}
-            className="absolute right-0 md:-right-8 z-30 p-2 rounded-full border border-cyan-400/30 bg-black/40 text-cyan-400 hover:bg-cyan-400 hover:text-black transition-all group"
+            className="hidden md:flex absolute right-0 md:-right-8 z-30 p-2 rounded-full border border-cyan-400/30 bg-black/40 text-cyan-400 hover:bg-cyan-400 hover:text-black transition-all group"
             aria-label="Next member"
           >
             <ChevronRight className="w-6 h-6 md:w-8 md:h-8 group-hover:scale-110 transition-transform" />
