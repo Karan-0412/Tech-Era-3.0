@@ -134,7 +134,7 @@ const HeroScreen = ({ onUnlock }: HeroScreenProps) => {
               }}
               className="space-y-2"
             >
-              <h1 className="font-black text-5xl sm:text-7xl lg:text-8xl tracking-tighter">
+              <h1 className="font-black text-5xl sm:text-6xl lg:text-7xl tracking-tighter">
                 <span className="text-white">TECH</span>
                 <br className="hidden sm:block" />
                 <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-400 text-transparent bg-clip-text animate-pulse">
@@ -159,7 +159,7 @@ const HeroScreen = ({ onUnlock }: HeroScreenProps) => {
               transition={{ delay: 0.8, duration: 0.8 }}
               whileHover={{ scale: 1.08, boxShadow: "0 0 30px rgba(34, 211, 238, 0.8)" }}
               whileTap={{ scale: 0.95 }}
-              className="relative group mt-8 px-8 sm:px-12 py-4 sm:py-5 font-mono text-sm sm:text-base font-bold tracking-[0.2em] uppercase
+              className="relative group mt-8 px-6 sm:px-12 py-3 sm:py-5 font-mono text-xs sm:text-base font-bold tracking-[0.2em] uppercase
                 border-2 border-transparent rounded-md
                 bg-gradient-to-r from-cyan-500/10 via-blue-500/10 to-cyan-500/10
                 transition-all duration-300
