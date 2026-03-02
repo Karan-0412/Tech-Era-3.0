@@ -44,7 +44,7 @@ const TeamSection = ({ onRegister }: { onRegister: () => void }) => {
 
   if (!registrationData || !registrationData.teamMembers || registrationData.teamMembers.length === 0) {
     return (
-      <section id="team" className="py-12 sm:py-24 px-6 max-w-lg mx-auto">
+      <section id="team" className="pt-6 sm:pt-12 pb-12 sm:pb-24 px-6 max-w-lg mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -69,7 +69,7 @@ const TeamSection = ({ onRegister }: { onRegister: () => void }) => {
   }
 
   return (
-    <section id="team" className="py-12 sm:py-24 px-6 max-w-lg mx-auto">
+    <section id="team" className="pt-6 sm:pt-12 pb-12 sm:pb-24 px-6 max-w-lg mx-auto">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}

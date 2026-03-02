@@ -105,7 +105,7 @@ const SpeakerCarousel = () => {
   const isInView = useInView(ref, { once: true });
 
   return (
-    <section className="py-12 sm:py-24 px-4 sm:px-6" ref={ref}>
+    <section className="pt-6 sm:pt-12 pb-12 sm:pb-24 px-4 sm:px-6" ref={ref}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={isInView ? { opacity: 1, y: 0 } : {}}
