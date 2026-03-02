@@ -62,7 +62,7 @@ const MissionBriefing = ({ visible, onRegister }: MissionBriefingProps) => {
   return (
     <section
       ref={ref}
-      className="relative min-h-[100dvh] flex items-center justify-center px-4 sm:px-6 py-16 overflow-hidden"
+      className="relative min-h-[100dvh] flex items-start sm:items-center justify-start sm:justify-center pt-20 sm:py-16 px-4 sm:px-6 overflow-hidden"
     >
       <motion.div
         initial={{ opacity: 0 }}
@@ -196,7 +196,7 @@ const MissionBriefing = ({ visible, onRegister }: MissionBriefingProps) => {
             whileTap={{ scale: 0.96, y: 0 }}
             transition={{ duration: 0.18, ease: [0.22, 0.61, 0.36, 1] }}
             onClick={onRegister}
-            className="group relative flex w-full items-center justify-center overflow-hidden rounded-full border border-cyan-400/50 bg-[radial-gradient(circle_at_top_left,#22d3ee_0,#1d1530_40%,#020617_85%)] px-7 py-2.5 sm:py-3 font-mono text-[11px] sm:text-xs font-semibold uppercase tracking-[0.32em] text-white shadow-[0_18px_40px_rgba(0,0,0,0.9)]"
+            className="group relative flex w-full items-center justify-center overflow-hidden rounded-full border border-cyan-400/50 bg-[radial-gradient(circle_at_top_left,#22d3ee_0,#1d1530_40%,#020617_85%)] px-7 py-3 sm:py-4 font-mono text-[11px] sm:text-xs font-semibold uppercase tracking-[0.32em] text-white shadow-[0_18px_40px_rgba(0,0,0,0.9)]"
           >
             <motion.span
               aria-hidden
