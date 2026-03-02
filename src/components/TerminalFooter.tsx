@@ -28,7 +28,7 @@ const TerminalFooter = () => {
   }, [selectedEvent]);
 
   return (
-    <footer className="py-24 px-6" ref={ref}>
+    <footer className="pt-6 sm:pt-12 pb-12 sm:pb-24 px-6" ref={ref}>
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={isInView ? { opacity: 1, y: 0 } : {}}

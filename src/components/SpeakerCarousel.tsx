@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect, memo } from "react";
 import { motion, useInView } from "framer-motion";
 
 const speakers = [
@@ -10,21 +10,44 @@ const speakers = [
   { name: "Zane Patel", role: "Director, DeepMind X", avatar: "ZP" },
 ];
 
-const SpeakerCard = ({ speaker, index }: { speaker: typeof speakers[0]; index: number }) => {
+const SpeakerCard = memo(({ speaker, index }: { speaker: typeof speakers[0]; index: number }) => {
   const [active, setActive] = useState(false);
   const [typedName, setTypedName] = useState("");
+  const intervalRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (!active) {
+      setTypedName("");
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+      return;
+    }
+
+    let i = 0;
+    setTypedName("");
+    intervalRef.current = window.setInterval(() => {
+      setTypedName(speaker.name.slice(0, i + 1));
+      i++;
+      if (i >= speaker.name.length) {
+        if (intervalRef.current) {
+          clearInterval(intervalRef.current);
+          intervalRef.current = null;
+        }
+      }
+    }, 40);
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+    };
+  }, [active, speaker.name]);
 
   const handleTap = () => {
     setActive(!active);
-    if (!active) {
-      let i = 0;
-      setTypedName("");
-      const interval = setInterval(() => {
-        setTypedName(speaker.name.slice(0, i + 1));
-        i++;
-        if (i >= speaker.name.length) clearInterval(interval);
-      }, 40);
-    }
   };
 
   const colors = ["from-neon-cyan/30 to-neon-magenta/30", "from-neon-magenta/30 to-neon-green/30", "from-neon-green/30 to-neon-cyan/30"];
@@ -73,14 +96,16 @@ const SpeakerCard = ({ speaker, index }: { speaker: typeof speakers[0]; index: n
       </div>
     </motion.div>
   );
-};
+});
+
+SpeakerCard.displayName = "SpeakerCard";
 
 const SpeakerCarousel = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
 
   return (
-    <section className="py-24 px-4 sm:px-6" ref={ref}>
+    <section className="pt-6 sm:pt-12 pb-12 sm:pb-24 px-4 sm:px-6" ref={ref}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={isInView ? { opacity: 1, y: 0 } : {}}

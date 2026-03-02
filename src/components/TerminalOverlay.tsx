@@ -16,6 +16,7 @@ interface TerminalLine {
   text: string;
   color: "green" | "cyan" | "red" | "dim";
   typing?: boolean;
+  id?: string;
 }
 
 interface TerminalOverlayProps {
@@ -162,12 +163,32 @@ const TerminalOverlay = ({ open, onClose }: TerminalOverlayProps) => {
 
   const inputRef = useRef<HTMLInputElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const lineBufferRef = useRef<TerminalLine[]>([]);
+  const flushTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const flushLineBuffer = useCallback(() => {
+    if (lineBufferRef.current.length > 0) {
+      setLines((prev) => {
+        const newLines = [...prev, ...lineBufferRef.current.map((line, idx) => ({
+          ...line,
+          id: `${Date.now()}-${idx}`
+        }))];
+        // Keep only the last 100 lines to prevent DOM bloat
+        return newLines.slice(-100);
+      });
+      lineBufferRef.current = [];
+    }
+  }, []);
 
   const addLine = useCallback(
     (text: string, color: TerminalLine["color"] = "green") => {
-      setLines((prev) => [...prev, { text, color }]);
+      lineBufferRef.current.push({ text, color });
+
+      // Flush buffer after 16ms (roughly one frame) to batch updates
+      if (flushTimerRef.current) clearTimeout(flushTimerRef.current);
+      flushTimerRef.current = setTimeout(flushLineBuffer, 16);
     },
-    []
+    [flushLineBuffer]
   );
 
   const startAutoType = useCallback(
@@ -200,9 +221,13 @@ const TerminalOverlay = ({ open, onClose }: TerminalOverlayProps) => {
   }, [autoTypeDone, step]);
 
   useEffect(() => {
-    if (!open) return;
+    if (!open) {
+      if (flushTimerRef.current) clearTimeout(flushTimerRef.current);
+      return;
+    }
     setStep("init");
     setLines([]);
+    lineBufferRef.current = [];
     setInputValue("");
     setName("");
     setEmail("");
@@ -220,7 +245,10 @@ const TerminalOverlay = ({ open, onClose }: TerminalOverlayProps) => {
       startAutoType("> Initializing registration session...", "dim");
     }, 400);
 
-    return () => clearTimeout(t1);
+    return () => {
+      clearTimeout(t1);
+      if (flushTimerRef.current) clearTimeout(flushTimerRef.current);
+    };
   }, [open, startAutoType]);
 
   useEffect(() => {
@@ -610,9 +638,9 @@ const TerminalOverlay = ({ open, onClose }: TerminalOverlayProps) => {
           >
             <div className="max-w-2xl mx-auto space-y-1">
               {/* Rendered lines */}
-              {lines.map((line, i) => (
+              {lines.map((line) => (
                 <motion.div
-                  key={i}
+                  key={line.id || `${line.text}-${Math.random()}`}
                   initial={{ opacity: 0, x: -8 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.15 }}

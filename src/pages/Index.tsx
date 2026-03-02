@@ -1,15 +1,17 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, Suspense, lazy } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import BootSequence from "@/components/BootSequence";
-import MeshBackground from "@/components/MeshBackground";
 import HeroScreen from "@/components/HeroScreen";
 import MissionBriefing from "@/components/MissionBriefing";
 import AboutSection from "@/components/AboutSection";
-import SpeakerCarousel from "@/components/SpeakerCarousel";
 import TeamSection from "@/components/TeamSection";
 import ScheduleTimeline from "@/components/ScheduleTimeline";
 import TerminalFooter from "@/components/TerminalFooter";
-import TerminalOverlay from "@/components/TerminalOverlay";
+
+// Lazy load heavy components
+const MeshBackground = lazy(() => import("@/components/MeshBackground"));
+const SpeakerCarousel = lazy(() => import("@/components/SpeakerCarousel"));
+const TerminalOverlay = lazy(() => import("@/components/TerminalOverlay"));
 
 const Index = () => {
   const [booted, setBooted] = useState(false);
@@ -18,6 +20,9 @@ const Index = () => {
 
   const handleBootComplete = useCallback(() => setBooted(true), []);
   const handleUnlock = useCallback(() => setUnlocked(true), []);
+  const handleRegister = useCallback(() => setTerminalOpen(true), []);
+  const handleOpenTerminal = useCallback(() => setTerminalOpen(true), []);
+  const handleCloseTerminal = useCallback(() => setTerminalOpen(false), []);
 
   return (
     <div className="relative min-h-screen bg-background text-foreground">
@@ -31,28 +36,34 @@ const Index = () => {
             animate={{ opacity: 1 }}
             className="w-full"
           >
-            <MeshBackground />
+            <Suspense fallback={null}>
+              <MeshBackground />
+            </Suspense>
             <main className="relative z-10">
               {!unlocked && <HeroScreen onUnlock={handleUnlock} />}
               {unlocked && (
                 <>
-                  <MissionBriefing visible={unlocked} onRegister={() => setTerminalOpen(true)} />
+                  <MissionBriefing visible={unlocked} onRegister={handleRegister} />
                   <AboutSection />
                   <div id="speakers">
-                    <SpeakerCarousel />
+                    <Suspense fallback={null}>
+                      <SpeakerCarousel />
+                    </Suspense>
                   </div>
-                  <TeamSection onRegister={() => setTerminalOpen(true)} />
+                  <TeamSection onRegister={handleRegister} />
                   <div id="schedule">
                     <ScheduleTimeline />
                   </div>
-                  <TerminalFooter onOpenTerminal={() => setTerminalOpen(true)} />
+                  <TerminalFooter onOpenTerminal={handleOpenTerminal} />
                 </>
               )}
             </main>
           </motion.div>
         )}
       </AnimatePresence>
-      <TerminalOverlay open={terminalOpen} onClose={() => setTerminalOpen(false)} />
+      <Suspense fallback={null}>
+        <TerminalOverlay open={terminalOpen} onClose={handleCloseTerminal} />
+      </Suspense>
     </div>
   );
 };
