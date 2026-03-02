@@ -24,7 +24,7 @@ const HeroScreen = ({ onUnlock }: HeroScreenProps) => {
   return (
     <AnimatePresence>
       {!unlocking ? (
-        <section className="relative w-full h-[100dvh] flex flex-col items-center justify-start pt-20 sm:justify-center px-4 sm:px-6 overflow-hidden bg-black">
+        <section className="relative w-full h-[100dvh] flex flex-col items-center justify-center px-4 sm:px-6 pt-0 overflow-hidden bg-black">
           <div className="absolute inset-0 z-0 overflow-hidden">
             <motion.div
               className="absolute top-0 left-1/4 w-96 h-96 rounded-full bg-cyan-400/20 blur-3xl"

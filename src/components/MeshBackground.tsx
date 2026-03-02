@@ -11,6 +11,7 @@ const MeshBackground = () => {
 
     let animationId: number;
     let time = 0;
+    let frameCount = 0;
 
     const particles: { x: number; y: number; vx: number; vy: number; size: number; color: string }[] = [];
 
@@ -31,12 +32,15 @@ const MeshBackground = () => {
     resize();
     window.addEventListener("resize", resize);
 
-    // Create particles
-    const particleCount = Math.min(60, Math.floor((window.innerWidth * window.innerHeight) / 15000));
+    // Reduce particle count based on device type and viewport size
+    const baseParticleCount = Math.floor((w * h) / 15000);
+    const isMobile = w < 768;
+    const particleCount = Math.min(isMobile ? 25 : 45, baseParticleCount);
+    
     for (let i = 0; i < particleCount; i++) {
       particles.push({
-        x: Math.random() * window.innerWidth,
-        y: Math.random() * window.innerHeight,
+        x: Math.random() * w,
+        y: Math.random() * h,
         vx: (Math.random() - 0.5) * 0.3,
         vy: (Math.random() - 0.5) * 0.3,
         size: Math.random() * 2 + 0.5,
@@ -45,6 +49,13 @@ const MeshBackground = () => {
     }
 
     const draw = () => {
+      // Skip every other frame to reduce CPU usage
+      frameCount++;
+      if (frameCount % 2 !== 0) {
+        animationId = requestAnimationFrame(draw);
+        return;
+      }
+
       ctx.clearRect(0, 0, w, h);
       time += 0.005;
 
@@ -65,8 +76,11 @@ const MeshBackground = () => {
       ctx.fillStyle = g2;
       ctx.fillRect(0, 0, w, h);
 
-      // Draw connections first
+      // Draw connections first - only check closer particles to reduce O(n²) operations
       ctx.lineWidth = 0.5;
+      const maxDistance = 150;
+      const maxDistanceSq = maxDistance * maxDistance;
+      
       for (let i = 0; i < particles.length; i++) {
         const p1 = particles[i];
         for (let j = i + 1; j < particles.length; j++) {
@@ -74,12 +88,12 @@ const MeshBackground = () => {
           const dx = p1.x - p2.x;
           const dy = p1.y - p2.y;
           const distSq = dx * dx + dy * dy;
-          if (distSq < 22500) { // 150 * 150
+          if (distSq < maxDistanceSq) {
             const dist = Math.sqrt(distSq);
             ctx.beginPath();
             ctx.moveTo(p1.x, p1.y);
             ctx.lineTo(p2.x, p2.y);
-            ctx.strokeStyle = `rgba(0, 243, 255, ${0.05 * (1 - dist / 150)})`;
+            ctx.strokeStyle = `rgba(0, 243, 255, ${0.05 * (1 - dist / maxDistance)})`;
             ctx.stroke();
           }
         }
@@ -101,11 +115,22 @@ const MeshBackground = () => {
       animationId = requestAnimationFrame(draw);
     };
 
+    // Pause animation when tab is not visible
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        cancelAnimationFrame(animationId);
+      } else {
+        draw();
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
     draw();
 
     return () => {
       cancelAnimationFrame(animationId);
       window.removeEventListener("resize", resize);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, []);
 

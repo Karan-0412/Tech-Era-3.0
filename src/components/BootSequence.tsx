@@ -39,14 +39,14 @@ const BootSequence = ({ onComplete }: { onComplete: () => void }) => {
 
         <div className="w-full max-w-md px-6">
           <motion.h1
-            className={`font-mono text-3xl font-bold text-primary text-center mb-8 ${showGlitch ? "animate-glitch" : ""}`}
+            className={`font-mono text-lg font-bold text-primary text-center mb-8 ${showGlitch ? "animate-glitch" : ""}`}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
           >
             TECH://ERA 3.0
           </motion.h1>
 
-          <div className="font-mono text-sm space-y-1">
+          <div className="font-mono text-[14px] space-y-1">
             {bootLines.slice(0, currentLine).map((line, i) => (
               <motion.div
                 key={i}
