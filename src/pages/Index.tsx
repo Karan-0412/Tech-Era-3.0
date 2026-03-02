@@ -4,8 +4,8 @@ import BootSequence from "@/components/BootSequence";
 import HeroScreen from "@/components/HeroScreen";
 import MissionBriefing from "@/components/MissionBriefing";
 import AboutSection from "@/components/AboutSection";
+import { Link } from "react-router-dom";
 import TeamSection from "@/components/TeamSection";
-import ArcadeTeamSelect from "@/components/ArcadeTeamSelect";
 import SpeakerCarousel from "@/components/SpeakerCarousel";
 import ScheduleTimeline from "@/components/ScheduleTimeline";
 import TerminalFooter from "@/components/TerminalFooter";
@@ -49,7 +49,38 @@ const Index = () => {
                   <div id="speakers">
                     <SpeakerCarousel />
                   </div>
-                  <ArcadeTeamSelect />
+
+                  {/* Team Showcase CTA */}
+                  <section className="py-20 px-4 flex flex-col items-center justify-center text-center bg-black/40 backdrop-blur-sm border-y border-white/5">
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      className="max-w-2xl space-y-8"
+                    >
+                      <div className="space-y-2">
+                        <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter uppercase italic">
+                          Meet the <span className="text-cyan-400 text-glow-cyan">Legends</span>
+                        </h2>
+                        <p className="font-mono text-xs text-gray-500 uppercase tracking-[0.4em]">
+                          THE_WARRIORS_BEHIND_TECH_ERA
+                        </p>
+                      </div>
+
+                      <p className="text-gray-400 text-sm leading-relaxed max-w-lg mx-auto">
+                        Explore our elite roster of digital warriors, each bringing unique ultimate moves to the battlefield of innovation.
+                      </p>
+
+                      <Link
+                        to="/team"
+                        className="inline-flex items-center gap-4 px-10 py-4 bg-transparent border-2 border-cyan-400/50 text-cyan-400 hover:bg-cyan-400 hover:text-black font-black uppercase italic tracking-widest transition-all duration-300 group rounded-md shadow-[0_0_20px_rgba(34,211,238,0.2)] hover:shadow-[0_0_40px_rgba(34,211,238,0.5)]"
+                      >
+                        ENTER CHARACTER SELECT
+                        <span className="text-xl group-hover:translate-x-2 transition-transform">→</span>
+                      </Link>
+                    </motion.div>
+                  </section>
+
                   <TeamSection onRegister={handleRegister} />
                   <div id="schedule">
                     <ScheduleTimeline />

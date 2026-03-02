@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { ExternalLink, Github, Linkedin, Mail, Trophy, Zap, Coffee, Code, MessageSquare, AlertTriangle } from "lucide-react";
+import { ExternalLink, Github, Linkedin, Mail, Trophy, Zap, Coffee, Code, MessageSquare, AlertTriangle, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface TeamMember {
@@ -185,6 +185,14 @@ export const ArcadeTeamSelect = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const activeMember = TEAM_MEMBERS[activeIndex];
 
+  const handleNext = () => {
+    setActiveIndex((prev) => (prev + 1) % TEAM_MEMBERS.length);
+  };
+
+  const handlePrev = () => {
+    setActiveIndex((prev) => (prev - 1 + TEAM_MEMBERS.length) % TEAM_MEMBERS.length);
+  };
+
   return (
     <section className="relative min-h-screen bg-black py-20 px-4 overflow-hidden flex flex-col items-center justify-center">
       {/* Title */}
@@ -231,6 +239,15 @@ export const ArcadeTeamSelect = () => {
            {/* Carousel Glow */}
            <div className="absolute inset-0 bg-cyan-500/5 blur-[120px] rounded-full pointer-events-none" />
 
+          {/* Left Navigation Button */}
+          <button
+            onClick={handlePrev}
+            className="absolute left-0 md:-left-8 z-30 p-2 rounded-full border border-cyan-400/30 bg-black/40 text-cyan-400 hover:bg-cyan-400 hover:text-black transition-all group"
+            aria-label="Previous member"
+          >
+            <ChevronLeft className="w-6 h-6 md:w-8 md:h-8 group-hover:scale-110 transition-transform" />
+          </button>
+
           {TEAM_MEMBERS.map((member, index) => (
             <div
               key={member.id}
@@ -245,6 +262,15 @@ export const ArcadeTeamSelect = () => {
               />
             </div>
           ))}
+
+          {/* Right Navigation Button */}
+          <button
+            onClick={handleNext}
+            className="absolute right-0 md:-right-8 z-30 p-2 rounded-full border border-cyan-400/30 bg-black/40 text-cyan-400 hover:bg-cyan-400 hover:text-black transition-all group"
+            aria-label="Next member"
+          >
+            <ChevronRight className="w-6 h-6 md:w-8 md:h-8 group-hover:scale-110 transition-transform" />
+          </button>
         </div>
 
         {/* Right Side: Skills Panel */}

@@ -1,0 +1,48 @@
+import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
+import ArcadeTeamSelect from "@/components/ArcadeTeamSelect";
+import MeshBackground from "@/components/MeshBackground";
+
+const Team = () => {
+  return (
+    <div className="relative min-h-screen bg-black text-white overflow-hidden">
+      {/* Background */}
+      <div className="fixed inset-0 z-0">
+        <MeshBackground />
+      </div>
+
+      {/* Header / Nav */}
+      <nav className="relative z-20 flex items-center justify-between p-6 bg-gradient-to-b from-black/80 to-transparent">
+        <Link 
+          to="/" 
+          className="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.3em] text-cyan-400 hover:text-cyan-300 transition-colors group"
+        >
+          <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
+          BACK_TO_HQ
+        </Link>
+        
+        <div className="flex items-center gap-3">
+          <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+          <span className="font-mono text-xs uppercase tracking-[0.3em] text-gray-500">
+            LOC: SECTOR_TEAM_ALPHA
+          </span>
+        </div>
+      </nav>
+
+      {/* Main Content */}
+      <main className="relative z-10">
+        <ArcadeTeamSelect />
+      </main>
+
+      {/* Decorative footer */}
+      <footer className="relative z-10 p-8 flex justify-center">
+        <div className="font-mono text-[10px] text-gray-700 tracking-[0.5em] uppercase">
+          Apex Techno Warriors // Team Roster v3.0.26
+        </div>
+      </footer>
+    </div>
+  );
+};
+
+export default Team;
