@@ -46,7 +46,7 @@ const BootSequence = ({ onComplete }: { onComplete: () => void }) => {
             TECH://ERA 3.0
           </motion.h1>
 
-          <div className="font-mono text-[14px] space-y-1">
+          <div className="font-mono text-3xl space-y-1">
             {bootLines.slice(0, currentLine).map((line, i) => (
               <motion.div
                 key={i}
