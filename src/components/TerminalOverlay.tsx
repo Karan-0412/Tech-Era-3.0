@@ -173,8 +173,7 @@ const TerminalOverlay = ({ open, onClose }: TerminalOverlayProps) => {
           ...line,
           id: `${Date.now()}-${idx}`
         }))];
-        // Keep only the last 100 lines to prevent DOM bloat
-        return newLines.slice(-100);
+        return newLines;
       });
       lineBufferRef.current = [];
     }
