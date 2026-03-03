@@ -91,9 +91,7 @@ const ScheduleTimeline = () => {
         animate={isInView ? { opacity: 1, y: 0 } : {}}
         className="text-center mb-8"
       >
-        <p className="font-mono text-xs text-accent tracking-[0.4em] mb-3">
-          // CIRCUIT_BOARD
-        </p>
+
         <h2 className="font-mono text-3xl sm:text-4xl font-bold text-foreground">
           EVENT <span className="text-accent">SCHEDULE</span>
         </h2>

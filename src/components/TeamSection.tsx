@@ -42,7 +42,8 @@ const TeamSection = ({ onRegister }: { onRegister: () => void }) => {
     return () => window.removeEventListener("registrationUpdate", loadData);
   }, [loadData]);
 
-  if (!registrationData || !registrationData.teamMembers || registrationData.teamMembers.length === 0) {
+  // If no registration data at all, prompt to register
+  if (!registrationData) {
     return (
       <section id="team" className="pt-6 sm:pt-12 pb-12 sm:pb-24 px-6 max-w-lg mx-auto">
         <motion.div
@@ -51,9 +52,7 @@ const TeamSection = ({ onRegister }: { onRegister: () => void }) => {
           viewport={{ once: true }}
           className="text-center"
         >
-          <p className="font-mono text-xs text-primary tracking-[0.4em] mb-3">
-            // NO_TEAM_DATA
-          </p>
+
           <p className="font-mono text-sm text-muted-foreground mb-8">
             Initialize connection to register your team
           </p>
@@ -76,9 +75,7 @@ const TeamSection = ({ onRegister }: { onRegister: () => void }) => {
         viewport={{ once: true }}
         className="text-center mb-12"
       >
-        <p className="font-mono text-xs text-primary tracking-[0.4em] mb-3">
-          // TEAM_ROSTER
-        </p>
+
         <h2 className="font-mono text-3xl font-bold text-foreground">
           <span className="text-primary">{registrationData.teamName}</span>
         </h2>
@@ -124,7 +121,7 @@ const TeamSection = ({ onRegister }: { onRegister: () => void }) => {
 
         {registrationData.teamMembers.length > 0 && (
           <div className="text-center py-4">
-            <p className="font-mono text-[11px] text-muted-foreground/60">// TEAM MEMBERS ({registrationData.teamMembers.length})</p>
+
           </div>
         )}
 

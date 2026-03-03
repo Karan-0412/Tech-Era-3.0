@@ -37,9 +37,7 @@ const TerminalFooter = () => {
       >
         <div className="flex flex-col sm:flex-row items-center justify-between mb-8 gap-4">
           <div>
-            <p className="font-mono text-xs text-primary tracking-[0.4em] mb-2 uppercase">
-              // EVENT_DIRECTORY
-            </p>
+  
             <h2 className="font-mono text-2xl font-bold text-foreground">
               MISSION <span className="text-primary">PROTOCOLS</span>
             </h2>
@@ -98,22 +96,7 @@ const TerminalFooter = () => {
         </div>
 
         {/* Footer info/links */}
-        <div className="mt-12 pt-8 border-t border-primary/10 flex flex-col items-center gap-6">
-          <div className="flex gap-8">
-            {["TWITTER", "DISCORD", "GITHUB"].map((link) => (
-              <a
-                key={link}
-                href="#"
-                className="font-mono text-[10px] text-muted-foreground hover:text-primary transition-colors tracking-[0.3em] font-medium"
-              >
-                {link}
-              </a>
-            ))}
-          </div>
-          <p className="font-mono text-[10px] text-muted-foreground/40 tracking-widest uppercase text-center">
-            © TECH ERA 3.0 • POWERED BY APEX TECHNO WARRIORS • SYSTEM_STABLE
-          </p>
-        </div>
+       
       </motion.div>
     </footer>
   );

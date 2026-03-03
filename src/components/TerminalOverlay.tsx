@@ -126,7 +126,7 @@ const TypingLine = ({
       : color === "red"
       ? "text-destructive"
       : color === "dim"
-      ? "text-muted-foreground"
+      ? "text-foreground/70"
       : "text-accent text-glow-green";
 
   return (
@@ -242,7 +242,7 @@ const TerminalOverlay = ({ open, onClose }: TerminalOverlayProps) => {
     setAutoTypeDone(false);
 
     const t1 = setTimeout(() => {
-      startAutoType("> Initializing registration session...", "dim");
+      startAutoType("> Initializing registration session...", "cyan");
     }, 400);
 
     return () => {

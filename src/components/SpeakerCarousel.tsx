@@ -111,9 +111,7 @@ const SpeakerCarousel = () => {
         animate={isInView ? { opacity: 1, y: 0 } : {}}
         className="text-center mb-12"
       >
-        <p className="font-mono text-sm text-secondary tracking-[0.4em] mb-3">
-          // DIRECTORY
-        </p>
+
         <h2 className="font-mono text-3xl sm:text-4xl font-bold text-foreground">
           SPEAKER <span className="text-secondary">LINEUP</span>
         </h2>

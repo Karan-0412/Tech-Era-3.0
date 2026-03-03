@@ -50,8 +50,15 @@ const Index = () => {
                     <SpeakerCarousel />
                   </div>
 
-                  {/* Team Showcase CTA */}
-                  <section className="py-20 px-4 flex flex-col items-center justify-center text-center bg-black/40 backdrop-blur-sm border-y border-white/5">
+                  {/* Team Showcase CTA moved to bottom of content */}
+
+                  <TeamSection onRegister={handleRegister} />
+                  <div id="schedule">
+                    <ScheduleTimeline />
+                  </div>
+                  <TerminalFooter onOpenTerminal={handleOpenTerminal} />
+                  {/* Team Showcase CTA (Meet the Legends) - moved here to bottom */}
+                  <section className="py-8 px-4 flex flex-col items-center justify-center text-center bg-black/40 backdrop-blur-sm border-y border-white/5">
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}
                       whileInView={{ opacity: 1, y: 0 }}
@@ -68,24 +75,36 @@ const Index = () => {
                       </div>
 
                       <p className="text-gray-400 text-sm leading-relaxed max-w-lg mx-auto">
-                        Explore our elite roster of digital warriors, each bringing unique ultimate moves to the battlefield of innovation.
+                        Explore our elite warriors, each bringing unique ultimate moves to the battlefield of innovation.
                       </p>
 
                       <Link
                         to="/team"
-                        className="inline-flex items-center gap-4 px-10 py-4 bg-transparent border-2 border-cyan-400/50 text-cyan-400 hover:bg-cyan-400 hover:text-black font-black uppercase italic tracking-widest transition-all duration-300 group rounded-md shadow-[0_0_20px_rgba(34,211,238,0.2)] hover:shadow-[0_0_40px_rgba(34,211,238,0.5)]"
+                        className="inline-flex items-center gap-3 px-8 py-3 bg-transparent border-2 border-cyan-400/50 text-cyan-400 text-sm hover:bg-cyan-400 hover:text-black font-black uppercase italic tracking-widest transition-all duration-300 group rounded-md shadow-[0_0_20px_rgba(34,211,238,0.2)] hover:shadow-[0_0_40px_rgba(34,211,238,0.5)]"
                       >
-                        ENTER CHARACTER SELECT
-                        <span className="text-xl group-hover:translate-x-2 transition-transform">→</span>
+                        VIEW TEAM APEX
+                        <span className="text-lg group-hover:translate-x-2 transition-transform">→</span>
                       </Link>
+                       <div className="mt-12 pt-8 border-t border-primary/10 flex flex-col items-center gap-6">
+                      <div className="flex gap-8">
+                        {["TWITTER", "DISCORD", "GITHUB"].map((link) => (
+                          <a
+                            key={link}
+                            href="#"
+                            className="font-mono text-[10px] text-muted-foreground hover:text-primary transition-colors tracking-[0.3em] font-medium"
+                          >
+                            {link}
+                          </a>
+                        ))}
+                      </div>
+                      <p className="font-mono text-[10px] text-muted-foreground/40 tracking-widest uppercase text-center">
+                        © TECH ERA 3.0 • POWERED BY APEX TECHNO WARRIORS • SYSTEM_STABLE
+                      </p>
+                    </div>
                     </motion.div>
                   </section>
 
-                  <TeamSection onRegister={handleRegister} />
-                  <div id="schedule">
-                    <ScheduleTimeline />
-                  </div>
-                  <TerminalFooter onOpenTerminal={handleOpenTerminal} />
+                  
                 </>
               )}
             </main>

@@ -29,7 +29,7 @@ const BootSequence = ({ onComplete }: { onComplete: () => void }) => {
   return (
     <AnimatePresence>
       <motion.div
-        className="fixed inset-0 z-50 flex flex-col items-center justify-start pt-28 md:justify-center bg-background"
+        className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-background"
         exit={{ opacity: 0 }}
         transition={{ duration: 0.3 }}
       >

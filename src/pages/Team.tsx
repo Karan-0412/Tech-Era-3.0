@@ -6,7 +6,7 @@ import MeshBackground from "@/components/MeshBackground";
 
 const Team = () => {
   return (
-    <div className="relative min-h-screen bg-black text-white overflow-hidden">
+    <div className="relative h-screen bg-black text-white overflow-hidden flex flex-col">
       {/* Background */}
       <div className="fixed inset-0 z-0">
         <MeshBackground />
@@ -31,14 +31,14 @@ const Team = () => {
       </nav>
 
       {/* Main Content */}
-      <main className="relative z-10">
+      <main className="relative z-10 flex-1 overflow-auto">
         <ArcadeTeamSelect />
       </main>
 
       {/* Decorative footer */}
       <footer className="relative z-10 p-8 flex justify-center">
         <div className="font-mono text-[10px] text-gray-700 tracking-[0.5em] uppercase">
-          Apex Techno Warriors // Team Roster v3.0.26
+          Apex Techno Warriors // Team Apex v3.0.26
         </div>
       </footer>
     </div>

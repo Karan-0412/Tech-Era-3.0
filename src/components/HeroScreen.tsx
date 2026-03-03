@@ -172,7 +172,7 @@ const HeroScreen = ({ onUnlock }: HeroScreenProps) => {
               <div className="absolute inset-0 z-0 rounded-md bg-gradient-to-r from-cyan-400/0 via-blue-400/30 to-cyan-400/0 opacity-0 group-hover:opacity-100 blur transition-opacity duration-300" />
 
               <span className="relative z-10 flex items-center justify-center space-x-3 bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-400 text-transparent bg-clip-text">
-                <span>REGISTER NOW</span>
+                <span>Enter The Arena</span>
                 <span className="text-lg text-cyan-400">→</span>
               </span>
             </motion.button>

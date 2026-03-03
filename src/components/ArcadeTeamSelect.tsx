@@ -279,7 +279,7 @@ export const ArcadeTeamSelect = () => {
   const desktopCardGap = 40;
 
   return (
-    <section className="relative min-h-screen bg-black py-12 md:py-20 px-4 overflow-hidden flex flex-col items-center justify-center">
+    <section className="relative h-full bg-black py-8 md:py-10 px-4 overflow-auto flex flex-col items-center justify-center">
       {/* Title */}
       <motion.div
         initial={{ opacity: 0, y: -50 }}
