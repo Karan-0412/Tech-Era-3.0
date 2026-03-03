@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { ExternalLink, Github, Linkedin, Mail, Trophy, Zap, Coffee, Code, MessageSquare, AlertTriangle, ChevronLeft, ChevronRight } from "lucide-react";
+import { ExternalLink, Github, Linkedin, Mail, Trophy, Zap, Coffee, Code, MessageSquare, AlertTriangle, ChevronLeft, ChevronRight, Quote } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface TeamMember {
@@ -8,11 +8,7 @@ interface TeamMember {
   name: string;
   role: string;
   image: string;
-  stats: {
-    label: string;
-    value: number;
-    icon: React.ReactNode;
-  }[];
+  funFacts: string[];
   skills: {
     name: string;
     description: string;
@@ -31,11 +27,10 @@ const TEAM_MEMBERS: TeamMember[] = [
     name: "Alex 'The Architect' Chen",
     role: "Lead Systems Engineer",
     image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Alex",
-    stats: [
-      { label: "Coffee Dependency", value: 98, icon: <Coffee className="w-4 h-4" /> },
-      { label: "Stack Overflow Speed", value: 85, icon: <Code className="w-4 h-4" /> },
-      { label: "Meeting Tolerance", value: 12, icon: <MessageSquare className="w-4 h-4" /> },
-      { label: "Syntax Error Rage", value: 92, icon: <AlertTriangle className="w-4 h-4" /> },
+    funFacts: [
+      "Can debug code in his sleep.",
+      "Has a mechanical keyboard collection.",
+      "Coffee intake is measured in gallons."
     ],
     skills: [
       { name: "React Refactoring Strike", description: "Instantly turns spaghetti into clean components.", icon: "⚔️" },
@@ -48,11 +43,10 @@ const TEAM_MEMBERS: TeamMember[] = [
     name: "Sarah 'The Stylist' Miller",
     role: "Senior UX Designer",
     image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah",
-    stats: [
-      { label: "Pixel Perfectionism", value: 100, icon: <Zap className="w-4 h-4" /> },
-      { label: "Figma Layer Hygiene", value: 95, icon: <Code className="w-4 h-4" /> },
-      { label: "Meeting Tolerance", value: 45, icon: <MessageSquare className="w-4 h-4" /> },
-      { label: "Syntax Error Rage", value: 15, icon: <AlertTriangle className="w-4 h-4" /> },
+    funFacts: [
+      "Obsessed with perfect kerning.",
+      "Once designed a logo in 5 minutes.",
+      "Owns 50 pairs of cool sneakers."
     ],
     skills: [
       { name: "Auto-Layout Whirlwind", description: "Bends containers to her will across all viewports.", icon: "🌀" },
@@ -65,11 +59,10 @@ const TEAM_MEMBERS: TeamMember[] = [
     name: "Jordan 'The Juggler' Wu",
     role: "Full-Stack Dev / Chaos Manager",
     image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Jordan",
-    stats: [
-      { label: "Coffee Dependency", value: 75, icon: <Coffee className="w-4 h-4" /> },
-      { label: "Stack Overflow Speed", value: 99, icon: <Code className="w-4 h-4" /> },
-      { label: "Meeting Tolerance", value: 60, icon: <MessageSquare className="w-4 h-4" /> },
-      { label: "Syntax Error Rage", value: 40, icon: <AlertTriangle className="w-4 h-4" /> },
+    funFacts: [
+      "Writes SQL queries for fun.",
+      "Secretly a master of chess.",
+      "Can juggle 5 items at once."
     ],
     skills: [
       { name: "Python Script of Doom", description: "Automates everything, including his breakfast.", icon: "🐍" },
@@ -82,11 +75,10 @@ const TEAM_MEMBERS: TeamMember[] = [
     name: "Elena 'The Enforcer' Rodriguez",
     role: "Backend Security Expert",
     image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Elena",
-    stats: [
-      { label: "Firewall Fortitude", value: 96, icon: <Zap className="w-4 h-4" /> },
-      { label: "Intrusion Detection", value: 89, icon: <Code className="w-4 h-4" /> },
-      { label: "Meeting Tolerance", value: 5, icon: <MessageSquare className="w-4 h-4" /> },
-      { label: "Syntax Error Rage", value: 75, icon: <AlertTriangle className="w-4 h-4" /> },
+    funFacts: [
+      "Found a zero-day in her toaster.",
+      "Speaks 5 languages fluently.",
+      "Black belt in Brazilian Jiu-Jitsu."
     ],
     skills: [
       { name: "Encryption Shield", description: "Secures data with unbreakable algorithmic barriers.", icon: "🛡️" },
@@ -99,11 +91,10 @@ const TEAM_MEMBERS: TeamMember[] = [
     name: "Hiroshi 'The Haiku' Sato",
     role: "Senior Frontend Developer",
     image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Hiroshi",
-    stats: [
-      { label: "CSS Wizardry", value: 99, icon: <Zap className="w-4 h-4" /> },
-      { label: "Bundle Size Obsession", value: 92, icon: <Code className="w-4 h-4" /> },
-      { label: "Meeting Tolerance", value: 30, icon: <MessageSquare className="w-4 h-4" /> },
-      { label: "Syntax Error Rage", value: 20, icon: <AlertTriangle className="w-4 h-4" /> },
+    funFacts: [
+      "Once wrote a whole app in one file.",
+      "Loves minimalist architecture.",
+      "Makes the best sushi in town."
     ],
     skills: [
       { name: "Animation Flow", description: "Creates interfaces smoother than silk.", icon: "✨" },
@@ -116,11 +107,10 @@ const TEAM_MEMBERS: TeamMember[] = [
     name: "Maya 'The Matrix' Williams",
     role: "Data Scientist",
     image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Maya",
-    stats: [
-      { label: "Algorithm Insight", value: 100, icon: <Zap className="w-4 h-4" /> },
-      { label: "Pattern Recognition", value: 95, icon: <Code className="w-4 h-4" /> },
-      { label: "Meeting Tolerance", value: 15, icon: <MessageSquare className="w-4 h-4" /> },
-      { label: "Syntax Error Rage", value: 65, icon: <AlertTriangle className="w-4 h-4" /> },
+    funFacts: [
+      "Sees patterns in static noise.",
+      "Trained a model to pick her outfits.",
+      "Has a pet owl named 'Logic'."
     ],
     skills: [
       { name: "Neural Network Pulse", description: "Predicts user behavior before they even think.", icon: "🧠" },
@@ -133,11 +123,10 @@ const TEAM_MEMBERS: TeamMember[] = [
     name: "Leo 'The Lightning' Kim",
     role: "DevOps Engineer",
     image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Leo",
-    stats: [
-      { label: "Uptime Zealotry", value: 99, icon: <Zap className="w-4 h-4" /> },
-      { label: "Pipeline Velocity", value: 94, icon: <Code className="w-4 h-4" /> },
-      { label: "Meeting Tolerance", value: 10, icon: <MessageSquare className="w-4 h-4" /> },
-      { label: "Syntax Error Rage", value: 85, icon: <AlertTriangle className="w-4 h-4" /> },
+    funFacts: [
+      "Once reached 1000 days of uptime.",
+      "Built his own server rack out of LEGO.",
+      "Fastest typist in the company."
     ],
     skills: [
       { name: "CI/CD Storm", description: "Deploys code faster than the speed of light.", icon: "🌩️" },
@@ -150,11 +139,10 @@ const TEAM_MEMBERS: TeamMember[] = [
     name: "Sophie 'The Spark' Dubois",
     role: "Motion Designer",
     image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sophie",
-    stats: [
-      { label: "Frame Precision", value: 98, icon: <Zap className="w-4 h-4" /> },
-      { label: "Aesthetic Sense", value: 97, icon: <Code className="w-4 h-4" /> },
-      { label: "Meeting Tolerance", value: 50, icon: <MessageSquare className="w-4 h-4" /> },
-      { label: "Syntax Error Rage", value: 10, icon: <AlertTriangle className="w-4 h-4" /> },
+    funFacts: [
+      "Can animate with her eyes closed.",
+      "Has a collection of vintage film cameras.",
+      "Always has a sketchbook in hand."
     ],
     skills: [
       { name: "Keyframe Magic", description: "Brings static designs to vibrant life.", icon: "🎬" },
@@ -172,6 +160,7 @@ const CharacterCard = ({ member, isActive, onClick }: { member: TeamMember; isAc
   const rotateY = useSpring(useTransform(x, [-100, 100], [-15, 15]), { stiffness: 150, damping: 20 });
 
   function handleMouseMove(event: React.MouseEvent<HTMLDivElement>) {
+    if (!isActive) return;
     const rect = event.currentTarget.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
@@ -188,37 +177,37 @@ const CharacterCard = ({ member, isActive, onClick }: { member: TeamMember; isAc
     <motion.div
       layout
       onClick={onClick}
-      onMouseMove={isActive ? handleMouseMove : undefined}
-      onMouseLeave={isActive ? handleMouseLeave : undefined}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
       style={{
         rotateX: isActive ? rotateX : 0,
         rotateY: isActive ? rotateY : 0,
         transformStyle: "preserve-3d",
       }}
       animate={{
-        scale: isActive ? 1.05 : 0.85,
-        opacity: isActive ? 1 : 0.3,
-        filter: isActive ? "brightness(1.1) contrast(1.1)" : "brightness(0.4) grayscale(0.6)",
+        scale: isActive ? 1 : 0.9,
+        opacity: isActive ? 1 : 0.4,
+        filter: isActive ? "brightness(1) contrast(1) blur(0px)" : "brightness(0.5) contrast(0.8) blur(2px)",
       }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
-      className={`relative w-[220px] h-[340px] md:w-64 md:h-96 cursor-pointer rounded-2xl overflow-hidden border-2 shrink-0 ${
-        isActive ? "border-cyan-400 shadow-[0_0_30px_rgba(34,211,238,0.5)]" : "border-gray-800"
-      } bg-black/80 backdrop-blur-xl group flex flex-col`}
+      className={`relative w-[260px] h-[420px] md:w-72 md:h-[480px] cursor-pointer rounded-3xl overflow-hidden border-2 shrink-0 ${
+        isActive ? "border-cyan-400 shadow-[0_0_40px_rgba(34,211,238,0.4)]" : "border-gray-800"
+      } bg-black/90 backdrop-blur-xl group flex flex-col transition-all duration-300`}
     >
       {/* Glitch Overlay for Active Card */}
       {isActive && (
         <motion.div
-          animate={{ opacity: [0, 0.1, 0] }}
-          transition={{ repeat: Infinity, duration: 2 }}
+          animate={{ opacity: [0, 0.05, 0] }}
+          transition={{ repeat: Infinity, duration: 3 }}
           className="absolute inset-0 bg-cyan-400 z-10 pointer-events-none mix-blend-overlay"
         />
       )}
 
       {/* Background Neon Glow */}
-      <div className="absolute inset-0 bg-gradient-to-t from-cyan-950/50 to-transparent" />
+      <div className={`absolute inset-0 bg-gradient-to-t from-cyan-950/40 to-transparent transition-opacity duration-300 ${isActive ? 'opacity-100' : 'opacity-0'}`} />
 
       {/* Character Image */}
-      <div className="flex-1 relative flex items-center justify-center p-4">
+      <div className="h-40 md:h-48 relative flex items-center justify-center p-4">
         <motion.img
           src={member.image}
           alt={member.name}
@@ -227,20 +216,35 @@ const CharacterCard = ({ member, isActive, onClick }: { member: TeamMember; isAc
         />
       </div>
 
-      {/* Name/Role Overlay */}
-      <div className="p-4 bg-gradient-to-t from-black to-transparent">
-        <h3 className="text-white font-mono text-lg font-bold truncate tracking-tight">{member.name}</h3>
-        <p className="text-cyan-400 font-mono text-xs uppercase tracking-widest">{member.role}</p>
+      {/* Info Section */}
+      <div className="flex-1 p-5 flex flex-col gap-4 relative z-20">
+        <div className="space-y-1">
+          <h3 className="text-white font-mono text-lg font-bold tracking-tight leading-tight">{member.name}</h3>
+          <p className="text-cyan-400 font-mono text-[10px] uppercase tracking-widest font-semibold">{member.role}</p>
+        </div>
 
-        {/* LinkedIn Connect Option */}
+        {/* Fun Facts Section */}
+        <div className="space-y-2 bg-gray-900/50 p-3 rounded-xl border border-cyan-500/20">
+          <p className="text-[10px] font-mono font-bold text-cyan-300 uppercase tracking-wider flex items-center gap-1.5">
+            <Quote className="w-3 h-3" /> Fun Facts
+          </p>
+          <ul className="space-y-1">
+            {member.funFacts.map((fact, i) => (
+              <li key={i} className="text-[10px] text-gray-300 leading-tight flex items-start gap-1.5">
+                <span className="text-cyan-500 mt-1">•</span>
+                {fact}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* LinkedIn Connect - Only fully visible when active */}
         <motion.a
           href={member.links.linkedin}
           target="_blank"
           rel="noopener noreferrer"
-          initial={{ opacity: 0, y: 10 }}
-          animate={isActive ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
-          whileHover={{ scale: 1.05 }}
-          className="mt-3 flex items-center justify-center gap-2 py-2 rounded-lg bg-blue-600/20 border border-blue-500/50 text-blue-400 hover:bg-blue-600 hover:text-white transition-all duration-300"
+          animate={{ opacity: isActive ? 1 : 0, pointerEvents: isActive ? 'auto' : 'none' }}
+          className="mt-auto flex items-center justify-center gap-2 py-2 rounded-xl bg-blue-600/20 border border-blue-500/40 text-blue-400 hover:bg-blue-600 hover:text-white transition-all duration-300 shadow-[0_0_15px_rgba(37,99,235,0.2)]"
         >
           <Linkedin className="w-4 h-4" />
           <span className="font-mono text-[10px] font-bold uppercase tracking-wider">Connect</span>
@@ -249,35 +253,6 @@ const CharacterCard = ({ member, isActive, onClick }: { member: TeamMember; isAc
     </motion.div>
   );
 };
-
-const StatBar = ({ label, value, icon, index }: { label: string; value: number; icon: React.ReactNode; index: number }) => (
-  <motion.div
-    initial={{ opacity: 0, x: -20 }}
-    animate={{ opacity: 1, x: 0 }}
-    transition={{ delay: 0.1 * index }}
-    className="space-y-1"
-  >
-    <div className="flex items-center justify-between text-[10px] font-mono text-gray-400 uppercase tracking-wider">
-      <div className="flex items-center gap-2">
-        {icon}
-        <span>{label}</span>
-      </div>
-      <span className={value > 90 ? "text-red-400 animate-pulse" : "text-cyan-400"}>
-        {value}%
-      </span>
-    </div>
-    <div className="h-2 w-full bg-gray-900 rounded-full overflow-hidden border border-gray-800">
-      <motion.div
-        initial={{ width: 0 }}
-        animate={{ width: `${value}%` }}
-        transition={{ duration: 1, delay: 0.5 + 0.1 * index, ease: "easeOut" }}
-        className={`h-full rounded-full ${
-          value > 90 ? "bg-gradient-to-r from-red-500 to-orange-400" : "bg-gradient-to-r from-cyan-500 to-blue-500"
-        } shadow-[0_0_10px_rgba(34,211,238,0.5)]`}
-      />
-    </div>
-  </motion.div>
-);
 
 export const ArcadeTeamSelect = () => {
   const [activeIndex, setActiveIndex] = useState(1);
@@ -307,50 +282,28 @@ export const ArcadeTeamSelect = () => {
       <motion.div
         initial={{ opacity: 0, y: -50 }}
         whileInView={{ opacity: 1, y: 0 }}
-        className="text-center mb-4 md:mb-12 space-y-2 z-10 px-4"
+        className="text-center mb-10 md:mb-16 space-y-2 z-10 px-4"
       >
-        <h2 className="text-3xl sm:text-5xl md:text-6xl font-black text-white tracking-tighter uppercase italic">
+        <h2 className="text-4xl sm:text-5xl md:text-6xl font-black text-white tracking-tighter uppercase italic">
           Select Your <span className="text-cyan-400 text-glow-cyan">Warriors</span>
         </h2>
-        <p className="text-gray-500 font-mono text-[10px] sm:text-sm uppercase tracking-[0.3em] sm:tracking-[0.5em]">
+        <p className="text-gray-500 font-mono text-[10px] sm:text-xs uppercase tracking-[0.4em] sm:tracking-[0.6em]">
           Swipe to Choose • Insert Coin to Connect
         </p>
       </motion.div>
 
-      {/* Main Container */}
-      <div className="w-full max-w-7xl grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-12 items-center relative">
-        {/* Left Side: Stats Panel */}
-        <div className="lg:col-span-3 order-2 lg:order-1 px-4 lg:px-0">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeMember.id}
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -30 }}
-              className="space-y-4 md:space-y-6 bg-gray-950/50 p-4 md:p-6 rounded-2xl border border-gray-800/50 backdrop-blur-md"
-            >
-              <div className="flex items-center gap-2 mb-2 md:mb-4">
-                <Trophy className="text-yellow-400 w-4 h-4 md:w-5 md:h-5" />
-                <h3 className="font-mono text-white text-[10px] md:text-sm font-bold uppercase tracking-widest">Base Stats</h3>
-              </div>
-              <div className="space-y-3 md:space-y-4">
-                {activeMember.stats.map((stat, i) => (
-                  <StatBar key={stat.label} {...stat} index={i} />
-                ))}
-              </div>
-            </motion.div>
-          </AnimatePresence>
-        </div>
-
-        {/* Center: Carousel */}
-        <div className="lg:col-span-6 flex flex-col items-center justify-center order-1 lg:order-2 relative h-[450px] md:h-[550px] overflow-visible">
-           {/* Carousel Glow */}
-           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full max-w-md bg-cyan-500/5 blur-[100px] rounded-full pointer-events-none -z-10" />
+      {/* Main Layout Container - Mobile-First Stacking */}
+      <div className="w-full max-w-7xl flex flex-col lg:flex-row gap-12 lg:gap-16 items-center lg:items-start justify-center">
+        
+        {/* Left/Center Side: Carousel (Order 1 on Mobile) */}
+        <div className="w-full lg:w-2/3 flex flex-col items-center justify-center relative h-[500px] md:h-[600px] overflow-visible order-1">
+           {/* Carousel Glow Background */}
+           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full max-w-xl bg-cyan-500/5 blur-[120px] rounded-full pointer-events-none -z-10" />
 
           {/* Navigation Buttons (Desktop Only) */}
           <button
             onClick={handlePrev}
-            className="hidden md:flex absolute left-0 z-30 p-2 rounded-full border border-cyan-400/30 bg-black/40 text-cyan-400 hover:bg-cyan-400 hover:text-black transition-all group"
+            className="hidden md:flex absolute left-0 z-30 p-3 rounded-full border border-cyan-400/30 bg-black/60 text-cyan-400 hover:bg-cyan-400 hover:text-black transition-all group shadow-[0_0_20px_rgba(34,211,238,0.2)]"
             aria-label="Previous member"
           >
             <ChevronLeft className="w-8 h-8 group-hover:scale-110 transition-transform" />
@@ -367,14 +320,14 @@ export const ArcadeTeamSelect = () => {
               }}
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
               style={{
-                "--card-width": "220px",
-                "--card-gap": "16px",
+                "--card-width": "260px",
+                "--card-gap": "20px",
                 display: "flex",
                 alignItems: "center",
                 gap: "var(--card-gap)",
                 cursor: "grab"
               } as any}
-              className="md:[--card-width:256px] md:[--card-gap:32px]"
+              className="md:[--card-width:288px] md:[--card-gap:40px]"
             >
               {TEAM_MEMBERS.map((member, index) => (
                 <CharacterCard
@@ -389,54 +342,62 @@ export const ArcadeTeamSelect = () => {
 
           <button
             onClick={handleNext}
-            className="hidden md:flex absolute right-0 z-30 p-2 rounded-full border border-cyan-400/30 bg-black/40 text-cyan-400 hover:bg-cyan-400 hover:text-black transition-all group"
+            className="hidden md:flex absolute right-0 z-30 p-3 rounded-full border border-cyan-400/30 bg-black/60 text-cyan-400 hover:bg-cyan-400 hover:text-black transition-all group shadow-[0_0_20px_rgba(34,211,238,0.2)]"
             aria-label="Next member"
           >
             <ChevronRight className="w-8 h-8 group-hover:scale-110 transition-transform" />
           </button>
 
           {/* Pagination Indicators */}
-          <div className="flex gap-2 mt-4 md:mt-8 z-10">
+          <div className="flex gap-3 mt-6 md:mt-10 z-10">
             {TEAM_MEMBERS.map((_, i) => (
               <button
                 key={i}
                 onClick={() => setActiveIndex(i)}
-                className={`h-1 rounded-full transition-all duration-300 ${
-                  i === activeIndex ? "w-8 bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.5)]" : "w-2 bg-gray-800"
+                className={`h-1.5 rounded-full transition-all duration-500 ${
+                  i === activeIndex ? "w-10 bg-cyan-400 shadow-[0_0_15px_rgba(34,211,238,0.6)]" : "w-3 bg-gray-800 hover:bg-gray-700"
                 }`}
               />
             ))}
           </div>
         </div>
 
-        {/* Right Side: Skills Panel */}
-        <div className="lg:col-span-3 order-3 px-4 lg:px-0">
+        {/* Right Side Side: Skills & Summon Panel (Order 2 on Mobile) */}
+        <div className="w-full lg:w-1/3 px-4 lg:px-0 order-2">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeMember.id}
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 30 }}
-              className="space-y-4 md:space-y-6 bg-gray-950/50 p-4 md:p-6 rounded-2xl border border-gray-800/50 backdrop-blur-md"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 30 }}
+              className="space-y-6 md:space-y-8 bg-gray-950/40 p-6 md:p-8 rounded-3xl border border-gray-800/50 backdrop-blur-md shadow-2xl"
             >
-              <div className="flex items-center gap-2 mb-2 md:mb-4">
-                <Zap className="text-cyan-400 w-4 h-4 md:w-5 md:h-5" />
-                <h3 className="font-mono text-white text-[10px] md:text-sm font-bold uppercase tracking-widest">Ultimate Moves</h3>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-2 rounded-lg bg-cyan-500/10">
+                  <Zap className="text-cyan-400 w-5 h-5 md:w-6 md:h-6" />
+                </div>
+                <div>
+                  <h3 className="font-mono text-white text-sm md:text-base font-black uppercase tracking-[0.2em]">Ultimate Moves</h3>
+                  <p className="text-[10px] text-gray-500 font-mono uppercase tracking-widest">Active Member Abilities</p>
+                </div>
               </div>
-              <div className="space-y-4 md:space-y-6">
+
+              <div className="space-y-5 md:space-y-8">
                 {activeMember.skills.map((skill, i) => (
                   <motion.div
                     key={skill.name}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2 + 0.1 * i }}
-                    className="relative group"
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.1 + 0.1 * i }}
+                    className="relative group bg-white/5 p-4 rounded-2xl border border-white/5 hover:border-cyan-500/30 transition-all duration-300"
                   >
-                    <div className="flex items-start gap-3">
-                      <span className="text-xl md:text-2xl group-hover:scale-125 transition-transform duration-300">{skill.icon}</span>
-                      <div>
-                        <h4 className="text-cyan-300 font-mono text-[10px] md:text-xs font-bold uppercase group-hover:text-white transition-colors">{skill.name}</h4>
-                        <p className="text-gray-500 text-[9px] md:text-[10px] leading-relaxed mt-1">{skill.description}</p>
+                    <div className="flex items-start gap-4">
+                      <div className="text-3xl md:text-4xl group-hover:scale-110 transition-transform duration-300 bg-black/40 p-2 rounded-xl border border-white/5 shadow-inner">
+                        {skill.icon}
+                      </div>
+                      <div className="space-y-1">
+                        <h4 className="text-cyan-300 font-mono text-xs md:text-sm font-black uppercase group-hover:text-white transition-colors">{skill.name}</h4>
+                        <p className="text-gray-400 text-[10px] md:text-xs leading-relaxed font-sans">{skill.description}</p>
                       </div>
                     </div>
                   </motion.div>
@@ -444,19 +405,20 @@ export const ArcadeTeamSelect = () => {
               </div>
 
               {/* Summon Button */}
-              <motion.div className="pt-4 md:pt-6">
+              <motion.div className="pt-6 border-t border-white/5">
                 <Button
                   onClick={() => setIsModalOpen(true)}
-                  className="w-full bg-transparent border-2 border-cyan-400/50 text-cyan-400 hover:bg-cyan-400 hover:text-black text-[10px] md:text-xs font-black uppercase italic tracking-tighter transition-all duration-300 group overflow-hidden relative"
+                  className="w-full py-6 md:py-8 bg-gradient-to-r from-cyan-500 to-blue-600 text-black hover:scale-[1.02] active:scale-95 font-black uppercase italic tracking-widest transition-all duration-300 group overflow-hidden relative rounded-2xl shadow-[0_0_30px_rgba(34,211,238,0.3)]"
                 >
                   <motion.span
-                    className="absolute inset-0 bg-cyan-400/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"
+                    className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"
                   />
-                  <span className="relative flex items-center justify-center gap-2">
+                  <span className="relative flex items-center justify-center gap-3">
                     SUMMON {activeMember.name.split("'")[1] || activeMember.name.split(" ")[0]}
-                    <ExternalLink className="w-3 h-3 md:w-4 md:h-4" />
+                    <ExternalLink className="w-5 h-5" />
                   </span>
                 </Button>
+                <p className="text-center text-[10px] font-mono text-gray-600 mt-4 uppercase tracking-[0.3em]">Establishing secure uplink...</p>
               </motion.div>
             </motion.div>
           </AnimatePresence>
@@ -472,44 +434,46 @@ export const ArcadeTeamSelect = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsModalOpen(false)}
-              className="absolute inset-0 bg-black/90 backdrop-blur-xl"
+              className="absolute inset-0 bg-black/95 backdrop-blur-2xl"
             />
 
             <motion.div
-              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              initial={{ scale: 0.9, opacity: 0, y: 40 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.9, opacity: 0, y: 20 }}
-              className="relative w-full max-w-lg bg-gray-900 border-2 border-cyan-400 rounded-3xl overflow-hidden shadow-[0_0_50px_rgba(34,211,238,0.3)]"
+              exit={{ scale: 0.9, opacity: 0, y: 40 }}
+              className="relative w-full max-w-lg bg-gray-900 border-2 border-cyan-400 rounded-[2.5rem] overflow-hidden shadow-[0_0_80px_rgba(34,211,238,0.4)]"
             >
-              <div className="p-8 space-y-8">
-                <div className="text-center space-y-2">
-                  <div className="inline-block p-4 rounded-full bg-cyan-400/10 mb-4">
-                    <img src={activeMember.image} alt={activeMember.name} className="w-24 h-24" />
+              <div className="p-8 md:p-12 space-y-10">
+                <div className="text-center space-y-4">
+                  <div className="inline-block p-6 rounded-full bg-cyan-400/10 mb-2 shadow-inner border border-cyan-400/20">
+                    <img src={activeMember.image} alt={activeMember.name} className="w-28 h-28" />
                   </div>
-                  <h2 className="text-3xl font-black text-white uppercase italic tracking-tighter">Connection Portal</h2>
-                  <p className="text-gray-400 font-mono text-xs uppercase">Establishing link with {activeMember.name}...</p>
+                  <div className="space-y-1">
+                    <h2 className="text-4xl font-black text-white uppercase italic tracking-tighter">Connection Portal</h2>
+                    <p className="text-cyan-400 font-mono text-xs uppercase tracking-widest">Establishing link with {activeMember.name}...</p>
+                  </div>
                 </div>
 
-                <div className="grid grid-cols-3 gap-4">
-                  <a href={activeMember.links.github} className="flex flex-col items-center gap-2 p-4 rounded-2xl bg-gray-800/50 border border-gray-700 hover:border-cyan-400 hover:bg-cyan-400/10 transition-all group">
-                    <Github className="w-6 h-6 text-white group-hover:text-cyan-400" />
-                    <span className="text-[10px] font-mono text-gray-400 uppercase">GitHub</span>
+                <div className="grid grid-cols-3 gap-4 md:gap-6">
+                  <a href={activeMember.links.github} className="flex flex-col items-center gap-3 p-5 rounded-3xl bg-white/5 border border-white/5 hover:border-cyan-400 hover:bg-cyan-400/10 transition-all group">
+                    <Github className="w-8 h-8 text-white group-hover:text-cyan-400 transition-colors" />
+                    <span className="text-[10px] font-mono text-gray-400 uppercase font-bold tracking-wider">GitHub</span>
                   </a>
-                  <a href={activeMember.links.linkedin} className="flex flex-col items-center gap-2 p-4 rounded-2xl bg-gray-800/50 border border-gray-700 hover:border-cyan-400 hover:bg-cyan-400/10 transition-all group">
-                    <Linkedin className="w-6 h-6 text-white group-hover:text-cyan-400" />
-                    <span className="text-[10px] font-mono text-gray-400 uppercase">LinkedIn</span>
+                  <a href={activeMember.links.linkedin} className="flex flex-col items-center gap-3 p-5 rounded-3xl bg-white/5 border border-white/5 hover:border-cyan-400 hover:bg-cyan-400/10 transition-all group">
+                    <Linkedin className="w-8 h-8 text-white group-hover:text-cyan-400 transition-colors" />
+                    <span className="text-[10px] font-mono text-gray-400 uppercase font-bold tracking-wider">LinkedIn</span>
                   </a>
-                  <a href={`mailto:${activeMember.links.email}`} className="flex flex-col items-center gap-2 p-4 rounded-2xl bg-gray-800/50 border border-gray-700 hover:border-cyan-400 hover:bg-cyan-400/10 transition-all group">
-                    <Mail className="w-6 h-6 text-white group-hover:text-cyan-400" />
-                    <span className="text-[10px] font-mono text-gray-400 uppercase">Email</span>
+                  <a href={`mailto:${activeMember.links.email}`} className="flex flex-col items-center gap-3 p-5 rounded-3xl bg-white/5 border border-white/5 hover:border-cyan-400 hover:bg-cyan-400/10 transition-all group">
+                    <Mail className="w-8 h-8 text-white group-hover:text-cyan-400 transition-colors" />
+                    <span className="text-[10px] font-mono text-gray-400 uppercase font-bold tracking-wider">Email</span>
                   </a>
                 </div>
 
                 <Button
                   onClick={() => setIsModalOpen(false)}
-                  className="w-full bg-cyan-400 hover:bg-cyan-500 text-black font-bold uppercase"
+                  className="w-full py-6 bg-cyan-400 hover:bg-cyan-500 text-black font-black uppercase tracking-widest rounded-2xl"
                 >
-                  Close Portal
+                  Terminate Connection
                 </Button>
               </div>
 
