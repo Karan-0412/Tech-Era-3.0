@@ -9,11 +9,6 @@ interface TeamMember {
   role: string;
   image: string;
   funFacts: string[];
-  skills: {
-    name: string;
-    description: string;
-    icon: string;
-  }[];
   links: {
     github?: string;
     linkedin?: string;
@@ -32,10 +27,6 @@ const TEAM_MEMBERS: TeamMember[] = [
       "Has a mechanical keyboard collection.",
       "Coffee intake is measured in gallons."
     ],
-    skills: [
-      { name: "React Refactoring Strike", description: "Instantly turns spaghetti into clean components.", icon: "⚔️" },
-      { name: "Docker Container Slam", description: "Crushes environment inconsistencies with one command.", icon: "📦" },
-    ],
     links: { github: "#", linkedin: "#", email: "alex@example.com" },
   },
   {
@@ -47,10 +38,6 @@ const TEAM_MEMBERS: TeamMember[] = [
       "Obsessed with perfect kerning.",
       "Once designed a logo in 5 minutes.",
       "Owns 50 pairs of cool sneakers."
-    ],
-    skills: [
-      { name: "Auto-Layout Whirlwind", description: "Bends containers to her will across all viewports.", icon: "🌀" },
-      { name: "Component Library Shield", description: "Defends against inconsistent branding.", icon: "🛡️" },
     ],
     links: { github: "#", linkedin: "#", email: "sarah@example.com" },
   },
@@ -64,10 +51,6 @@ const TEAM_MEMBERS: TeamMember[] = [
       "Secretly a master of chess.",
       "Can juggle 5 items at once."
     ],
-    skills: [
-      { name: "Python Script of Doom", description: "Automates everything, including his breakfast.", icon: "🐍" },
-      { name: "SQL Query Blast", description: "Joins tables that were never meant to be together.", icon: "🔥" },
-    ],
     links: { github: "#", linkedin: "#", email: "jordan@example.com" },
   },
   {
@@ -79,10 +62,6 @@ const TEAM_MEMBERS: TeamMember[] = [
       "Found a zero-day in her toaster.",
       "Speaks 5 languages fluently.",
       "Black belt in Brazilian Jiu-Jitsu."
-    ],
-    skills: [
-      { name: "Encryption Shield", description: "Secures data with unbreakable algorithmic barriers.", icon: "🛡️" },
-      { name: "Query Optimization Strike", description: "Slashes response times by 500%.", icon: "⚡" },
     ],
     links: { github: "#", linkedin: "#", email: "elena@example.com" },
   },
@@ -96,10 +75,6 @@ const TEAM_MEMBERS: TeamMember[] = [
       "Loves minimalist architecture.",
       "Makes the best sushi in town."
     ],
-    skills: [
-      { name: "Animation Flow", description: "Creates interfaces smoother than silk.", icon: "✨" },
-      { name: "Framework Jump", description: "Master of React, Vue, and the next big thing.", icon: "🦘" },
-    ],
     links: { github: "#", linkedin: "#", email: "hiroshi@example.com" },
   },
   {
@@ -111,10 +86,6 @@ const TEAM_MEMBERS: TeamMember[] = [
       "Sees patterns in static noise.",
       "Trained a model to pick her outfits.",
       "Has a pet owl named 'Logic'."
-    ],
-    skills: [
-      { name: "Neural Network Pulse", description: "Predicts user behavior before they even think.", icon: "🧠" },
-      { name: "Visualization Nova", description: "Turns complex data into beautiful, actionable insights.", icon: "📊" },
     ],
     links: { github: "#", linkedin: "#", email: "maya@example.com" },
   },
@@ -128,10 +99,6 @@ const TEAM_MEMBERS: TeamMember[] = [
       "Built his own server rack out of LEGO.",
       "Fastest typist in the company."
     ],
-    skills: [
-      { name: "CI/CD Storm", description: "Deploys code faster than the speed of light.", icon: "🌩️" },
-      { name: "Cloud Infrastructure Wall", description: "Builds scalable systems that never fail.", icon: "☁️" },
-    ],
     links: { github: "#", linkedin: "#", email: "leo@example.com" },
   },
   {
@@ -143,10 +110,6 @@ const TEAM_MEMBERS: TeamMember[] = [
       "Can animate with her eyes closed.",
       "Has a collection of vintage film cameras.",
       "Always has a sketchbook in hand."
-    ],
-    skills: [
-      { name: "Keyframe Magic", description: "Brings static designs to vibrant life.", icon: "🎬" },
-      { name: "Vibe Check", description: "Ensures every interaction feels 'just right'.", icon: "💎" },
     ],
     links: { github: "#", linkedin: "#", email: "sophie@example.com" },
   },
@@ -185,29 +148,29 @@ const CharacterCard = ({ member, isActive, onClick }: { member: TeamMember; isAc
         transformStyle: "preserve-3d",
       }}
       animate={{
-        scale: isActive ? 1 : 0.9,
-        opacity: isActive ? 1 : 0.4,
-        filter: isActive ? "brightness(1) contrast(1) blur(0px)" : "brightness(0.5) contrast(0.8) blur(2px)",
+        scale: isActive ? 1 : 0.85,
+        opacity: isActive ? 1 : 0.3,
+        filter: isActive ? "brightness(1) contrast(1) blur(0px)" : "brightness(0.4) contrast(0.8) blur(2px)",
       }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
-      className={`relative w-[260px] h-[420px] md:w-72 md:h-[480px] cursor-pointer rounded-3xl overflow-hidden border-2 shrink-0 ${
+      className={`relative w-[260px] h-[440px] md:w-72 md:h-[500px] cursor-pointer rounded-3xl overflow-hidden border-2 shrink-0 ${
         isActive ? "border-cyan-400 shadow-[0_0_40px_rgba(34,211,238,0.4)]" : "border-gray-800"
       } bg-black/90 backdrop-blur-xl group flex flex-col transition-all duration-300`}
     >
-      {/* Glitch Overlay for Active Card */}
+      {/* Active Card Effects */}
       {isActive && (
-        <motion.div
-          animate={{ opacity: [0, 0.05, 0] }}
-          transition={{ repeat: Infinity, duration: 3 }}
-          className="absolute inset-0 bg-cyan-400 z-10 pointer-events-none mix-blend-overlay"
-        />
+        <>
+          <motion.div
+            animate={{ opacity: [0, 0.05, 0] }}
+            transition={{ repeat: Infinity, duration: 3 }}
+            className="absolute inset-0 bg-cyan-400 z-10 pointer-events-none mix-blend-overlay"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-cyan-950/40 to-transparent z-0" />
+        </>
       )}
 
-      {/* Background Neon Glow */}
-      <div className={`absolute inset-0 bg-gradient-to-t from-cyan-950/40 to-transparent transition-opacity duration-300 ${isActive ? 'opacity-100' : 'opacity-0'}`} />
-
       {/* Character Image */}
-      <div className="h-40 md:h-48 relative flex items-center justify-center p-4">
+      <div className="h-40 md:h-48 relative flex items-center justify-center p-4 z-10">
         <motion.img
           src={member.image}
           alt={member.name}
@@ -238,17 +201,35 @@ const CharacterCard = ({ member, isActive, onClick }: { member: TeamMember; isAc
           </ul>
         </div>
 
-        {/* LinkedIn Connect - Only fully visible when active */}
-        <motion.a
-          href={member.links.linkedin}
-          target="_blank"
-          rel="noopener noreferrer"
+        {/* Action Buttons - Only visible when active */}
+        <motion.div 
           animate={{ opacity: isActive ? 1 : 0, pointerEvents: isActive ? 'auto' : 'none' }}
-          className="mt-auto flex items-center justify-center gap-2 py-2 rounded-xl bg-blue-600/20 border border-blue-500/40 text-blue-400 hover:bg-blue-600 hover:text-white transition-all duration-300 shadow-[0_0_15px_rgba(37,99,235,0.2)]"
+          className="mt-auto space-y-2"
         >
-          <Linkedin className="w-4 h-4" />
-          <span className="font-mono text-[10px] font-bold uppercase tracking-wider">Connect</span>
-        </motion.a>
+          <motion.a
+            href={member.links.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="flex items-center justify-center gap-2 py-2 rounded-xl bg-blue-600/20 border border-blue-500/40 text-blue-400 hover:bg-blue-600 hover:text-white transition-all duration-300 shadow-[0_0_15px_rgba(37,99,235,0.2)]"
+          >
+            <Linkedin className="w-4 h-4" />
+            <span className="font-mono text-[10px] font-bold uppercase tracking-wider">Connect</span>
+          </motion.a>
+          
+          <Button
+            size="sm"
+            className="w-full h-9 bg-cyan-500 hover:bg-cyan-400 text-black font-black uppercase italic tracking-widest rounded-xl text-[10px]"
+            onClick={(e) => {
+              e.stopPropagation();
+              // Summon logic could be handled here or via a shared state
+              window.dispatchEvent(new CustomEvent('summon-warrior', { detail: member }));
+            }}
+          >
+            SUMMON
+          </Button>
+        </motion.div>
       </div>
     </motion.div>
   );
@@ -257,7 +238,18 @@ const CharacterCard = ({ member, isActive, onClick }: { member: TeamMember; isAc
 export const ArcadeTeamSelect = () => {
   const [activeIndex, setActiveIndex] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
+  
   const activeMember = TEAM_MEMBERS[activeIndex];
+
+  useEffect(() => {
+    const handleSummon = (e: any) => {
+      setSelectedMember(e.detail);
+      setIsModalOpen(true);
+    };
+    window.addEventListener('summon-warrior', handleSummon);
+    return () => window.removeEventListener('summon-warrior', handleSummon);
+  }, []);
 
   const handleNext = () => {
     setActiveIndex((prev) => (prev + 1) % TEAM_MEMBERS.length);
@@ -276,6 +268,11 @@ export const ArcadeTeamSelect = () => {
     }
   };
 
+  const cardWidth = 260; // Mobile width
+  const cardGap = 20;    // Mobile gap
+  const desktopCardWidth = 288;
+  const desktopCardGap = 40;
+
   return (
     <section className="relative min-h-screen bg-black py-12 md:py-20 px-4 overflow-hidden flex flex-col items-center justify-center">
       {/* Title */}
@@ -288,22 +285,22 @@ export const ArcadeTeamSelect = () => {
           Select Your <span className="text-cyan-400 text-glow-cyan">Warriors</span>
         </h2>
         <p className="text-gray-500 font-mono text-[10px] sm:text-xs uppercase tracking-[0.4em] sm:tracking-[0.6em]">
-          Swipe to Choose • Insert Coin to Connect
+          Swipe or Click to Focus • Insert Coin to Connect
         </p>
       </motion.div>
 
-      {/* Main Layout Container - Mobile-First Stacking */}
-      <div className="w-full max-w-7xl flex flex-col lg:flex-row gap-12 lg:gap-16 items-center lg:items-start justify-center">
+      {/* Main Layout Container - Centered Cards Only */}
+      <div className="w-full max-w-7xl flex flex-col items-center justify-center">
         
-        {/* Left/Center Side: Carousel (Order 1 on Mobile) */}
-        <div className="w-full lg:w-2/3 flex flex-col items-center justify-center relative h-[500px] md:h-[600px] overflow-visible order-1">
+        {/* Carousel Viewport */}
+        <div className="w-full flex flex-col items-center justify-center relative h-[550px] md:h-[650px] overflow-visible">
            {/* Carousel Glow Background */}
            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full max-w-xl bg-cyan-500/5 blur-[120px] rounded-full pointer-events-none -z-10" />
 
           {/* Navigation Buttons (Desktop Only) */}
           <button
             onClick={handlePrev}
-            className="hidden md:flex absolute left-0 z-30 p-3 rounded-full border border-cyan-400/30 bg-black/60 text-cyan-400 hover:bg-cyan-400 hover:text-black transition-all group shadow-[0_0_20px_rgba(34,211,238,0.2)]"
+            className="hidden md:flex absolute left-4 z-30 p-3 rounded-full border border-cyan-400/30 bg-black/60 text-cyan-400 hover:bg-cyan-400 hover:text-black transition-all group shadow-[0_0_20px_rgba(34,211,238,0.2)]"
             aria-label="Previous member"
           >
             <ChevronLeft className="w-8 h-8 group-hover:scale-110 transition-transform" />
@@ -316,7 +313,9 @@ export const ArcadeTeamSelect = () => {
               dragConstraints={{ left: 0, right: 0 }}
               onDragEnd={onDragEnd}
               animate={{
-                x: `calc(0px - (${activeIndex} * (var(--card-width) + var(--card-gap))))`
+                // Formula to center index 'activeIndex':
+                // Displacement = ((N-1)/2 - activeIndex) * (cardWidth + cardGap)
+                x: `calc((${TEAM_MEMBERS.length - 1} / 2 - ${activeIndex}) * (var(--card-width) + var(--card-gap)))`
               }}
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
               style={{
@@ -342,7 +341,7 @@ export const ArcadeTeamSelect = () => {
 
           <button
             onClick={handleNext}
-            className="hidden md:flex absolute right-0 z-30 p-3 rounded-full border border-cyan-400/30 bg-black/60 text-cyan-400 hover:bg-cyan-400 hover:text-black transition-all group shadow-[0_0_20px_rgba(34,211,238,0.2)]"
+            className="hidden md:flex absolute right-4 z-30 p-3 rounded-full border border-cyan-400/30 bg-black/60 text-cyan-400 hover:bg-cyan-400 hover:text-black transition-all group shadow-[0_0_20px_rgba(34,211,238,0.2)]"
             aria-label="Next member"
           >
             <ChevronRight className="w-8 h-8 group-hover:scale-110 transition-transform" />
@@ -361,73 +360,11 @@ export const ArcadeTeamSelect = () => {
             ))}
           </div>
         </div>
-
-        {/* Right Side Side: Skills & Summon Panel (Order 2 on Mobile) */}
-        <div className="w-full lg:w-1/3 px-4 lg:px-0 order-2">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeMember.id}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 30 }}
-              className="space-y-6 md:space-y-8 bg-gray-950/40 p-6 md:p-8 rounded-3xl border border-gray-800/50 backdrop-blur-md shadow-2xl"
-            >
-              <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 rounded-lg bg-cyan-500/10">
-                  <Zap className="text-cyan-400 w-5 h-5 md:w-6 md:h-6" />
-                </div>
-                <div>
-                  <h3 className="font-mono text-white text-sm md:text-base font-black uppercase tracking-[0.2em]">Ultimate Moves</h3>
-                  <p className="text-[10px] text-gray-500 font-mono uppercase tracking-widest">Active Member Abilities</p>
-                </div>
-              </div>
-
-              <div className="space-y-5 md:space-y-8">
-                {activeMember.skills.map((skill, i) => (
-                  <motion.div
-                    key={skill.name}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.1 + 0.1 * i }}
-                    className="relative group bg-white/5 p-4 rounded-2xl border border-white/5 hover:border-cyan-500/30 transition-all duration-300"
-                  >
-                    <div className="flex items-start gap-4">
-                      <div className="text-3xl md:text-4xl group-hover:scale-110 transition-transform duration-300 bg-black/40 p-2 rounded-xl border border-white/5 shadow-inner">
-                        {skill.icon}
-                      </div>
-                      <div className="space-y-1">
-                        <h4 className="text-cyan-300 font-mono text-xs md:text-sm font-black uppercase group-hover:text-white transition-colors">{skill.name}</h4>
-                        <p className="text-gray-400 text-[10px] md:text-xs leading-relaxed font-sans">{skill.description}</p>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-
-              {/* Summon Button */}
-              <motion.div className="pt-6 border-t border-white/5">
-                <Button
-                  onClick={() => setIsModalOpen(true)}
-                  className="w-full py-6 md:py-8 bg-gradient-to-r from-cyan-500 to-blue-600 text-black hover:scale-[1.02] active:scale-95 font-black uppercase italic tracking-widest transition-all duration-300 group overflow-hidden relative rounded-2xl shadow-[0_0_30px_rgba(34,211,238,0.3)]"
-                >
-                  <motion.span
-                    className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"
-                  />
-                  <span className="relative flex items-center justify-center gap-3">
-                    SUMMON {activeMember.name.split("'")[1] || activeMember.name.split(" ")[0]}
-                    <ExternalLink className="w-5 h-5" />
-                  </span>
-                </Button>
-                <p className="text-center text-[10px] font-mono text-gray-600 mt-4 uppercase tracking-[0.3em]">Establishing secure uplink...</p>
-              </motion.div>
-            </motion.div>
-          </AnimatePresence>
-        </div>
       </div>
 
       {/* Connection Portal (Modal) */}
       <AnimatePresence>
-        {isModalOpen && (
+        {isModalOpen && selectedMember && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
             <motion.div
               initial={{ opacity: 0 }}
@@ -446,24 +383,24 @@ export const ArcadeTeamSelect = () => {
               <div className="p-8 md:p-12 space-y-10">
                 <div className="text-center space-y-4">
                   <div className="inline-block p-6 rounded-full bg-cyan-400/10 mb-2 shadow-inner border border-cyan-400/20">
-                    <img src={activeMember.image} alt={activeMember.name} className="w-28 h-28" />
+                    <img src={selectedMember.image} alt={selectedMember.name} className="w-28 h-28" />
                   </div>
                   <div className="space-y-1">
                     <h2 className="text-4xl font-black text-white uppercase italic tracking-tighter">Connection Portal</h2>
-                    <p className="text-cyan-400 font-mono text-xs uppercase tracking-widest">Establishing link with {activeMember.name}...</p>
+                    <p className="text-cyan-400 font-mono text-xs uppercase tracking-widest">Establishing link with {selectedMember.name}...</p>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-3 gap-4 md:gap-6">
-                  <a href={activeMember.links.github} className="flex flex-col items-center gap-3 p-5 rounded-3xl bg-white/5 border border-white/5 hover:border-cyan-400 hover:bg-cyan-400/10 transition-all group">
+                  <a href={selectedMember.links.github} className="flex flex-col items-center gap-3 p-5 rounded-3xl bg-white/5 border border-white/5 hover:border-cyan-400 hover:bg-cyan-400/10 transition-all group">
                     <Github className="w-8 h-8 text-white group-hover:text-cyan-400 transition-colors" />
                     <span className="text-[10px] font-mono text-gray-400 uppercase font-bold tracking-wider">GitHub</span>
                   </a>
-                  <a href={activeMember.links.linkedin} className="flex flex-col items-center gap-3 p-5 rounded-3xl bg-white/5 border border-white/5 hover:border-cyan-400 hover:bg-cyan-400/10 transition-all group">
+                  <a href={selectedMember.links.linkedin} className="flex flex-col items-center gap-3 p-5 rounded-3xl bg-white/5 border border-white/5 hover:border-cyan-400 hover:bg-cyan-400/10 transition-all group">
                     <Linkedin className="w-8 h-8 text-white group-hover:text-cyan-400 transition-colors" />
                     <span className="text-[10px] font-mono text-gray-400 uppercase font-bold tracking-wider">LinkedIn</span>
                   </a>
-                  <a href={`mailto:${activeMember.links.email}`} className="flex flex-col items-center gap-3 p-5 rounded-3xl bg-white/5 border border-white/5 hover:border-cyan-400 hover:bg-cyan-400/10 transition-all group">
+                  <a href={`mailto:${selectedMember.links.email}`} className="flex flex-col items-center gap-3 p-5 rounded-3xl bg-white/5 border border-white/5 hover:border-cyan-400 hover:bg-cyan-400/10 transition-all group">
                     <Mail className="w-8 h-8 text-white group-hover:text-cyan-400 transition-colors" />
                     <span className="text-[10px] font-mono text-gray-400 uppercase font-bold tracking-wider">Email</span>
                   </a>
@@ -477,7 +414,6 @@ export const ArcadeTeamSelect = () => {
                 </Button>
               </div>
 
-              {/* Decorative scanline effect */}
               <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_2px,3px_100%]" />
             </motion.div>
           </div>
