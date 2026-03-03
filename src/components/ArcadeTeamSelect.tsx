@@ -153,7 +153,7 @@ const CharacterCard = React.memo(({ member, isActive, onClick }: { member: TeamM
         filter: isActive ? "brightness(1) contrast(1) blur(0px)" : "brightness(0.4) contrast(0.8) blur(2px)",
       }}
       transition={{ type: "spring", stiffness: 300, damping: 30, mass: 0.8 }}
-      className={`relative w-[260px] h-[440px] md:w-72 md:h-[500px] cursor-pointer rounded-3xl overflow-hidden border-2 shrink-0 ${
+      className={`relative w-[240px] h-[480px] md:w-72 md:h-[500px] cursor-pointer rounded-3xl overflow-hidden border-2 shrink-0 ${
         isActive ? "border-cyan-400 shadow-[0_0_40px_rgba(34,211,238,0.4)]" : "border-gray-800"
       } bg-black/90 backdrop-blur-xl group flex flex-col transition-all duration-300`}
     >
@@ -170,44 +170,51 @@ const CharacterCard = React.memo(({ member, isActive, onClick }: { member: TeamM
       )}
 
       {/* Character Image */}
-      <div className="h-40 md:h-48 relative flex items-center justify-center p-4 z-10">
+      <div className="h-40 md:h-48 relative flex items-center justify-center p-6 z-10 bg-gradient-to-b from-cyan-900/20 to-transparent">
         <motion.img
           src={member.image}
           alt={member.name}
           loading="lazy"
-          className="w-full h-full object-contain pointer-events-none"
+          className="w-full h-full object-contain pointer-events-none drop-shadow-[0_0_15px_rgba(34,211,238,0.5)]"
           style={{ translateZ: 50 }}
         />
       </div>
 
       {/* Info Section */}
-      <div className="flex-1 p-5 flex flex-col gap-4 relative z-20">
+      <div className="flex-1 p-5 flex flex-col gap-3 relative z-20 overflow-hidden">
         <div className="space-y-1">
-          <h3 className="text-white font-mono text-lg font-bold tracking-tight leading-tight">{member.name}</h3>
-          <p className="text-cyan-400 font-mono text-[10px] uppercase tracking-widest font-semibold">{member.role}</p>
+          <h3 className="text-white font-mono text-base md:text-lg font-bold tracking-tight leading-tight truncate">{member.name}</h3>
+          <p className="text-cyan-400 font-mono text-[9px] md:text-[10px] uppercase tracking-widest font-semibold truncate">{member.role}</p>
         </div>
 
         {/* Fun Facts Section */}
-        <div className="space-y-2 bg-gray-900/50 p-3 rounded-xl border border-cyan-500/20">
-          <p className="text-[10px] font-mono font-bold text-cyan-300 uppercase tracking-wider flex items-center gap-1.5">
+        <div className="flex-1 space-y-2 bg-gray-900/50 p-3 rounded-xl border border-cyan-500/20 overflow-y-auto custom-scrollbar">
+          <p className="text-[9px] font-mono font-bold text-cyan-300 uppercase tracking-wider flex items-center gap-1.5 sticky top-0 bg-gray-900/5 py-1">
             <Quote className="w-3 h-3" /> Fun Facts
           </p>
-          <ul className="space-y-1">
+          <ul className="space-y-1.5">
             {member.funFacts.map((fact, i) => (
-              <li key={i} className="text-[10px] text-gray-300 leading-tight flex items-start gap-1.5">
-                <span className="text-cyan-500 mt-1">•</span>
-                {fact}
+              <li key={i} className="text-[9px] md:text-[10px] text-gray-300 leading-tight flex items-start gap-1.5">
+                <span className="text-cyan-500 mt-1 shrink-0">•</span>
+                <span>{fact}</span>
               </li>
             ))}
           </ul>
         </div>
 
         {/* Action Buttons - Only visible when active */}
-        <motion.div
-          animate={{ opacity: isActive ? 1 : 0, pointerEvents: isActive ? 'auto' : 'none' }}
-          className="mt-auto space-y-2"
-        >
-          <motion.a
+      <motion.div
+        animate={{ opacity: isActive ? 1 : 0, pointerEvents: isActive ? 'auto' : 'none' }}
+        className="mt-auto space-y-2"
+      >
+        {/* Directional Hints for Mobile */}
+        <div className="md:hidden flex items-center justify-between mb-2 px-4 text-cyan-500/40">
+           <motion.div animate={{ x: [-3, 3, -3] }} transition={{ repeat: Infinity, duration: 1.5 }}><ChevronLeft className="w-4 h-4" /></motion.div>
+           <span className="text-[8px] font-mono font-bold tracking-[0.3em] uppercase">Swipe to Select</span>
+           <motion.div animate={{ x: [3, -3, 3] }} transition={{ repeat: Infinity, duration: 1.5 }}><ChevronRight className="w-4 h-4" /></motion.div>
+        </div>
+
+        <motion.a
             href={member.links.linkedin}
             target="_blank"
             rel="noopener noreferrer"
@@ -263,15 +270,17 @@ export const ArcadeTeamSelect = () => {
   }, []);
 
   const onDragEnd = (event: any, info: any) => {
-    const threshold = 30;
-    if (info.offset.x < -threshold) {
+    const threshold = 50;
+    const velocityThreshold = 500;
+
+    if (info.offset.x < -threshold || info.velocity.x < -velocityThreshold) {
       handleNext();
-    } else if (info.offset.x > threshold) {
+    } else if (info.offset.x > threshold || info.velocity.x > velocityThreshold) {
       handlePrev();
     }
   };
 
-  const cardWidth = 260; // Mobile width
+  const cardWidth = 240; // Mobile width
   const cardGap = 20;    // Mobile gap
   const desktopCardWidth = 288;
   const desktopCardGap = 40;
@@ -287,8 +296,10 @@ export const ArcadeTeamSelect = () => {
         <h2 className="text-4xl sm:text-5xl md:text-6xl font-black text-white tracking-tighter uppercase italic">
           Select Your <span className="text-cyan-400 text-glow-cyan">Warriors</span>
         </h2>
-        <p className="text-gray-500 font-mono text-[10px] sm:text-xs uppercase tracking-[0.4em] sm:tracking-[0.6em]">
-          Swipe or Click to Focus • Insert Coin to Connect
+        <p className="text-gray-500 font-mono text-[10px] sm:text-xs uppercase tracking-[0.4em] sm:tracking-[0.6em] flex items-center justify-center gap-4">
+          <motion.span animate={{ x: [-5, 5, -5] }} transition={{ repeat: Infinity, duration: 2 }}>«</motion.span>
+          Swipe or Click to Focus
+          <motion.span animate={{ x: [5, -5, 5] }} transition={{ repeat: Infinity, duration: 2 }}>»</motion.span>
         </p>
       </motion.div>
 
@@ -300,17 +311,19 @@ export const ArcadeTeamSelect = () => {
            {/* Carousel Glow Background */}
            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full max-w-xl bg-cyan-500/5 blur-[120px] rounded-full pointer-events-none -z-10" />
 
-          {/* Navigation Buttons (Desktop Only) */}
-          <button
-            onClick={handlePrev}
-            className="hidden md:flex absolute left-4 z-30 p-3 rounded-full border border-cyan-400/30 bg-black/60 text-cyan-400 hover:bg-cyan-400 hover:text-black transition-all group shadow-[0_0_20px_rgba(34,211,238,0.2)]"
-            aria-label="Previous member"
-          >
-            <ChevronLeft className="w-8 h-8 group-hover:scale-110 transition-transform" />
-          </button>
+          {/* Navigation Buttons */}
+          <div className="absolute left-1 md:left-6 top-1/2 -translate-y-1/2 z-30 flex flex-col items-center gap-2 group cursor-pointer" onClick={handlePrev}>
+            <button
+              className="p-1.5 md:p-3 rounded-full border border-cyan-400/30 bg-black/60 text-cyan-400 hover:bg-cyan-400 hover:text-black transition-all shadow-[0_0_20px_rgba(34,211,238,0.2)] active:scale-95 group-hover:scale-110"
+              aria-label="Previous member"
+            >
+              <ChevronLeft className="w-5 h-5 md:w-8 md:h-8" />
+            </button>
+            <span className="text-[7px] md:text-[10px] font-mono text-cyan-400/60 uppercase tracking-widest font-bold group-hover:text-cyan-400">PREV</span>
+          </div>
 
           {/* Swipeable Viewport */}
-          <div className="w-full h-full overflow-hidden flex items-center justify-center relative touch-none select-none">
+          <div className="w-[calc(100%-70px)] md:w-full h-full overflow-hidden flex items-center justify-center relative touch-none select-none">
             <motion.div
               drag="x"
               dragConstraints={{ left: 0, right: 0 }}
@@ -321,7 +334,7 @@ export const ArcadeTeamSelect = () => {
               }}
               transition={{ type: "spring", stiffness: 250, damping: 25, mass: 0.5 }}
               style={{
-                "--card-width": "260px",
+                "--card-width": "240px",
                 "--card-gap": "20px",
                 display: "flex",
                 alignItems: "center",
@@ -342,13 +355,15 @@ export const ArcadeTeamSelect = () => {
             </motion.div>
           </div>
 
-          <button
-            onClick={handleNext}
-            className="hidden md:flex absolute right-4 z-30 p-3 rounded-full border border-cyan-400/30 bg-black/60 text-cyan-400 hover:bg-cyan-400 hover:text-black transition-all group shadow-[0_0_20px_rgba(34,211,238,0.2)]"
-            aria-label="Next member"
-          >
-            <ChevronRight className="w-8 h-8 group-hover:scale-110 transition-transform" />
-          </button>
+          <div className="absolute right-1 md:right-6 top-1/2 -translate-y-1/2 z-30 flex flex-col items-center gap-2 group cursor-pointer" onClick={handleNext}>
+            <button
+              className="p-1.5 md:p-3 rounded-full border border-cyan-400/30 bg-black/60 text-cyan-400 hover:bg-cyan-400 hover:text-black transition-all shadow-[0_0_20px_rgba(34,211,238,0.2)] active:scale-95 group-hover:scale-110"
+              aria-label="Next member"
+            >
+              <ChevronRight className="w-5 h-5 md:w-8 md:h-8" />
+            </button>
+            <span className="text-[7px] md:text-[10px] font-mono text-cyan-400/60 uppercase tracking-widest font-bold group-hover:text-cyan-400">NEXT</span>
+          </div>
 
           {/* Pagination Indicators */}
           <div className="flex gap-3 mt-6 md:mt-10 z-10">
