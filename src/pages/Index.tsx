@@ -97,7 +97,7 @@ const Index = () => {
 
                       <Link
                         to="/team"
-                        className="inline-flex items-center gap-2 px-6 py-2 bg-transparent border-2 border-cyan-400/50 text-cyan-400 text-xs hover:bg-cyan-400 hover:text-black font-black uppercase italic tracking-widest transition-all duration-300 group rounded-md shadow-[0_0_20px_rgba(34,211,238,0.2)] hover:shadow-[0_0_40px_rgba(34,211,238,0.5)]"
+                        className="inline-flex items-center gap-2 px-5 py-2 bg-transparent border-2 border-cyan-400/50 text-cyan-400 text-xs hover:bg-cyan-400 hover:text-black font-black uppercase italic tracking-widest transition-all duration-300 group rounded-md shadow-[0_0_20px_rgba(34,211,238,0.2)] hover:shadow-[0_0_40px_rgba(34,211,238,0.5)]"
                       >
                         VIEW TEAM APEX
                         <span className="text-sm group-hover:translate-x-2 transition-transform">→</span>
