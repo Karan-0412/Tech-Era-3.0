@@ -200,11 +200,15 @@ const TerminalOverlay = ({ open, onClose }: TerminalOverlayProps) => {
 
   const handleAutoTypeDone = useCallback(() => {
     if (currentAutoType) {
-      addLine(currentAutoType.text, currentAutoType.color);
+      // Add line to buffer
+      lineBufferRef.current.push({ text: currentAutoType.text, color: currentAutoType.color });
+      // Flush immediately to prevent lines from disappearing
+      if (flushTimerRef.current) clearTimeout(flushTimerRef.current);
+      flushLineBuffer();
       setCurrentAutoType(null);
       setAutoTypeDone(true);
     }
-  }, [currentAutoType, addLine]);
+  }, [currentAutoType, flushLineBuffer]);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({
