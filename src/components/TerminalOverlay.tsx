@@ -1,7 +1,9 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useToast } from "@/hooks/use-toast";
 import { EVENTS } from "@/lib/events";
+
+const MAX_LINES = 500; // Prevent unbounded memory growth while keeping history
 
 type Step = "init" | "name" | "email" | "phone" | "event" | "team_name" | "team_leader_uid" | "team_uid" | "team_member_name" | "team_member_email" | "team_member_phone" | "team_review" | "submitting" | "success" | "error";
 
@@ -50,13 +52,13 @@ const useAutoType = (text: string, onDone: () => void, active: boolean) => {
   return displayed;
 };
 
-const MatrixRain = () => {
+const MatrixRain = memo(() => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d", { alpha: true });
     if (!ctx) return;
 
     canvas.width = window.innerWidth;
@@ -68,20 +70,25 @@ const MatrixRain = () => {
     const drops = Array.from({ length: columns }, () => Math.random() * -100);
 
     let frameId: number;
+    let frameCount = 0;
     const draw = () => {
-      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "hsl(183, 100%, 50%)";
-      ctx.font = `${fontSize}px monospace`;
+      // Update every 2 frames for better performance
+      if (frameCount % 2 === 0) {
+        ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "hsl(183, 100%, 50%)";
+        ctx.font = `${fontSize}px monospace`;
 
-      drops.forEach((y, i) => {
-        const char = chars[Math.floor(Math.random() * chars.length)];
-        ctx.fillText(char, i * fontSize, y * fontSize);
-        if (y * fontSize > canvas.height && Math.random() > 0.975) {
-          drops[i] = 0;
-        }
-        drops[i]++;
-      });
+        drops.forEach((y, i) => {
+          const char = chars[Math.floor(Math.random() * chars.length)];
+          ctx.fillText(char, i * fontSize, y * fontSize);
+          if (y * fontSize > canvas.height && Math.random() > 0.975) {
+            drops[i] = 0;
+          }
+          drops[i]++;
+        });
+      }
+      frameCount++;
       frameId = requestAnimationFrame(draw);
     };
     draw();
@@ -94,9 +101,11 @@ const MatrixRain = () => {
       className="absolute inset-0 z-0 pointer-events-none"
     />
   );
-};
+});
 
-const Scanlines = () => (
+MatrixRain.displayName = "MatrixRain";
+
+const Scanlines = memo(() => (
   <div className="absolute inset-0 pointer-events-none z-10 overflow-hidden opacity-[0.06]">
     <div
       className="w-full h-[200%] animate-scanline"
@@ -106,9 +115,11 @@ const Scanlines = () => (
       }}
     />
   </div>
-);
+));
 
-const TypingLine = ({
+Scanlines.displayName = "Scanlines";
+
+const TypingLine = memo(({
   text,
   active,
   onDone,
@@ -137,7 +148,9 @@ const TypingLine = ({
       )}
     </div>
   );
-};
+});
+
+TypingLine.displayName = "TypingLine";
 
 const TerminalOverlay = ({ open, onClose }: TerminalOverlayProps) => {
   const { toast } = useToast();
@@ -173,8 +186,8 @@ const TerminalOverlay = ({ open, onClose }: TerminalOverlayProps) => {
           ...line,
           id: `${Date.now()}-${idx}`
         }))];
-        // Keep only the last 100 lines to prevent DOM bloat
-        return newLines.slice(-100);
+        // Keep last 500 lines to prevent unbounded memory growth
+        return newLines.slice(-MAX_LINES);
       });
       lineBufferRef.current = [];
     }
@@ -201,17 +214,24 @@ const TerminalOverlay = ({ open, onClose }: TerminalOverlayProps) => {
 
   const handleAutoTypeDone = useCallback(() => {
     if (currentAutoType) {
-      addLine(currentAutoType.text, currentAutoType.color);
+      // Add line to buffer
+      lineBufferRef.current.push({ text: currentAutoType.text, color: currentAutoType.color });
+      // Flush immediately to prevent lines from disappearing
+      if (flushTimerRef.current) clearTimeout(flushTimerRef.current);
+      flushLineBuffer();
       setCurrentAutoType(null);
       setAutoTypeDone(true);
     }
-  }, [currentAutoType, addLine]);
+  }, [currentAutoType, flushLineBuffer]);
 
   useEffect(() => {
-    scrollRef.current?.scrollTo({
-      top: scrollRef.current.scrollHeight,
-      behavior: "smooth",
-    });
+    // Debounce scroll updates to prevent excessive layout thrashing
+    const timer = setTimeout(() => {
+      if (scrollRef.current) {
+        scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+      }
+    }, 0);
+    return () => clearTimeout(timer);
   }, [lines, currentAutoType]);
 
   useEffect(() => {
@@ -638,25 +658,38 @@ const TerminalOverlay = ({ open, onClose }: TerminalOverlayProps) => {
           >
             <div className="max-w-2xl mx-auto space-y-1">
               {/* Rendered lines */}
-              {lines.map((line) => (
-                <motion.div
-                  key={line.id || `${line.text}-${Math.random()}`}
-                  initial={{ opacity: 0, x: -8 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.15 }}
-                  className={
-                    line.color === "cyan"
-                      ? "text-primary"
-                      : line.color === "red"
-                      ? "text-destructive"
-                      : line.color === "dim"
-                      ? "text-muted-foreground"
-                      : "text-accent text-glow-green"
-                  }
-                >
-                  {line.text}
-                </motion.div>
-              ))}
+              {lines.map((line, idx) => {
+                const colorClass =
+                  line.color === "cyan"
+                    ? "text-primary"
+                    : line.color === "red"
+                    ? "text-destructive"
+                    : line.color === "dim"
+                    ? "text-muted-foreground"
+                    : "text-accent text-glow-green";
+
+                // Disable animations for older lines when there are many (performance)
+                const shouldAnimate = lines.length < 100 || idx > lines.length - 20;
+
+                return shouldAnimate ? (
+                  <motion.div
+                    key={line.id || `${line.text}-${Math.random()}`}
+                    initial={{ opacity: 0, x: -8 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.15 }}
+                    className={`font-mono text-xs sm:text-sm ${colorClass}`}
+                  >
+                    {line.text}
+                  </motion.div>
+                ) : (
+                  <div
+                    key={line.id || `${line.text}-${Math.random()}`}
+                    className={`font-mono text-xs sm:text-sm ${colorClass}`}
+                  >
+                    {line.text}
+                  </div>
+                );
+              })}
 
               {/* Team review display */}
               {step === "team_review" && (

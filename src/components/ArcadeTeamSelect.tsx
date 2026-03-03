@@ -279,12 +279,12 @@ export const ArcadeTeamSelect = () => {
   const desktopCardGap = 40;
 
   return (
-    <section className="relative h-full bg-black py-8 md:py-10 px-4 overflow-auto flex flex-col items-center justify-center">
+    <section className="relative h-full bg-black py-6 md:py-8 px-4 overflow-auto flex flex-col items-center justify-center">
       {/* Title */}
       <motion.div
         initial={{ opacity: 0, y: -50 }}
         whileInView={{ opacity: 1, y: 0 }}
-        className="text-center mb-10 md:mb-16 space-y-2 z-10 px-4"
+        className="text-center mb-8 md:mb-12 space-y-2 z-10 px-4"
       >
         <h2 className="text-4xl sm:text-5xl md:text-6xl font-black text-white tracking-tighter uppercase italic">
           Select Your <span className="text-cyan-400 text-glow-cyan">Warriors</span>
