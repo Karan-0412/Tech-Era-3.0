@@ -39,7 +39,7 @@ const BootSequence = ({ onComplete }: { onComplete: () => void }) => {
 
         <div className="w-full max-w-md px-6">
           <motion.h1
-            className={`font-mono text-lg font-bold text-primary text-center mb-8 ${showGlitch ? "animate-glitch" : ""}`}
+            className={`font-mono text-2xl font-bold text-primary text-center mb-8 ${showGlitch ? "animate-glitch" : ""}`}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
           >
