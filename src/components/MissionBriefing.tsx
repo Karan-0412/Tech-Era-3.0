@@ -112,7 +112,7 @@ const MissionBriefing = ({ visible, onRegister }: MissionBriefingProps) => {
   return (
     <section
       ref={ref}
-      className="relative min-h-[100dvh] flex items-start sm:items-center justify-start sm:justify-center pt-20 sm:py-16 px-4 sm:px-6 overflow-hidden"
+      className="relative min-h-[100dvh] flex items-center justify-center py-16 px-4 sm:px-6 overflow-hidden"
     >
       <motion.div
         initial={{ opacity: 0 }}
