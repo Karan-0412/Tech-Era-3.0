@@ -153,7 +153,7 @@ const CharacterCard = React.memo(({ member, isActive, onClick }: { member: TeamM
         filter: isActive ? "brightness(1) contrast(1) blur(0px)" : "brightness(0.4) contrast(0.8) blur(2px)",
       }}
       transition={{ type: "spring", stiffness: 300, damping: 30, mass: 0.8 }}
-      className={`relative w-[240px] h-[480px] md:w-72 md:h-[500px] cursor-pointer rounded-3xl overflow-hidden border-2 shrink-0 ${
+      className={`relative w-[240px] md:w-72 cursor-pointer rounded-3xl overflow-hidden border-2 shrink-0 ${
         isActive ? "border-cyan-400 shadow-[0_0_40px_rgba(34,211,238,0.4)]" : "border-gray-800"
       } bg-black/90 backdrop-blur-xl group flex flex-col transition-all duration-300`}
     >
@@ -188,8 +188,8 @@ const CharacterCard = React.memo(({ member, isActive, onClick }: { member: TeamM
         </div>
 
         {/* Fun Facts Section */}
-        <div className="flex-1 space-y-2 bg-gray-900/50 p-3 rounded-xl border border-cyan-500/20 overflow-y-auto custom-scrollbar">
-          <p className="text-[9px] font-mono font-bold text-cyan-300 uppercase tracking-wider flex items-center gap-1.5 sticky top-0 bg-gray-900/5 py-1">
+        <div className="space-y-2 bg-gray-900/50 p-3 rounded-xl border border-cyan-500/20">
+          <p className="text-[9px] font-mono font-bold text-cyan-300 uppercase tracking-wider flex items-center gap-1.5">
             <Quote className="w-3 h-3" /> Fun Facts
           </p>
           <ul className="space-y-1.5">
@@ -207,13 +207,6 @@ const CharacterCard = React.memo(({ member, isActive, onClick }: { member: TeamM
         animate={{ opacity: isActive ? 1 : 0, pointerEvents: isActive ? 'auto' : 'none' }}
         className="mt-auto space-y-2"
       >
-        {/* Directional Hints for Mobile */}
-        <div className="md:hidden flex items-center justify-between mb-2 px-4 text-cyan-500/40">
-           <motion.div animate={{ x: [-3, 3, -3] }} transition={{ repeat: Infinity, duration: 1.5 }}><ChevronLeft className="w-4 h-4" /></motion.div>
-           <span className="text-[8px] font-mono font-bold tracking-[0.3em] uppercase">Swipe to Select</span>
-           <motion.div animate={{ x: [3, -3, 3] }} transition={{ repeat: Infinity, duration: 1.5 }}><ChevronRight className="w-4 h-4" /></motion.div>
-        </div>
-
         <motion.a
             href={member.links.linkedin}
             target="_blank"
@@ -296,18 +289,13 @@ export const ArcadeTeamSelect = () => {
         <h2 className="text-4xl sm:text-5xl md:text-6xl font-black text-white tracking-tighter uppercase italic">
           Select Your <span className="text-cyan-400 text-glow-cyan">Warriors</span>
         </h2>
-        <p className="text-gray-500 font-mono text-[10px] sm:text-xs uppercase tracking-[0.4em] sm:tracking-[0.6em] flex items-center justify-center gap-4">
-          <motion.span animate={{ x: [-5, 5, -5] }} transition={{ repeat: Infinity, duration: 2 }}>«</motion.span>
-          Swipe or Click to Focus
-          <motion.span animate={{ x: [5, -5, 5] }} transition={{ repeat: Infinity, duration: 2 }}>»</motion.span>
-        </p>
       </motion.div>
 
       {/* Main Layout Container - Centered Cards Only */}
       <div className="w-full max-w-7xl flex flex-col items-center justify-center">
         
         {/* Carousel Viewport */}
-        <div className="w-full flex flex-col items-center justify-center relative h-[550px] md:h-[650px] overflow-visible">
+        <div className="w-full flex flex-col items-center justify-center relative h-auto min-h-[500px] md:min-h-[600px] py-10 overflow-visible">
            {/* Carousel Glow Background */}
            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full max-w-xl bg-cyan-500/5 blur-[120px] rounded-full pointer-events-none -z-10" />
 
@@ -319,7 +307,6 @@ export const ArcadeTeamSelect = () => {
             >
               <ChevronLeft className="w-5 h-5 md:w-8 md:h-8" />
             </button>
-            <span className="text-[7px] md:text-[10px] font-mono text-cyan-400/60 uppercase tracking-widest font-bold group-hover:text-cyan-400">PREV</span>
           </div>
 
           {/* Swipeable Viewport */}
@@ -362,7 +349,6 @@ export const ArcadeTeamSelect = () => {
             >
               <ChevronRight className="w-5 h-5 md:w-8 md:h-8" />
             </button>
-            <span className="text-[7px] md:text-[10px] font-mono text-cyan-400/60 uppercase tracking-widest font-bold group-hover:text-cyan-400">NEXT</span>
           </div>
 
           {/* Pagination Indicators */}
