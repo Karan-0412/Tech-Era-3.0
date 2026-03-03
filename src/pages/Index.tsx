@@ -1,4 +1,4 @@
-import { useState, useCallback, Suspense, lazy } from "react";
+import { useState, useCallback, Suspense, lazy, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import BootSequence from "@/components/BootSequence";
 import HeroScreen from "@/components/HeroScreen";
@@ -15,9 +15,26 @@ const MeshBackground = lazy(() => import("@/components/MeshBackground"));
 const TerminalOverlay = lazy(() => import("@/components/TerminalOverlay"));
 
 const Index = () => {
-  const [booted, setBooted] = useState(false);
-  const [unlocked, setUnlocked] = useState(false);
+  // Initialize from localStorage to persist state across navigation
+  const [booted, setBooted] = useState(() => {
+    const saved = localStorage.getItem("techEraBooted");
+    return saved ? JSON.parse(saved) : false;
+  });
+  const [unlocked, setUnlocked] = useState(() => {
+    const saved = localStorage.getItem("techEraUnlocked");
+    return saved ? JSON.parse(saved) : false;
+  });
   const [terminalOpen, setTerminalOpen] = useState(false);
+
+  // Persist boot state
+  useEffect(() => {
+    localStorage.setItem("techEraBooted", JSON.stringify(booted));
+  }, [booted]);
+
+  // Persist unlock state
+  useEffect(() => {
+    localStorage.setItem("techEraUnlocked", JSON.stringify(unlocked));
+  }, [unlocked]);
 
   const handleBootComplete = useCallback(() => setBooted(true), []);
   const handleUnlock = useCallback(() => setUnlocked(true), []);
