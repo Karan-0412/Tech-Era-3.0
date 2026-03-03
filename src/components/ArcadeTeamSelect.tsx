@@ -115,30 +115,29 @@ const TEAM_MEMBERS: TeamMember[] = [
   },
 ];
 
-const CharacterCard = ({ member, isActive, onClick }: { member: TeamMember; isActive: boolean; onClick: () => void }) => {
+const CharacterCard = React.memo(({ member, isActive, onClick }: { member: TeamMember; isActive: boolean; onClick: () => void }) => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
   const rotateX = useSpring(useTransform(y, [-100, 100], [15, -15]), { stiffness: 150, damping: 20 });
   const rotateY = useSpring(useTransform(x, [-100, 100], [-15, 15]), { stiffness: 150, damping: 20 });
 
-  function handleMouseMove(event: React.MouseEvent<HTMLDivElement>) {
+  const handleMouseMove = React.useCallback((event: React.MouseEvent<HTMLDivElement>) => {
     if (!isActive) return;
     const rect = event.currentTarget.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
     x.set(event.clientX - centerX);
     y.set(event.clientY - centerY);
-  }
+  }, [isActive, x, y]);
 
-  function handleMouseLeave() {
+  const handleMouseLeave = React.useCallback(() => {
     x.set(0);
     y.set(0);
-  }
+  }, [x, y]);
 
   return (
     <motion.div
-      layout
       onClick={onClick}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
@@ -146,13 +145,14 @@ const CharacterCard = ({ member, isActive, onClick }: { member: TeamMember; isAc
         rotateX: isActive ? rotateX : 0,
         rotateY: isActive ? rotateY : 0,
         transformStyle: "preserve-3d",
+        willChange: "transform, opacity"
       }}
       animate={{
         scale: isActive ? 1 : 0.85,
         opacity: isActive ? 1 : 0.3,
         filter: isActive ? "brightness(1) contrast(1) blur(0px)" : "brightness(0.4) contrast(0.8) blur(2px)",
       }}
-      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+      transition={{ type: "spring", stiffness: 300, damping: 30, mass: 0.8 }}
       className={`relative w-[260px] h-[440px] md:w-72 md:h-[500px] cursor-pointer rounded-3xl overflow-hidden border-2 shrink-0 ${
         isActive ? "border-cyan-400 shadow-[0_0_40px_rgba(34,211,238,0.4)]" : "border-gray-800"
       } bg-black/90 backdrop-blur-xl group flex flex-col transition-all duration-300`}
@@ -174,7 +174,8 @@ const CharacterCard = ({ member, isActive, onClick }: { member: TeamMember; isAc
         <motion.img
           src={member.image}
           alt={member.name}
-          className="w-full h-full object-contain"
+          loading="lazy"
+          className="w-full h-full object-contain pointer-events-none"
           style={{ translateZ: 50 }}
         />
       </div>
@@ -202,7 +203,7 @@ const CharacterCard = ({ member, isActive, onClick }: { member: TeamMember; isAc
         </div>
 
         {/* Action Buttons - Only visible when active */}
-        <motion.div 
+        <motion.div
           animate={{ opacity: isActive ? 1 : 0, pointerEvents: isActive ? 'auto' : 'none' }}
           className="mt-auto space-y-2"
         >
@@ -217,7 +218,7 @@ const CharacterCard = ({ member, isActive, onClick }: { member: TeamMember; isAc
             <Linkedin className="w-4 h-4" />
             <span className="font-mono text-[10px] font-bold uppercase tracking-wider">Connect</span>
           </motion.a>
-          
+
           <Button
             size="sm"
             className="w-full h-9 bg-cyan-500 hover:bg-cyan-400 text-black font-black uppercase italic tracking-widest rounded-xl text-[10px]"
@@ -233,13 +234,15 @@ const CharacterCard = ({ member, isActive, onClick }: { member: TeamMember; isAc
       </div>
     </motion.div>
   );
-};
+});
+
+CharacterCard.displayName = "CharacterCard";
 
 export const ArcadeTeamSelect = () => {
   const [activeIndex, setActiveIndex] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
-  
+
   const activeMember = TEAM_MEMBERS[activeIndex];
 
   useEffect(() => {
@@ -251,16 +254,16 @@ export const ArcadeTeamSelect = () => {
     return () => window.removeEventListener('summon-warrior', handleSummon);
   }, []);
 
-  const handleNext = () => {
+  const handleNext = React.useCallback(() => {
     setActiveIndex((prev) => (prev + 1) % TEAM_MEMBERS.length);
-  };
+  }, []);
 
-  const handlePrev = () => {
+  const handlePrev = React.useCallback(() => {
     setActiveIndex((prev) => (prev - 1 + TEAM_MEMBERS.length) % TEAM_MEMBERS.length);
-  };
+  }, []);
 
   const onDragEnd = (event: any, info: any) => {
-    const threshold = 50;
+    const threshold = 30;
     if (info.offset.x < -threshold) {
       handleNext();
     } else if (info.offset.x > threshold) {
@@ -307,24 +310,24 @@ export const ArcadeTeamSelect = () => {
           </button>
 
           {/* Swipeable Viewport */}
-          <div className="w-full h-full overflow-hidden flex items-center justify-center relative touch-none">
+          <div className="w-full h-full overflow-hidden flex items-center justify-center relative touch-none select-none">
             <motion.div
               drag="x"
               dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.2}
               onDragEnd={onDragEnd}
               animate={{
-                // Formula to center index 'activeIndex':
-                // Displacement = ((N-1)/2 - activeIndex) * (cardWidth + cardGap)
                 x: `calc((${TEAM_MEMBERS.length - 1} / 2 - ${activeIndex}) * (var(--card-width) + var(--card-gap)))`
               }}
-              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              transition={{ type: "spring", stiffness: 250, damping: 25, mass: 0.5 }}
               style={{
                 "--card-width": "260px",
                 "--card-gap": "20px",
                 display: "flex",
                 alignItems: "center",
                 gap: "var(--card-gap)",
-                cursor: "grab"
+                cursor: "grab",
+                willChange: "transform"
               } as any}
               className="md:[--card-width:288px] md:[--card-gap:40px]"
             >
