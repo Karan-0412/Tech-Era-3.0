@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
-import { EVENTS, type Event } from "@/lib/events";
+import { EVENTS, type Event } from "@/data/events";
 
 const TerminalFooter = () => {
   const ref = useRef(null);

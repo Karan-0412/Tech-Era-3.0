@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useToast } from "@/hooks/use-toast";
-import { EVENTS } from "@/lib/events";
+import { EVENTS } from "@/data/events";
 
 type Step = "init" | "name" | "email" | "phone" | "event" | "team_name" | "team_leader_uid" | "team_uid" | "team_member_name" | "team_member_email" | "team_member_phone" | "team_review" | "submitting" | "success" | "error";
 

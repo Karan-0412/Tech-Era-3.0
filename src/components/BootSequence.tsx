@@ -1,22 +1,14 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
-const bootLines = [
-  "TECH_ERA_3.0 INITIALIZING...",
-  "Syncing with Apex Mainframe...",
-  "Loading neural interface...",
-  "Scanning biometrics... [OK]",
-  "Connecting to global network...",
-  "Decrypting secure protocols...",
-  "ACCESS GRANTED_",
-];
+import { BOOT_LINES } from "@/data/bootSequence";
 
 const BootSequence = ({ onComplete }: { onComplete: () => void }) => {
   const [currentLine, setCurrentLine] = useState(0);
   const [showGlitch, setShowGlitch] = useState(false);
 
   useEffect(() => {
-    if (currentLine < bootLines.length) {
+    if (currentLine < BOOT_LINES.length) {
       const timer = setTimeout(() => setCurrentLine((c) => c + 1), 250);
       return () => clearTimeout(timer);
     } else {
@@ -46,13 +38,13 @@ const BootSequence = ({ onComplete }: { onComplete: () => void }) => {
           </motion.h1>
 
           <div className="font-mono text-[14px] space-y-1">
-            {bootLines.slice(0, currentLine).map((line, i) => (
+            {BOOT_LINES.slice(0, currentLine).map((line, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 className={
-                  i === bootLines.length - 1
+                  i === BOOT_LINES.length - 1
                     ? "text-neon-green text-glow-green"
                     : "text-muted-foreground"
                 }
@@ -61,7 +53,7 @@ const BootSequence = ({ onComplete }: { onComplete: () => void }) => {
                 {line}
               </motion.div>
             ))}
-            {currentLine < bootLines.length && (
+            {currentLine < BOOT_LINES.length && (
               <span className="inline-block w-2 h-4 bg-primary animate-typing-cursor" />
             )}
           </div>
@@ -71,7 +63,7 @@ const BootSequence = ({ onComplete }: { onComplete: () => void }) => {
             <motion.div
               className="h-full bg-primary"
               initial={{ width: "0%" }}
-              animate={{ width: `${(currentLine / bootLines.length) * 100}%` }}
+              animate={{ width: `${(currentLine / BOOT_LINES.length) * 100}%` }}
               transition={{ ease: "easeOut" }}
               style={{
                 boxShadow: "0 0 10px hsl(183 100% 50% / 0.8)",
