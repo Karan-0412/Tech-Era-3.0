@@ -1,13 +1,12 @@
 import { useRef, useEffect, useState, memo } from "react";
 import { AnimatePresence, motion, useInView, useMotionValue, useSpring } from "framer-motion";
+import { EVENT_DATE } from "@/data/eventData";
 
 /* ── Main Component ─────────────────────────────────── */
 interface MissionBriefingProps {
   visible: boolean;
   onRegister: () => void;
 }
-
-const EVENT_DATE = new Date("2026-03-15T09:00:00");
 
 const calculateTimeLeft = () => {
   const now = new Date().getTime();

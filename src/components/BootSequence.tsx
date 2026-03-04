@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 const bootLines = [
   "TECH_ERA_3.0 INITIALIZING...",
@@ -27,12 +27,11 @@ const BootSequence = ({ onComplete }: { onComplete: () => void }) => {
   }, [currentLine, onComplete]);
 
   return (
-    <AnimatePresence>
-      <motion.div
-        className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-background"
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.3 }}
-      >
+    <motion.div
+      className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-background"
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+    >
         <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
           <div className="w-full h-1 bg-primary/30 animate-scanline" />
         </div>
@@ -62,7 +61,7 @@ const BootSequence = ({ onComplete }: { onComplete: () => void }) => {
                 {line}
               </motion.div>
             ))}
-            {currentLine <= bootLines.length && (
+            {currentLine < bootLines.length && (
               <span className="inline-block w-2 h-4 bg-primary animate-typing-cursor" />
             )}
           </div>
@@ -81,7 +80,6 @@ const BootSequence = ({ onComplete }: { onComplete: () => void }) => {
           </div>
         </div>
       </motion.div>
-    </AnimatePresence>
   );
 };
 

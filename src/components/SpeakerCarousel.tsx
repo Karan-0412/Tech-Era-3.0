@@ -1,16 +1,8 @@
 import { useState, useRef, useEffect, memo } from "react";
 import { motion, useInView } from "framer-motion";
+import { SPEAKERS } from "@/data/speakers";
 
-const speakers = [
-  { name: "Dr. Yuki Tanaka", role: "AI Research Lead, NeuraCorp", avatar: "YT" },
-  { name: "Marcus Chen", role: "Founder, Quantum Labs", avatar: "MC" },
-  { name: "Aria Volkov", role: "CTO, CyberShield", avatar: "AV" },
-  { name: "Kai Okafor", role: "Head of Web3, MetaForge", avatar: "KO" },
-  { name: "Luna Reyes", role: "VP Engineering, SynthOS", avatar: "LR" },
-  { name: "Zane Patel", role: "Director, DeepMind X", avatar: "ZP" },
-];
-
-const SpeakerCard = memo(({ speaker, index }: { speaker: typeof speakers[0]; index: number }) => {
+const SpeakerCard = memo(({ speaker, index }: { speaker: typeof SPEAKERS[0]; index: number }) => {
   const [active, setActive] = useState(false);
   const [typedName, setTypedName] = useState("");
   const intervalRef = useRef<number | null>(null);
@@ -124,7 +116,7 @@ const SpeakerCarousel = () => {
         className="flex justify-center"
       >
         <div className="flex flex-wrap items-stretch justify-center gap-6 sm:gap-8 max-w-5xl">
-          {speakers.map((speaker, i) => (
+          {SPEAKERS.map((speaker, i) => (
             <SpeakerCard key={speaker.name} speaker={speaker} index={i} />
           ))}
         </div>
