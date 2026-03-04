@@ -1,9 +1,7 @@
-import { useState, useEffect, useRef, useCallback, memo } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useToast } from "@/hooks/use-toast";
 import { EVENTS } from "@/lib/events";
-
-const MAX_LINES = 500; // Prevent unbounded memory growth while keeping history
 
 type Step = "init" | "name" | "email" | "phone" | "event" | "team_name" | "team_leader_uid" | "team_uid" | "team_member_name" | "team_member_email" | "team_member_phone" | "team_review" | "submitting" | "success" | "error";
 
@@ -18,7 +16,6 @@ interface TerminalLine {
   text: string;
   color: "green" | "cyan" | "red" | "dim";
   typing?: boolean;
-  id?: string;
 }
 
 interface TerminalOverlayProps {
@@ -52,13 +49,13 @@ const useAutoType = (text: string, onDone: () => void, active: boolean) => {
   return displayed;
 };
 
-const MatrixRain = memo(() => {
+const MatrixRain = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d", { alpha: true });
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     canvas.width = window.innerWidth;
@@ -70,25 +67,20 @@ const MatrixRain = memo(() => {
     const drops = Array.from({ length: columns }, () => Math.random() * -100);
 
     let frameId: number;
-    let frameCount = 0;
     const draw = () => {
-      // Update every 2 frames for better performance
-      if (frameCount % 2 === 0) {
-        ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = "hsl(183, 100%, 50%)";
-        ctx.font = `${fontSize}px monospace`;
+      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "hsl(183, 100%, 50%)";
+      ctx.font = `${fontSize}px monospace`;
 
-        drops.forEach((y, i) => {
-          const char = chars[Math.floor(Math.random() * chars.length)];
-          ctx.fillText(char, i * fontSize, y * fontSize);
-          if (y * fontSize > canvas.height && Math.random() > 0.975) {
-            drops[i] = 0;
-          }
-          drops[i]++;
-        });
-      }
-      frameCount++;
+      drops.forEach((y, i) => {
+        const char = chars[Math.floor(Math.random() * chars.length)];
+        ctx.fillText(char, i * fontSize, y * fontSize);
+        if (y * fontSize > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
+      });
       frameId = requestAnimationFrame(draw);
     };
     draw();
@@ -101,11 +93,9 @@ const MatrixRain = memo(() => {
       className="absolute inset-0 z-0 pointer-events-none"
     />
   );
-});
+};
 
-MatrixRain.displayName = "MatrixRain";
-
-const Scanlines = memo(() => (
+const Scanlines = () => (
   <div className="absolute inset-0 pointer-events-none z-10 overflow-hidden opacity-[0.06]">
     <div
       className="w-full h-[200%] animate-scanline"
@@ -115,11 +105,9 @@ const Scanlines = memo(() => (
       }}
     />
   </div>
-));
+);
 
-Scanlines.displayName = "Scanlines";
-
-const TypingLine = memo(({
+const TypingLine = ({
   text,
   active,
   onDone,
@@ -137,7 +125,7 @@ const TypingLine = memo(({
       : color === "red"
       ? "text-destructive"
       : color === "dim"
-      ? "text-foreground/70"
+      ? "text-muted-foreground"
       : "text-accent text-glow-green";
 
   return (
@@ -148,9 +136,7 @@ const TypingLine = memo(({
       )}
     </div>
   );
-});
-
-TypingLine.displayName = "TypingLine";
+};
 
 const TerminalOverlay = ({ open, onClose }: TerminalOverlayProps) => {
   const { toast } = useToast();
@@ -176,32 +162,12 @@ const TerminalOverlay = ({ open, onClose }: TerminalOverlayProps) => {
 
   const inputRef = useRef<HTMLInputElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const lineBufferRef = useRef<TerminalLine[]>([]);
-  const flushTimerRef = useRef<NodeJS.Timeout | null>(null);
-
-  const flushLineBuffer = useCallback(() => {
-    if (lineBufferRef.current.length > 0) {
-      setLines((prev) => {
-        const newLines = [...prev, ...lineBufferRef.current.map((line, idx) => ({
-          ...line,
-          id: `${Date.now()}-${idx}`
-        }))];
-        // Keep last 500 lines to prevent unbounded memory growth
-        return newLines.slice(-MAX_LINES);
-      });
-      lineBufferRef.current = [];
-    }
-  }, []);
 
   const addLine = useCallback(
     (text: string, color: TerminalLine["color"] = "green") => {
-      lineBufferRef.current.push({ text, color });
-
-      // Flush buffer after 16ms (roughly one frame) to batch updates
-      if (flushTimerRef.current) clearTimeout(flushTimerRef.current);
-      flushTimerRef.current = setTimeout(flushLineBuffer, 16);
+      setLines((prev) => [...prev, { text, color }]);
     },
-    [flushLineBuffer]
+    []
   );
 
   const startAutoType = useCallback(
@@ -214,24 +180,17 @@ const TerminalOverlay = ({ open, onClose }: TerminalOverlayProps) => {
 
   const handleAutoTypeDone = useCallback(() => {
     if (currentAutoType) {
-      // Add line to buffer
-      lineBufferRef.current.push({ text: currentAutoType.text, color: currentAutoType.color });
-      // Flush immediately to prevent lines from disappearing
-      if (flushTimerRef.current) clearTimeout(flushTimerRef.current);
-      flushLineBuffer();
+      addLine(currentAutoType.text, currentAutoType.color);
       setCurrentAutoType(null);
       setAutoTypeDone(true);
     }
-  }, [currentAutoType, flushLineBuffer]);
+  }, [currentAutoType, addLine]);
 
   useEffect(() => {
-    // Debounce scroll updates to prevent excessive layout thrashing
-    const timer = setTimeout(() => {
-      if (scrollRef.current) {
-        scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-      }
-    }, 0);
-    return () => clearTimeout(timer);
+    scrollRef.current?.scrollTo({
+      top: scrollRef.current.scrollHeight,
+      behavior: "smooth",
+    });
   }, [lines, currentAutoType]);
 
   useEffect(() => {
@@ -241,13 +200,9 @@ const TerminalOverlay = ({ open, onClose }: TerminalOverlayProps) => {
   }, [autoTypeDone, step]);
 
   useEffect(() => {
-    if (!open) {
-      if (flushTimerRef.current) clearTimeout(flushTimerRef.current);
-      return;
-    }
+    if (!open) return;
     setStep("init");
     setLines([]);
-    lineBufferRef.current = [];
     setInputValue("");
     setName("");
     setEmail("");
@@ -262,13 +217,10 @@ const TerminalOverlay = ({ open, onClose }: TerminalOverlayProps) => {
     setAutoTypeDone(false);
 
     const t1 = setTimeout(() => {
-      startAutoType("> Initializing registration session...", "cyan");
+      startAutoType("> Initializing registration session...", "dim");
     }, 400);
 
-    return () => {
-      clearTimeout(t1);
-      if (flushTimerRef.current) clearTimeout(flushTimerRef.current);
-    };
+    return () => clearTimeout(t1);
   }, [open, startAutoType]);
 
   useEffect(() => {
@@ -658,38 +610,25 @@ const TerminalOverlay = ({ open, onClose }: TerminalOverlayProps) => {
           >
             <div className="max-w-2xl mx-auto space-y-1">
               {/* Rendered lines */}
-              {lines.map((line, idx) => {
-                const colorClass =
-                  line.color === "cyan"
-                    ? "text-primary"
-                    : line.color === "red"
-                    ? "text-destructive"
-                    : line.color === "dim"
-                    ? "text-muted-foreground"
-                    : "text-accent text-glow-green";
-
-                // Disable animations for older lines when there are many (performance)
-                const shouldAnimate = lines.length < 100 || idx > lines.length - 20;
-
-                return shouldAnimate ? (
-                  <motion.div
-                    key={line.id || `${line.text}-${Math.random()}`}
-                    initial={{ opacity: 0, x: -8 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.15 }}
-                    className={`font-mono text-xs sm:text-sm ${colorClass}`}
-                  >
-                    {line.text}
-                  </motion.div>
-                ) : (
-                  <div
-                    key={line.id || `${line.text}-${Math.random()}`}
-                    className={`font-mono text-xs sm:text-sm ${colorClass}`}
-                  >
-                    {line.text}
-                  </div>
-                );
-              })}
+              {lines.map((line, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: -8 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.15 }}
+                  className={
+                    line.color === "cyan"
+                      ? "text-primary"
+                      : line.color === "red"
+                      ? "text-destructive"
+                      : line.color === "dim"
+                      ? "text-muted-foreground"
+                      : "text-accent text-glow-green"
+                  }
+                >
+                  {line.text}
+                </motion.div>
+              ))}
 
               {/* Team review display */}
               {step === "team_review" && (
