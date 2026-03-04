@@ -102,7 +102,7 @@ const Index = () => {
                         VIEW TEAM APEX
                         <span className="text-sm group-hover:translate-x-2 transition-transform">→</span>
                       </Link>
-                       <div className="mt-6 pt-4 border-t border-primary/10 flex flex-col items-center gap-4">
+                      <div className="mt-6 pt-4 border-t border-primary/10 flex flex-col items-center gap-4">
                       <div className="flex gap-8">
                         {["TWITTER", "DISCORD", "GITHUB"].map((link) => (
                           <a
