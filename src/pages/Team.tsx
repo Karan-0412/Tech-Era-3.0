@@ -15,7 +15,7 @@ const Team = () => {
       {/* Header / Nav */}
       <nav className="relative z-20 flex items-center justify-between p-4 md:p-4 bg-black border-b border-cyan-400/10">
         <Link
-          to="/"
+          to="/?unlocked=true"
           className="flex items-center gap-2 font-mono text-[10px] md:text-xs uppercase tracking-[0.2em] md:tracking-[0.3em] text-cyan-400 hover:text-cyan-300 transition-colors group"
         >
           <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />

@@ -4,7 +4,7 @@ import BootSequence from "@/components/BootSequence";
 import HeroScreen from "@/components/HeroScreen";
 import MissionBriefing from "@/components/MissionBriefing";
 import AboutSection from "@/components/AboutSection";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import TeamSection from "@/components/TeamSection";
 import SpeakerCarousel from "@/components/SpeakerCarousel";
 import ScheduleTimeline from "@/components/ScheduleTimeline";
@@ -14,22 +14,28 @@ import TerminalFooter from "@/components/TerminalFooter";
 const MeshBackground = lazy(() => import("@/components/MeshBackground"));
 const TerminalOverlay = lazy(() => import("@/components/TerminalOverlay"));
 
+// Module-level variables to preserve state across component re-mounts (while not refreshing)
+let sessionBooted = false;
+let sessionUnlocked = false;
+
 const Index = () => {
-  // Initialize booted state - for testing, always start fresh
-  const [booted, setBooted] = useState(false);
-  const [unlocked, setUnlocked] = useState(() => {
-    const saved = localStorage.getItem("techEraUnlocked");
-    return saved ? JSON.parse(saved) : false;
-  });
+  const [searchParams] = useSearchParams();
+  const skipBoot = searchParams.get("unlocked") === "true";
+
+  // Initialize state from session variables or search parameters
+  const [booted, setBooted] = useState(sessionBooted || skipBoot);
+  const [unlocked, setUnlocked] = useState(sessionUnlocked || skipBoot);
   const [terminalOpen, setTerminalOpen] = useState(false);
 
-  // Persist unlock state
-  useEffect(() => {
-    localStorage.setItem("techEraUnlocked", JSON.stringify(unlocked));
-  }, [unlocked]);
-
-  const handleBootComplete = useCallback(() => setBooted(true), []);
-  const handleUnlock = useCallback(() => setUnlocked(true), []);
+  // Sync state changes to session variables
+  const handleBootComplete = useCallback(() => {
+    setBooted(true);
+    sessionBooted = true;
+  }, []);
+  const handleUnlock = useCallback(() => {
+    setUnlocked(true);
+    sessionUnlocked = true;
+  }, []);
   const handleRegister = useCallback(() => setTerminalOpen(true), []);
   const handleOpenTerminal = useCallback(() => setTerminalOpen(true), []);
   const handleCloseTerminal = useCallback(() => setTerminalOpen(false), []);

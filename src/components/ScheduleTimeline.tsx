@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { motion, useInView, useScroll, useTransform, AnimatePresence } from "framer-motion";
-import { EVENTS } from "@/lib/events";
+import { EVENTS } from "@/data/events";
 
 interface ScheduleItemType {
   time: string;
