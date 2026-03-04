@@ -301,7 +301,7 @@ export const ArcadeTeamSelect = () => {
 
                 <Button
                   onClick={() => setIsModalOpen(false)}
-                  className="w-full py-6 bg-cyan-400 hover:bg-cyan-500 text-black font-black uppercase tracking-widest rounded-2xl"
+                  className="w-full py-6 bg-cyan-400 hover:bg-cyan-500 text-black font-black uppercase tracking-wider rounded-2xl text-[10px] sm:text-xs"
                 >
                   Terminate Connection
                 </Button>

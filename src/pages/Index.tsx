@@ -4,7 +4,7 @@ import BootSequence from "@/components/BootSequence";
 import HeroScreen from "@/components/HeroScreen";
 import MissionBriefing from "@/components/MissionBriefing";
 import AboutSection from "@/components/AboutSection";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import TeamSection from "@/components/TeamSection";
 import SpeakerCarousel from "@/components/SpeakerCarousel";
 import ScheduleTimeline from "@/components/ScheduleTimeline";
@@ -15,9 +15,12 @@ const MeshBackground = lazy(() => import("@/components/MeshBackground"));
 const TerminalOverlay = lazy(() => import("@/components/TerminalOverlay"));
 
 const Index = () => {
+  const [searchParams] = useSearchParams();
+  const skipBoot = searchParams.get("unlocked") === "true";
+
   // Initialize booted state - for testing, always start fresh
-  const [booted, setBooted] = useState(false);
-  const [unlocked, setUnlocked] = useState(false);
+  const [booted, setBooted] = useState(skipBoot);
+  const [unlocked, setUnlocked] = useState(skipBoot);
   const [terminalOpen, setTerminalOpen] = useState(false);
 
   // No longer persist unlock state to ensure HeroScreen shows on reload
