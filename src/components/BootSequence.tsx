@@ -62,7 +62,7 @@ const BootSequence = ({ onComplete }: { onComplete: () => void }) => {
                 {line}
               </motion.div>
             ))}
-            {currentLine <= bootLines.length && (
+            {currentLine < bootLines.length && (
               <span className="inline-block w-2 h-4 bg-primary animate-typing-cursor" />
             )}
           </div>
