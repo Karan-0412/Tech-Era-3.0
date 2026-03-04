@@ -17,17 +17,10 @@ const TerminalOverlay = lazy(() => import("@/components/TerminalOverlay"));
 const Index = () => {
   // Initialize booted state - for testing, always start fresh
   const [booted, setBooted] = useState(false);
-  const [unlocked, setUnlocked] = useState(() => {
-    const saved = localStorage.getItem("techEraUnlocked");
-    return saved ? JSON.parse(saved) : false;
-  });
+  const [unlocked, setUnlocked] = useState(false);
   const [terminalOpen, setTerminalOpen] = useState(false);
 
-  // Persist unlock state
-  useEffect(() => {
-    localStorage.setItem("techEraUnlocked", JSON.stringify(unlocked));
-  }, [unlocked]);
-
+  // No longer persist unlock state to ensure HeroScreen shows on reload
   const handleBootComplete = useCallback(() => setBooted(true), []);
   const handleUnlock = useCallback(() => setUnlocked(true), []);
   const handleRegister = useCallback(() => setTerminalOpen(true), []);
