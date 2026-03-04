@@ -1,37 +1,7 @@
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef } from "react";
-
-const specs = [
-  {
-    icon: "◈",
-    title: "3 DAYS",
-    subtitle: "RUNTIME",
-    description: "72 hours of non-stop innovation, workshops, and networking across 4 stages.",
-    color: "cyan" as const,
-  },
-  {
-    icon: "⬡",
-    title: "120+",
-    subtitle: "SPEAKERS",
-    description: "Industry pioneers in AI, Web3, quantum computing, and cybersecurity.",
-    color: "magenta" as const,
-  },
-  {
-    icon: "◇",
-    title: "5,000",
-    subtitle: "NODES",
-    description: "Connect with developers, founders, and visionaries from 60+ countries.",
-    color: "green" as const,
-  },
-  {
-    icon: "△",
-    title: "48HR",
-    subtitle: "HACKATHON",
-    description: "Build the future in our flagship hackathon with $500K in prizes.",
-    color: "cyan" as const,
-  },
-];
+import { EVENT_SPECS } from "@/data/eventData";
 
 const textColorMap = {
   cyan: "text-primary",
@@ -39,7 +9,7 @@ const textColorMap = {
   green: "text-accent",
 };
 
-const SpecCard = ({ spec, index }: { spec: typeof specs[0]; index: number }) => {
+const SpecCard = ({ spec, index }: { spec: typeof EVENT_SPECS[0]; index: number }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-50px" });
 
@@ -88,7 +58,7 @@ const AboutSection = () => {
       </motion.div>
 
       <div className="max-w-lg mx-auto grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {specs.map((spec, i) => (
+        {EVENT_SPECS.map((spec, i) => (
           <SpecCard key={spec.title} spec={spec} index={i} />
         ))}
       </div>
