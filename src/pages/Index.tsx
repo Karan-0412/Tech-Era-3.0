@@ -14,18 +14,28 @@ import TerminalFooter from "@/components/TerminalFooter";
 const MeshBackground = lazy(() => import("@/components/MeshBackground"));
 const TerminalOverlay = lazy(() => import("@/components/TerminalOverlay"));
 
+// Module-level variables to preserve state across component re-mounts (while not refreshing)
+let sessionBooted = false;
+let sessionUnlocked = false;
+
 const Index = () => {
   const [searchParams] = useSearchParams();
   const skipBoot = searchParams.get("unlocked") === "true";
 
-  // Initialize booted state - for testing, always start fresh
-  const [booted, setBooted] = useState(skipBoot);
-  const [unlocked, setUnlocked] = useState(skipBoot);
+  // Initialize state from session variables or search parameters
+  const [booted, setBooted] = useState(sessionBooted || skipBoot);
+  const [unlocked, setUnlocked] = useState(sessionUnlocked || skipBoot);
   const [terminalOpen, setTerminalOpen] = useState(false);
 
-  // No longer persist unlock state to ensure HeroScreen shows on reload
-  const handleBootComplete = useCallback(() => setBooted(true), []);
-  const handleUnlock = useCallback(() => setUnlocked(true), []);
+  // Sync state changes to session variables
+  const handleBootComplete = useCallback(() => {
+    setBooted(true);
+    sessionBooted = true;
+  }, []);
+  const handleUnlock = useCallback(() => {
+    setUnlocked(true);
+    sessionUnlocked = true;
+  }, []);
   const handleRegister = useCallback(() => setTerminalOpen(true), []);
   const handleOpenTerminal = useCallback(() => setTerminalOpen(true), []);
   const handleCloseTerminal = useCallback(() => setTerminalOpen(false), []);
