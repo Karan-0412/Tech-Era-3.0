@@ -15,21 +15,13 @@ const MeshBackground = lazy(() => import("@/components/MeshBackground"));
 const TerminalOverlay = lazy(() => import("@/components/TerminalOverlay"));
 
 const Index = () => {
-  // Initialize from localStorage to persist state across navigation
-  const [booted, setBooted] = useState(() => {
-    const saved = localStorage.getItem("techEraBooted");
-    return saved ? JSON.parse(saved) : false;
-  });
+  // Initialize booted state - for testing, always start fresh
+  const [booted, setBooted] = useState(false);
   const [unlocked, setUnlocked] = useState(() => {
     const saved = localStorage.getItem("techEraUnlocked");
     return saved ? JSON.parse(saved) : false;
   });
   const [terminalOpen, setTerminalOpen] = useState(false);
-
-  // Persist boot state
-  useEffect(() => {
-    localStorage.setItem("techEraBooted", JSON.stringify(booted));
-  }, [booted]);
 
   // Persist unlock state
   useEffect(() => {
