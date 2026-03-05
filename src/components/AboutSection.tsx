@@ -9,12 +9,6 @@ const textColorMap = {
   green: "text-accent",
 };
 
-const borderColorMap = {
-  cyan: "border-primary/50",
-  magenta: "border-secondary/50",
-  green: "border-accent/50",
-};
-
 const SpecCard = ({ spec, index }: { spec: typeof EVENT_SPECS[0]; index: number }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-50px" });
@@ -25,7 +19,7 @@ const SpecCard = ({ spec, index }: { spec: typeof EVENT_SPECS[0]; index: number 
       initial={{ opacity: 0, y: 40, rotateX: 10 }}
       animate={isInView ? { opacity: 1, y: 0, rotateX: 0 } : {}}
       transition={{ type: "spring", stiffness: 80, delay: index * 0.15 }}
-      className={`rounded-xl p-6 hover:scale-[1.02] transition-all duration-300 border-2 backdrop-blur-md bg-black/40 ${borderColorMap[spec.color]} hover:border-opacity-100 border-opacity-70`}
+      className="glass rounded-xl p-6 hover:scale-[1.02] transition-transform duration-300"
     >
       <div className={`text-3xl mb-3 ${textColorMap[spec.color]}`}>
         {spec.icon}
