@@ -211,9 +211,9 @@ const ZeroGravitySponsors = () => {
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
                 className={`w-full h-full rounded-full flex items-center justify-center cursor-pointer group transition-all duration-300 ${isHovered ? SPONSOR_GLOW : ''}`}
                 style={{
-                  backgroundColor: isHovered ? (sponsor.color ? `${sponsor.color}30` : 'rgba(255,255,255,0.15)') : 'transparent',
-                  boxShadow: isHovered ? `0 0 30px ${sponsor.color || '#06b6d4'}80` : undefined,
-                  border: isHovered ? '1px solid rgba(255,255,255,0.2)' : 'none'
+                  backgroundColor: 'transparent',
+                  border: isHovered ? `2px solid ${sponsor.color || '#06b6d4'}` : '2px solid rgba(255,255,255,0.1)',
+                  boxShadow: isHovered ? `0 0 20px ${sponsor.color || '#06b6d4'}, inset 0 0 20px ${sponsor.color || '#06b6d4'}40` : 'none'
                 }}
               >
                 <div className="relative w-full h-full flex items-center justify-center p-1 pointer-events-none">
