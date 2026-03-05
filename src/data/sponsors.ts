@@ -7,7 +7,7 @@ export interface Sponsor {
 }
 
 export const SPONSORS: Sponsor[] = [
-  // PLATINUM (Tier 1) - Massive presence
+  // Keeping exactly 3 sponsors
   {
     name: "TechNova Solutions",
     tier: "Platinum",
@@ -22,27 +22,11 @@ export const SPONSORS: Sponsor[] = [
     url: "https://cybercore.example.com",
     color: "#3b82f6",
   },
-  
-  // GOLD (Tier 2) - Large presence
   {
     name: "Quantum Dynamics",
     tier: "Gold",
     logo: "https://placehold.co/300x120/000000/d946ef/png?text=Quantum",
     url: "https://quantum.example.com",
     color: "#d946ef",
-  },
-  {
-    name: "Aether Grid",
-    tier: "Gold",
-    logo: "https://placehold.co/300x120/000000/a855f7/png?text=Aether",
-    url: "https://aether.example.com",
-    color: "#a855f7",
-  },
-  {
-    name: "Zenith AI",
-    tier: "Gold",
-    logo: "https://placehold.co/300x120/000000/ec4899/png?text=Zenith",
-    url: "https://zenith.example.com",
-    color: "#ec4899",
   }
 ];

@@ -5,10 +5,10 @@ import Matter from "matter-js";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 const TIER_CONFIG = {
-  Platinum: { size: 140, mass: 10, glow: "shadow-[0_0_20px_rgba(34,211,238,0.4)]" },
-  Gold: { size: 120, mass: 6, glow: "shadow-[0_0_15px_rgba(217,70,239,0.3)]" },
-  Silver: { size: 90, mass: 3, glow: "shadow-[0_0_10px_rgba(255,255,255,0.2)]" },
-  Startup: { size: 70, mass: 1, glow: "shadow-[0_0_8px_rgba(255,255,255,0.1)]" },
+  Platinum: { size: 80, mass: 10, glow: "shadow-[0_0_15px_rgba(34,211,238,0.4)]" },
+  Gold: { size: 70, mass: 6, glow: "shadow-[0_0_10px_rgba(217,70,239,0.3)]" },
+  Silver: { size: 50, mass: 3, glow: "shadow-[0_0_8px_rgba(255,255,255,0.2)]" },
+  Startup: { size: 40, mass: 1, glow: "shadow-[0_0_6px_rgba(255,255,255,0.1)]" },
 };
 
 const ZeroGravitySponsors = () => {
@@ -31,7 +31,7 @@ const ZeroGravitySponsors = () => {
   // Dimensions observer
   useEffect(() => {
     if (!containerRef.current) return;
-
+    
     const updateDimensions = () => {
       if (containerRef.current) {
         setDimensions({
@@ -70,9 +70,9 @@ const ZeroGravitySponsors = () => {
     const bodies = sponsorsData.map((sponsor) => {
       const config = TIER_CONFIG[sponsor.tier];
       const size = isMobile ? config.size * 0.7 : config.size;
-
+      
       // Better starting position generation with padding
-      const padding = 20;
+      const padding = 10;
       const x = Math.random() * (width - size - padding * 2) + size / 2 + padding;
       const y = Math.random() * (height - size - padding * 2) + size / 2 + padding;
 
@@ -84,8 +84,8 @@ const ZeroGravitySponsors = () => {
       });
 
       Matter.Body.setVelocity(body, {
-        x: (Math.random() - 0.5) * 2,
-        y: (Math.random() - 0.5) * 2,
+        x: (Math.random() - 0.5) * 1.5,
+        y: (Math.random() - 0.5) * 1.5,
       });
 
       return body;
@@ -102,7 +102,7 @@ const ZeroGravitySponsors = () => {
 
       allBodies.forEach(body => {
         // 1. Gentle floating force
-        const forceMagnitude = 0.00005 * body.mass;
+        const forceMagnitude = 0.00003 * body.mass;
         Matter.Body.applyForce(body, body.position, {
           x: (Math.random() - 0.5) * forceMagnitude,
           y: (Math.random() - 0.5) * forceMagnitude,
@@ -111,8 +111,8 @@ const ZeroGravitySponsors = () => {
         // 1.5. Center Attraction (Keeps them from wandering too far)
         const toCenter = Matter.Vector.sub({ x: width / 2, y: height / 2 }, body.position);
         const distCenter = Matter.Vector.magnitude(toCenter);
-        if (distCenter > 20) {
-          const attractionStrength = isMobile ? 0.00003 : 0.00001;
+        if (distCenter > 10) {
+          const attractionStrength = isMobile ? 0.00004 : 0.00002;
           const attraction = Matter.Vector.mult(Matter.Vector.normalise(toCenter), attractionStrength * body.mass);
           Matter.Body.applyForce(body, body.position, attraction);
         }
@@ -120,10 +120,10 @@ const ZeroGravitySponsors = () => {
         // 2. Mouse Repulsion
         if (mouse.position.x !== 0 && mouse.position.y !== 0) {
           const distMouse = Matter.Vector.magnitude(Matter.Vector.sub(body.position, mouse.position));
-          const repulsionRadius = isMobile ? 100 : 150;
+          const repulsionRadius = isMobile ? 60 : 100;
           if (distMouse < repulsionRadius) {
             const force = Matter.Vector.normalise(Matter.Vector.sub(body.position, mouse.position));
-            const strength = Math.pow(1 - distMouse / repulsionRadius, 2) * 0.02 * body.mass;
+            const strength = Math.pow(1 - distMouse / repulsionRadius, 2) * 0.015 * body.mass;
             Matter.Body.applyForce(body, body.position, Matter.Vector.mult(force, strength));
           }
         }
@@ -131,10 +131,10 @@ const ZeroGravitySponsors = () => {
         // 3. Hovered Item Repulsion (Magnetic effect)
         if (hoveredBody && hoveredBody !== body) {
           const distHover = Matter.Vector.magnitude(Matter.Vector.sub(body.position, hoveredBody.position));
-          const magneticRadius = isMobile ? 180 : 250;
+          const magneticRadius = isMobile ? 100 : 180;
           if (distHover < magneticRadius) {
             const force = Matter.Vector.normalise(Matter.Vector.sub(body.position, hoveredBody.position));
-            const strength = Math.pow(1 - distHover / magneticRadius, 2) * 0.08 * body.mass;
+            const strength = Math.pow(1 - distHover / magneticRadius, 2) * 0.06 * body.mass;
             Matter.Body.applyForce(body, body.position, Matter.Vector.mult(force, strength));
           }
         }
@@ -153,7 +153,7 @@ const ZeroGravitySponsors = () => {
           const x = body.position.x - size / 2;
           const y = body.position.y - size / 2;
           const angle = body.angle * (180 / Math.PI);
-
+          
           domNode.style.transform = `translate3d(${x}px, ${y}px, 0) rotate(${angle}deg)`;
         }
       });
@@ -171,18 +171,18 @@ const ZeroGravitySponsors = () => {
   }, [sponsorsData, isMobile, dimensions]);
 
   return (
-    <section id="sponsors" className="relative pt-12 pb-6 px-4 overflow-hidden bg-black/40 border-y border-white/5 select-none">
-      <div className="max-w-7xl mx-auto relative z-10 pointer-events-none mb-12">
+    <section id="sponsors" className="relative pt-8 pb-4 px-4 overflow-hidden bg-black/40 border-y border-white/5 select-none">
+      <div className="max-w-7xl mx-auto relative z-10 pointer-events-none mb-6">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           className="text-center"
         >
-          <p className="font-mono text-sm text-primary tracking-[0.4em] mb-3 uppercase">
+          <p className="font-mono text-[10px] text-primary tracking-[0.4em] mb-1.5 uppercase">
             // ECOSYSTEM_NODES
           </p>
-          <h2 className="font-mono text-3xl sm:text-4xl font-bold text-foreground">
+          <h2 className="font-mono text-2xl sm:text-3xl font-bold text-foreground">
             OUR <span className="text-primary text-glow-cyan">SPONSORS</span>
           </h2>
         </motion.div>
@@ -190,7 +190,7 @@ const ZeroGravitySponsors = () => {
 
       <div 
         ref={containerRef} 
-        className="relative h-[200px] z-0 cursor-crosshair touch-none overflow-hidden"
+        className="relative h-[100px] z-0 cursor-crosshair touch-none overflow-hidden"
       >
         {sponsorsData.map((sponsor) => {
           const config = TIER_CONFIG[sponsor.tier];
@@ -208,14 +208,14 @@ const ZeroGravitySponsors = () => {
                 onMouseEnter={() => setHoveredId(sponsor.name)}
                 onMouseLeave={() => setHoveredId(null)}
                 animate={{ 
-                  scale: isHovered ? 1.25 : 1,
+                  scale: isHovered ? 1.2 : 1,
                   zIndex: isHovered ? 50 : 1
                 }}
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
                 className={`w-full h-full rounded-full flex items-center justify-center cursor-pointer group transition-all duration-300 ${isHovered ? config.glow : ''}`}
                 style={{ 
                   backgroundColor: isHovered ? (sponsor.color ? `${sponsor.color}30` : 'rgba(255,255,255,0.15)') : 'transparent',
-                  boxShadow: isHovered ? `0 0 40px ${sponsor.color || '#06b6d4'}80` : undefined,
+                  boxShadow: isHovered ? `0 0 30px ${sponsor.color || '#06b6d4'}80` : undefined,
                   border: isHovered ? '1px solid rgba(255,255,255,0.2)' : 'none'
                 }}
               >
@@ -230,13 +230,13 @@ const ZeroGravitySponsors = () => {
                 <AnimatePresence>
                   {isHovered && (
                     <motion.div
-                      initial={{ opacity: 0, scale: 0.8, y: -10 }}
-                      animate={{ opacity: 1, scale: 1, y: -35 }}
+                      initial={{ opacity: 0, scale: 0.8, y: -5 }}
+                      animate={{ opacity: 1, scale: 1, y: -25 }}
                       exit={{ opacity: 0, scale: 0.8 }}
-                      className="absolute left-1/2 -translate-x-1/2 whitespace-nowrap bg-black/90 backdrop-blur-xl px-2 py-1 rounded border border-primary/30 shadow-lg z-50 pointer-events-none"
+                      className="absolute left-1/2 -translate-x-1/2 whitespace-nowrap bg-black/90 backdrop-blur-xl px-2 py-0.5 rounded border border-primary/30 shadow-lg z-50 pointer-events-none"
                     >
-                      <div className="text-[8px] font-mono tracking-widest text-primary uppercase leading-none mb-1">{sponsor.tier}</div>
-                      <div className="text-[10px] font-bold text-white tracking-widest uppercase leading-none">{sponsor.name}</div>
+                      <div className="text-[7px] font-mono tracking-widest text-primary uppercase leading-none mb-0.5">{sponsor.tier}</div>
+                      <div className="text-[9px] font-bold text-white tracking-widest uppercase leading-none">{sponsor.name}</div>
                     </motion.div>
                   )}
                 </AnimatePresence>
