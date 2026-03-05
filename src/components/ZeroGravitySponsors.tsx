@@ -5,10 +5,10 @@ import Matter from "matter-js";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 const TIER_CONFIG = {
-  Platinum: { size: 100, mass: 10, glow: "shadow-[0_0_20px_rgba(34,211,238,0.4)]" },
-  Gold: { size: 80, mass: 6, glow: "shadow-[0_0_15px_rgba(217,70,239,0.3)]" },
-  Silver: { size: 60, mass: 3, glow: "shadow-[0_0_10px_rgba(255,255,255,0.2)]" },
-  Startup: { size: 45, mass: 1, glow: "shadow-[0_0_8px_rgba(255,255,255,0.1)]" },
+  Platinum: { size: 120, mass: 10, glow: "shadow-[0_0_20px_rgba(34,211,238,0.4)]" },
+  Gold: { size: 100, mass: 6, glow: "shadow-[0_0_15px_rgba(217,70,239,0.3)]" },
+  Silver: { size: 80, mass: 3, glow: "shadow-[0_0_10px_rgba(255,255,255,0.2)]" },
+  Startup: { size: 60, mass: 1, glow: "shadow-[0_0_8px_rgba(255,255,255,0.1)]" },
 };
 
 const ZeroGravitySponsors = () => {
@@ -98,10 +98,10 @@ const ZeroGravitySponsors = () => {
         // 2. Mouse Repulsion
         if (mouse.position.x !== 0 && mouse.position.y !== 0) {
           const distMouse = Matter.Vector.magnitude(Matter.Vector.sub(body.position, mouse.position));
-          const repulsionRadius = 100;
+          const repulsionRadius = 150;
           if (distMouse < repulsionRadius) {
             const force = Matter.Vector.normalise(Matter.Vector.sub(body.position, mouse.position));
-            const strength = Math.pow(1 - distMouse / repulsionRadius, 2) * 0.01 * body.mass;
+            const strength = Math.pow(1 - distMouse / repulsionRadius, 2) * 0.02 * body.mass;
             Matter.Body.applyForce(body, body.position, Matter.Vector.mult(force, strength));
           }
         }
@@ -109,10 +109,10 @@ const ZeroGravitySponsors = () => {
         // 3. Hovered Item Repulsion (Magnetic effect)
         if (hoveredBody && hoveredBody !== body) {
           const distHover = Matter.Vector.magnitude(Matter.Vector.sub(body.position, hoveredBody.position));
-          const magneticRadius = 150;
+          const magneticRadius = 250;
           if (distHover < magneticRadius) {
             const force = Matter.Vector.normalise(Matter.Vector.sub(body.position, hoveredBody.position));
-            const strength = Math.pow(1 - distHover / magneticRadius, 2) * 0.03 * body.mass;
+            const strength = Math.pow(1 - distHover / magneticRadius, 2) * 0.08 * body.mass;
             Matter.Body.applyForce(body, body.position, Matter.Vector.mult(force, strength));
           }
         }
@@ -143,7 +143,7 @@ const ZeroGravitySponsors = () => {
   }, [sponsorsData, isMobile]);
 
   return (
-    <section id="sponsors" className="relative py-4 px-4 overflow-hidden bg-black/40 h-[150px] border-y border-white/5 select-none">
+    <section id="sponsors" className="relative py-4 px-4 overflow-hidden bg-black/40 h-[160px] border-y border-white/5 select-none">
       <div 
         ref={containerRef} 
         className="absolute inset-0 z-0 cursor-crosshair touch-none"
@@ -163,8 +163,8 @@ const ZeroGravitySponsors = () => {
               <motion.div
                 onMouseEnter={() => setHoveredId(sponsor.name)}
                 onMouseLeave={() => setHoveredId(null)}
-                animate={{ 
-                  scale: isHovered ? 1.5 : 1,
+                animate={{
+                  scale: isHovered ? 1.25 : 1,
                   zIndex: isHovered ? 50 : 1
                 }}
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
