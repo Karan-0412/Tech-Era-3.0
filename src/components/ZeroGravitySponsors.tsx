@@ -201,6 +201,9 @@ const ZeroGravitySponsors = () => {
               <motion.div
                 onMouseEnter={() => setHoveredId(sponsor.name)}
                 onMouseLeave={() => setHoveredId(null)}
+                onTouchStart={() => setHoveredId(sponsor.name)}
+                onTouchEnd={() => setHoveredId(null)}
+                onClick={() => setHoveredId(isHovered ? null : sponsor.name)}
                 animate={{
                   scale: isHovered ? 1.2 : 1,
                   zIndex: isHovered ? 50 : 1
