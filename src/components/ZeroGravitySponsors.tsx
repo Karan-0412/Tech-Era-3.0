@@ -217,6 +217,7 @@ const ZeroGravitySponsors = () => {
                   <img
                     src={sponsor.logo}
                     alt={sponsor.name}
+                    loading="lazy"
                     className={`max-w-full max-h-full object-contain transition-all duration-500 ${isHovered ? 'filter-none grayscale-0' : 'grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100'}`}
                   />
                 </div>
