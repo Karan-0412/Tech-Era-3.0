@@ -183,9 +183,9 @@ const ZeroGravitySponsors = () => {
         </motion.div>
       </div>
 
-      <div 
-        ref={containerRef} 
-        className="relative h-[100px] z-0 cursor-crosshair touch-none overflow-hidden"
+      <div
+        ref={containerRef}
+        className="relative h-[100px] z-0 cursor-crosshair touch-none overflow-hidden max-w-2xl mx-auto"
       >
         {sponsorsData.map((sponsor) => {
           const size = isMobile ? SPONSOR_SIZE * 0.7 : SPONSOR_SIZE;
