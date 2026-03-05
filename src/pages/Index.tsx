@@ -4,9 +4,9 @@ import BootSequence from "@/components/BootSequence";
 import HeroScreen from "@/components/HeroScreen";
 import MissionBriefing from "@/components/MissionBriefing";
 import AboutSection from "@/components/AboutSection";
+import ZeroGravitySponsors from "@/components/ZeroGravitySponsors";
 import { Link, useSearchParams } from "react-router-dom";
 import TeamSection from "@/components/TeamSection";
-import SpeakerCarousel from "@/components/SpeakerCarousel";
 import ScheduleTimeline from "@/components/ScheduleTimeline";
 import TerminalFooter from "@/components/TerminalFooter";
 
@@ -60,10 +60,8 @@ const Index = () => {
               {unlocked && (
                 <>
                   <MissionBriefing visible={unlocked} onRegister={handleRegister} />
+                  <ZeroGravitySponsors />
                   <AboutSection />
-                  <div id="speakers">
-                    <SpeakerCarousel />
-                  </div>
 
                   {/* Team Showcase CTA moved to bottom of content */}
 
