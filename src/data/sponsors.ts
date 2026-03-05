@@ -8,7 +8,7 @@ export interface Sponsor {
 export const SPONSORS: Sponsor[] = [
   {
     name: "TechNova Solutions",
-    logo: "https://placehold.co/400x160/000000/06b6d4/png?text=TechNova",
+    logo: "/sponsors-logo/gfg.png",
     url: "https://technova.example.com",
     color: "#06b6d4",
   },
