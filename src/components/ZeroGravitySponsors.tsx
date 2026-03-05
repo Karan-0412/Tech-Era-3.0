@@ -4,12 +4,9 @@ import { SPONSORS, Sponsor } from "@/data/sponsors";
 import Matter from "matter-js";
 import { useIsMobile } from "@/hooks/use-mobile";
 
-const TIER_CONFIG = {
-  Platinum: { size: 100, mass: 10, glow: "shadow-[0_0_15px_rgba(34,211,238,0.4)]" },
-  Gold: { size: 85, mass: 6, glow: "shadow-[0_0_10px_rgba(217,70,239,0.3)]" },
-  Silver: { size: 60, mass: 3, glow: "shadow-[0_0_8px_rgba(255,255,255,0.2)]" },
-  Startup: { size: 50, mass: 1, glow: "shadow-[0_0_6px_rgba(255,255,255,0.1)]" },
-};
+const SPONSOR_SIZE = 75;
+const SPONSOR_MASS = 4;
+const SPONSOR_GLOW = "shadow-[0_0_15px_rgba(34,211,238,0.4)]";
 
 const ZeroGravitySponsors = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -68,9 +65,8 @@ const ZeroGravitySponsors = () => {
 
     // Create sponsor bodies
     const bodies = sponsorsData.map((sponsor) => {
-      const config = TIER_CONFIG[sponsor.tier];
-      const size = isMobile ? config.size * 0.7 : config.size;
-      
+      const size = isMobile ? SPONSOR_SIZE * 0.7 : SPONSOR_SIZE;
+
       // Better starting position generation with padding
       const padding = 10;
       const x = Math.random() * (width - size - padding * 2) + size / 2 + padding;
@@ -79,7 +75,7 @@ const ZeroGravitySponsors = () => {
       const body = Matter.Bodies.circle(x, y, size / 2, {
         restitution: 0.7,
         frictionAir: 0.05,
-        mass: config.mass,
+        mass: SPONSOR_MASS,
         label: sponsor.name,
       });
 
@@ -148,12 +144,11 @@ const ZeroGravitySponsors = () => {
         // Sync with DOM directly for performance
         const domNode = itemsRef.current[body.label];
         if (domNode) {
-          const config = TIER_CONFIG[sponsorsData.find(s => s.name === body.label)?.tier || 'Silver'];
-          const size = isMobile ? config.size * 0.7 : config.size;
+          const size = isMobile ? SPONSOR_SIZE * 0.7 : SPONSOR_SIZE;
           const x = body.position.x - size / 2;
           const y = body.position.y - size / 2;
           const angle = body.angle * (180 / Math.PI);
-          
+
           domNode.style.transform = `translate3d(${x}px, ${y}px, 0) rotate(${angle}deg)`;
         }
       });
@@ -193,8 +188,7 @@ const ZeroGravitySponsors = () => {
         className="relative h-[100px] z-0 cursor-crosshair touch-none overflow-hidden"
       >
         {sponsorsData.map((sponsor) => {
-          const config = TIER_CONFIG[sponsor.tier];
-          const size = isMobile ? config.size * 0.7 : config.size;
+          const size = isMobile ? SPONSOR_SIZE * 0.7 : SPONSOR_SIZE;
           const isHovered = hoveredId === sponsor.name;
 
           return (
@@ -207,26 +201,26 @@ const ZeroGravitySponsors = () => {
               <motion.div
                 onMouseEnter={() => setHoveredId(sponsor.name)}
                 onMouseLeave={() => setHoveredId(null)}
-                animate={{ 
+                animate={{
                   scale: isHovered ? 1.2 : 1,
                   zIndex: isHovered ? 50 : 1
                 }}
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                className={`w-full h-full rounded-full flex items-center justify-center cursor-pointer group transition-all duration-300 ${isHovered ? config.glow : ''}`}
-                style={{ 
+                className={`w-full h-full rounded-full flex items-center justify-center cursor-pointer group transition-all duration-300 ${isHovered ? SPONSOR_GLOW : ''}`}
+                style={{
                   backgroundColor: isHovered ? (sponsor.color ? `${sponsor.color}30` : 'rgba(255,255,255,0.15)') : 'transparent',
                   boxShadow: isHovered ? `0 0 30px ${sponsor.color || '#06b6d4'}80` : undefined,
                   border: isHovered ? '1px solid rgba(255,255,255,0.2)' : 'none'
                 }}
               >
                 <div className="relative w-full h-full flex items-center justify-center p-1 pointer-events-none">
-                  <img 
-                    src={sponsor.logo} 
+                  <img
+                    src={sponsor.logo}
                     alt={sponsor.name}
                     className={`max-w-full max-h-full object-contain transition-all duration-500 ${isHovered ? 'filter-none grayscale-0' : 'grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100'}`}
                   />
                 </div>
-                
+
                 <AnimatePresence>
                   {isHovered && (
                     <motion.div
@@ -235,7 +229,6 @@ const ZeroGravitySponsors = () => {
                       exit={{ opacity: 0, scale: 0.8 }}
                       className="absolute left-1/2 -translate-x-1/2 whitespace-nowrap bg-black/90 backdrop-blur-xl px-2 py-0.5 rounded border border-primary/30 shadow-lg z-50 pointer-events-none"
                     >
-                      <div className="text-[7px] font-mono tracking-widest text-primary uppercase leading-none mb-0.5">{sponsor.tier}</div>
                       <div className="text-[9px] font-bold text-white tracking-widest uppercase leading-none">{sponsor.name}</div>
                     </motion.div>
                   )}
