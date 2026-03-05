@@ -5,10 +5,10 @@ import Matter from "matter-js";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 const TIER_CONFIG = {
-  Platinum: { size: 80, mass: 10, glow: "shadow-[0_0_15px_rgba(34,211,238,0.4)]" },
-  Gold: { size: 70, mass: 6, glow: "shadow-[0_0_10px_rgba(217,70,239,0.3)]" },
-  Silver: { size: 50, mass: 3, glow: "shadow-[0_0_8px_rgba(255,255,255,0.2)]" },
-  Startup: { size: 40, mass: 1, glow: "shadow-[0_0_6px_rgba(255,255,255,0.1)]" },
+  Platinum: { size: 100, mass: 10, glow: "shadow-[0_0_15px_rgba(34,211,238,0.4)]" },
+  Gold: { size: 85, mass: 6, glow: "shadow-[0_0_10px_rgba(217,70,239,0.3)]" },
+  Silver: { size: 60, mass: 3, glow: "shadow-[0_0_8px_rgba(255,255,255,0.2)]" },
+  Startup: { size: 50, mass: 1, glow: "shadow-[0_0_6px_rgba(255,255,255,0.1)]" },
 };
 
 const ZeroGravitySponsors = () => {
