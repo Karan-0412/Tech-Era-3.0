@@ -4,6 +4,7 @@ import BootSequence from "@/components/BootSequence";
 import HeroScreen from "@/components/HeroScreen";
 import MissionBriefing from "@/components/MissionBriefing";
 import AboutSection from "@/components/AboutSection";
+import SponsorsSection from "@/components/SponsorsSection";
 import { Link, useSearchParams } from "react-router-dom";
 import TeamSection from "@/components/TeamSection";
 import SpeakerCarousel from "@/components/SpeakerCarousel";
@@ -61,6 +62,7 @@ const Index = () => {
                 <>
                   <MissionBriefing visible={unlocked} onRegister={handleRegister} />
                   <AboutSection />
+                  <SponsorsSection />
                   <div id="speakers">
                     <SpeakerCarousel />
                   </div>
