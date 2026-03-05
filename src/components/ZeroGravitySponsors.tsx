@@ -5,10 +5,10 @@ import Matter from "matter-js";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 const TIER_CONFIG = {
-  Platinum: { size: 120, mass: 10, glow: "shadow-[0_0_20px_rgba(34,211,238,0.4)]" },
-  Gold: { size: 100, mass: 6, glow: "shadow-[0_0_15px_rgba(217,70,239,0.3)]" },
-  Silver: { size: 80, mass: 3, glow: "shadow-[0_0_10px_rgba(255,255,255,0.2)]" },
-  Startup: { size: 60, mass: 1, glow: "shadow-[0_0_8px_rgba(255,255,255,0.1)]" },
+  Platinum: { size: 140, mass: 10, glow: "shadow-[0_0_20px_rgba(34,211,238,0.4)]" },
+  Gold: { size: 120, mass: 6, glow: "shadow-[0_0_15px_rgba(217,70,239,0.3)]" },
+  Silver: { size: 90, mass: 3, glow: "shadow-[0_0_10px_rgba(255,255,255,0.2)]" },
+  Startup: { size: 70, mass: 1, glow: "shadow-[0_0_8px_rgba(255,255,255,0.1)]" },
 };
 
 const ZeroGravitySponsors = () => {
@@ -143,10 +143,26 @@ const ZeroGravitySponsors = () => {
   }, [sponsorsData, isMobile]);
 
   return (
-    <section id="sponsors" className="relative py-4 px-4 overflow-hidden bg-black/40 h-[160px] border-y border-white/5 select-none">
+    <section id="sponsors" className="relative pt-12 pb-6 px-4 overflow-hidden bg-black/40 border-y border-white/5 select-none">
+      <div className="max-w-7xl mx-auto relative z-10 pointer-events-none mb-12">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center"
+        >
+          <p className="font-mono text-sm text-primary tracking-[0.4em] mb-3 uppercase">
+            // ECOSYSTEM_NODES
+          </p>
+          <h2 className="font-mono text-3xl sm:text-4xl font-bold text-foreground">
+            OUR <span className="text-primary text-glow-cyan">SPONSORS</span>
+          </h2>
+        </motion.div>
+      </div>
+
       <div 
         ref={containerRef} 
-        className="absolute inset-0 z-0 cursor-crosshair touch-none"
+        className="relative h-[200px] z-0 cursor-crosshair touch-none overflow-hidden"
       >
         {sponsorsData.map((sponsor) => {
           const config = TIER_CONFIG[sponsor.tier];
@@ -163,7 +179,7 @@ const ZeroGravitySponsors = () => {
               <motion.div
                 onMouseEnter={() => setHoveredId(sponsor.name)}
                 onMouseLeave={() => setHoveredId(null)}
-                animate={{
+                animate={{ 
                   scale: isHovered ? 1.25 : 1,
                   zIndex: isHovered ? 50 : 1
                 }}

@@ -60,8 +60,8 @@ const Index = () => {
               {unlocked && (
                 <>
                   <MissionBriefing visible={unlocked} onRegister={handleRegister} />
-                  <AboutSection />
                   <ZeroGravitySponsors />
+                  <AboutSection />
 
                   {/* Team Showcase CTA moved to bottom of content */}
 
