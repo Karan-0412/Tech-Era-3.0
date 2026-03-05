@@ -4,7 +4,7 @@ import { SPONSORS, Sponsor } from "@/data/sponsors";
 import Matter from "matter-js";
 import { useIsMobile } from "@/hooks/use-mobile";
 
-const SPONSOR_SIZE = 75;
+const SPONSOR_SIZE = 95;
 const SPONSOR_MASS = 4;
 const SPONSOR_GLOW = "shadow-[0_0_15px_rgba(34,211,238,0.4)]";
 
@@ -185,7 +185,7 @@ const ZeroGravitySponsors = () => {
 
       <div
         ref={containerRef}
-        className="relative h-[100px] z-0 cursor-crosshair touch-none overflow-hidden max-w-2xl mx-auto"
+        className="relative h-[160px] z-0 cursor-crosshair touch-none overflow-hidden max-w-2xl mx-auto"
       >
         {sponsorsData.map((sponsor) => {
           const size = isMobile ? SPONSOR_SIZE * 0.7 : SPONSOR_SIZE;
