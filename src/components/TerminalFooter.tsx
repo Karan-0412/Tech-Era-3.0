@@ -39,7 +39,7 @@ const TerminalFooter = () => {
           <div>
   
             <h2 className="font-mono text-2xl font-bold text-foreground">
-              MISSION <span className="text-primary">PROTOCOLS</span>
+              EVENT <span className="text-primary">PROTOCOLS</span>
             </h2>
           </div>
 

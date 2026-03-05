@@ -89,7 +89,7 @@ const Index = () => {
                         </p>
                       </div>
 
-                      <p className="text-gray-400 text-xs leading-relaxed max-w-lg mx-auto">
+                      <p className="text-gray-400 text-sm leading-relaxed max-w-lg mx-auto">
                         Explore our elite warriors, each bringing unique ultimate moves to the battlefield of innovation.
                       </p>
 

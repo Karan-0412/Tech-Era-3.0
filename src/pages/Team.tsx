@@ -6,7 +6,7 @@ import MeshBackground from "@/components/MeshBackground";
 
 const Team = () => {
   return (
-    <div className="relative h-screen bg-black text-white overflow-hidden flex flex-col">
+    <div className="relative h-screen bg-black text-white overflow-auto flex flex-col">
       {/* Background */}
       <div className="fixed inset-0 z-0">
         <MeshBackground />

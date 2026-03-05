@@ -59,12 +59,12 @@ const CharacterCard = React.memo(({ member, isActive, onClick }: { member: TeamM
       )}
 
       {/* Character Image */}
-      <div className="h-40 md:h-48 relative flex items-center justify-center p-6 z-10 bg-gradient-to-b from-cyan-900/20 to-transparent">
+      <div className="h-40 md:h-48 relative flex items-center justify-center pt-6 pb-4 px-6 z-10 bg-gradient-to-b from-cyan-900/20 to-transparent">
         <motion.img
           src={member.image}
           alt={member.name}
           loading="lazy"
-          className="w-full h-full object-contain pointer-events-none drop-shadow-[0_0_15px_rgba(34,211,238,0.5)]"
+          className="w-full h-full object-cover object-[center_32%] [clip-path:polygon(6%_0%,94%_0%,100%_6%,100%_94%,94%_100%,6%_100%,0%_94%,0%_6%)] pointer-events-none drop-shadow-[0_0_15px_rgba(34,211,238,0.5)]"
           style={{ translateZ: 50 }}
         />
       </div>
@@ -78,12 +78,12 @@ const CharacterCard = React.memo(({ member, isActive, onClick }: { member: TeamM
 
         {/* Fun Facts Section */}
         <div className="space-y-2 bg-gray-900/50 p-3 rounded-xl border border-cyan-500/20">
-          <p className="text-[9px] font-mono font-bold text-cyan-300 uppercase tracking-wider flex items-center gap-1.5">
+          <p className="text-[10px] md:text-[11px] font-mono font-bold text-cyan-300 uppercase tracking-wider flex items-center gap-1.5">
             <Quote className="w-3 h-3" /> Fun Facts
           </p>
           <ul className="space-y-1.5">
             {member.funFacts.map((fact, i) => (
-              <li key={i} className="text-[9px] md:text-[10px] text-gray-300 leading-tight flex items-start gap-1.5">
+              <li key={i} className="text-[9px] md:text-[11px] text-gray-300 leading-tight flex items-start gap-1.5">
                 <span className="text-cyan-500 mt-1 shrink-0">•</span>
                 <span>{fact}</span>
               </li>
@@ -128,7 +128,7 @@ const CharacterCard = React.memo(({ member, isActive, onClick }: { member: TeamM
 CharacterCard.displayName = "CharacterCard";
 
 export const ArcadeTeamSelect = () => {
-  const [activeIndex, setActiveIndex] = useState(1);
+  const [activeIndex, setActiveIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
 
@@ -168,15 +168,16 @@ export const ArcadeTeamSelect = () => {
   const desktopCardGap = 40;
 
   return (
-    <section className="relative h-full bg-black py-6 md:py-8 px-4 overflow-auto flex flex-col items-center justify-center">
+    <section className="relative h-full bg-black py-8 md:py-12 px-4 overflow-auto flex flex-col items-center md:justify-start justify-center">
       {/* Title */}
       <motion.div
-        initial={{ opacity: 0, y: -50 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
         className="text-center mb-8 md:mb-12 space-y-2 z-10 px-4"
       >
-        <h2 className="text-4xl sm:text-5xl md:text-6xl font-black text-white tracking-tighter uppercase italic">
-          Select Your <span className="text-cyan-400 text-glow-cyan">Warriors</span>
+        <h2 className="text-4xl sm:text-5xl md:text-6xl font-black text-white tracking-normal md:tracking-tight uppercase md:not-italic italic antialiased leading-tight">
+          View Your <span className="text-cyan-400 text-glow-cyan">Warriors</span>
         </h2>
       </motion.div>
 
@@ -275,8 +276,18 @@ export const ArcadeTeamSelect = () => {
             >
               <div className="p-8 md:p-12 space-y-10">
                 <div className="text-center space-y-4">
-                  <div className="inline-block p-6 rounded-full bg-cyan-400/10 mb-2 shadow-inner border border-cyan-400/20">
-                    <img src={selectedMember.image} alt={selectedMember.name} className="w-28 h-28" />
+                  <div className="w-40 h-40 mx-auto mb-2 relative 
+                    rounded-full 
+                    overflow-hidden 
+                    bg-cyan-400/10 
+                    shadow-inner 
+                    border border-cyan-400/20">
+                    
+                    <img
+                      src={selectedMember.image}
+                      alt={selectedMember.name}
+                      className="w-full h-full object-cover"
+                    />
                   </div>
                   <div className="space-y-1">
                     <h2 className="text-4xl font-black text-white uppercase italic tracking-tighter">Connection Portal</h2>
