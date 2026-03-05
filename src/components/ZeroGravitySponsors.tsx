@@ -19,6 +19,7 @@ const ZeroGravitySponsors = () => {
   const hoveredIdRef = useRef<string | null>(null);
   const isMobile = useIsMobile();
   const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
   const sponsorsData = useMemo(() => SPONSORS, []);
 
@@ -27,11 +28,28 @@ const ZeroGravitySponsors = () => {
     hoveredIdRef.current = hoveredId;
   }, [hoveredId]);
 
+  // Dimensions observer
   useEffect(() => {
     if (!containerRef.current) return;
 
-    const width = containerRef.current.offsetWidth;
-    const height = containerRef.current.offsetHeight;
+    const updateDimensions = () => {
+      if (containerRef.current) {
+        setDimensions({
+          width: containerRef.current.offsetWidth,
+          height: containerRef.current.offsetHeight
+        });
+      }
+    };
+
+    updateDimensions();
+    window.addEventListener('resize', updateDimensions);
+    return () => window.removeEventListener('resize', updateDimensions);
+  }, []);
+
+  useEffect(() => {
+    if (!containerRef.current || dimensions.width === 0) return;
+
+    const { width, height } = dimensions;
 
     // Matter.js setup
     const engine = Matter.Engine.create({
@@ -52,8 +70,11 @@ const ZeroGravitySponsors = () => {
     const bodies = sponsorsData.map((sponsor) => {
       const config = TIER_CONFIG[sponsor.tier];
       const size = isMobile ? config.size * 0.7 : config.size;
-      const x = Math.random() * (width - size) + size / 2;
-      const y = Math.random() * (height - size) + size / 2;
+
+      // Better starting position generation with padding
+      const padding = 20;
+      const x = Math.random() * (width - size - padding * 2) + size / 2 + padding;
+      const y = Math.random() * (height - size - padding * 2) + size / 2 + padding;
 
       const body = Matter.Bodies.circle(x, y, size / 2, {
         restitution: 0.7,
@@ -91,14 +112,15 @@ const ZeroGravitySponsors = () => {
         const toCenter = Matter.Vector.sub({ x: width / 2, y: height / 2 }, body.position);
         const distCenter = Matter.Vector.magnitude(toCenter);
         if (distCenter > 20) {
-          const attraction = Matter.Vector.mult(Matter.Vector.normalise(toCenter), 0.00001 * body.mass);
+          const attractionStrength = isMobile ? 0.00003 : 0.00001;
+          const attraction = Matter.Vector.mult(Matter.Vector.normalise(toCenter), attractionStrength * body.mass);
           Matter.Body.applyForce(body, body.position, attraction);
         }
 
         // 2. Mouse Repulsion
         if (mouse.position.x !== 0 && mouse.position.y !== 0) {
           const distMouse = Matter.Vector.magnitude(Matter.Vector.sub(body.position, mouse.position));
-          const repulsionRadius = 150;
+          const repulsionRadius = isMobile ? 100 : 150;
           if (distMouse < repulsionRadius) {
             const force = Matter.Vector.normalise(Matter.Vector.sub(body.position, mouse.position));
             const strength = Math.pow(1 - distMouse / repulsionRadius, 2) * 0.02 * body.mass;
@@ -109,13 +131,19 @@ const ZeroGravitySponsors = () => {
         // 3. Hovered Item Repulsion (Magnetic effect)
         if (hoveredBody && hoveredBody !== body) {
           const distHover = Matter.Vector.magnitude(Matter.Vector.sub(body.position, hoveredBody.position));
-          const magneticRadius = 250;
+          const magneticRadius = isMobile ? 180 : 250;
           if (distHover < magneticRadius) {
             const force = Matter.Vector.normalise(Matter.Vector.sub(body.position, hoveredBody.position));
             const strength = Math.pow(1 - distHover / magneticRadius, 2) * 0.08 * body.mass;
             Matter.Body.applyForce(body, body.position, Matter.Vector.mult(force, strength));
           }
         }
+
+        // Safety check: force inside walls if they escape
+        if (body.position.x < 0) Matter.Body.setPosition(body, { x: 10, y: body.position.y });
+        if (body.position.x > width) Matter.Body.setPosition(body, { x: width - 10, y: body.position.y });
+        if (body.position.y < 0) Matter.Body.setPosition(body, { x: body.position.x, y: 10 });
+        if (body.position.y > height) Matter.Body.setPosition(body, { x: body.position.x, y: height - 10 });
 
         // Sync with DOM directly for performance
         const domNode = itemsRef.current[body.label];
@@ -125,7 +153,7 @@ const ZeroGravitySponsors = () => {
           const x = body.position.x - size / 2;
           const y = body.position.y - size / 2;
           const angle = body.angle * (180 / Math.PI);
-          
+
           domNode.style.transform = `translate3d(${x}px, ${y}px, 0) rotate(${angle}deg)`;
         }
       });
@@ -140,7 +168,7 @@ const ZeroGravitySponsors = () => {
       if (requestRef.current) cancelAnimationFrame(requestRef.current);
       Matter.Engine.clear(engine);
     };
-  }, [sponsorsData, isMobile]);
+  }, [sponsorsData, isMobile, dimensions]);
 
   return (
     <section id="sponsors" className="relative pt-12 pb-6 px-4 overflow-hidden bg-black/40 border-y border-white/5 select-none">
