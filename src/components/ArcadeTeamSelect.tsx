@@ -286,6 +286,7 @@ export const ArcadeTeamSelect = () => {
                     <img
                       src={selectedMember.image}
                       alt={selectedMember.name}
+                      loading="lazy"
                       className="w-full h-full object-cover"
                     />
                   </div>
