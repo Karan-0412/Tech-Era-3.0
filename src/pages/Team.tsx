@@ -1,15 +1,19 @@
+import { Suspense, lazy } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import ArcadeTeamSelect from "@/components/ArcadeTeamSelect";
-import MeshBackground from "@/components/MeshBackground";
+
+const MeshBackground = lazy(() => import("@/components/MeshBackground"));
 
 const Team = () => {
   return (
     <div className="relative h-screen bg-black text-white overflow-auto flex flex-col">
       {/* Background */}
       <div className="fixed inset-0 z-0">
-        <MeshBackground />
+        <Suspense fallback={null}>
+          <MeshBackground />
+        </Suspense>
       </div>
 
       {/* Header / Nav */}

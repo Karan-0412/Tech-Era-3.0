@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useToast } from "@/hooks/use-toast";
 import { EVENTS } from "@/data/events";
@@ -49,52 +49,6 @@ const useAutoType = (text: string, onDone: () => void, active: boolean) => {
   return displayed;
 };
 
-const MatrixRain = () => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    const chars = "APEXTECH01アイウエオカキクケコサシスセソ>_[]{}|/\\";
-    const fontSize = 14;
-    const columns = Math.floor(canvas.width / fontSize);
-    const drops = Array.from({ length: columns }, () => Math.random() * -100);
-
-    let frameId: number;
-    const draw = () => {
-      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "hsl(183, 100%, 50%)";
-      ctx.font = `${fontSize}px monospace`;
-
-      drops.forEach((y, i) => {
-        const char = chars[Math.floor(Math.random() * chars.length)];
-        ctx.fillText(char, i * fontSize, y * fontSize);
-        if (y * fontSize > canvas.height && Math.random() > 0.975) {
-          drops[i] = 0;
-        }
-        drops[i]++;
-      });
-      frameId = requestAnimationFrame(draw);
-    };
-    draw();
-    return () => cancelAnimationFrame(frameId);
-  }, []);
-
-  return (
-    <canvas
-      ref={canvasRef}
-      className="absolute inset-0 z-0 pointer-events-none"
-    />
-  );
-};
-
 const Scanlines = () => (
   <div className="absolute inset-0 pointer-events-none z-10 overflow-hidden opacity-[0.06]">
     <div
@@ -140,6 +94,22 @@ const TypingLine = ({
 
 const TerminalOverlay = ({ open, onClose }: TerminalOverlayProps) => {
   const { toast } = useToast();
+  const interactiveSteps = useMemo(
+    () => [
+      "name",
+      "email",
+      "phone",
+      "event",
+      "team_name",
+      "team_leader_uid",
+      "team_uid",
+      "team_member_name",
+      "team_member_email",
+      "team_member_phone",
+      "team_review",
+    ] as Step[],
+    [],
+  );
   const [step, setStep] = useState<Step>("init");
   const [lines, setLines] = useState<TerminalLine[]>([]);
   const [inputValue, setInputValue] = useState("");
@@ -153,7 +123,6 @@ const TerminalOverlay = ({ open, onClose }: TerminalOverlayProps) => {
   const [currentMemberData, setCurrentMemberData] = useState({ uid: "", name: "", email: "", phone: "" });
   const [memberFieldStep, setMemberFieldStep] = useState<"uid" | "name" | "email" | "phone">("uid");
   const [shakeInput, setShakeInput] = useState(false);
-  const [isSubmittingToSheets, setIsSubmittingToSheets] = useState(false);
   const [currentAutoType, setCurrentAutoType] = useState<{
     text: string;
     color: TerminalLine["color"];
@@ -194,10 +163,10 @@ const TerminalOverlay = ({ open, onClose }: TerminalOverlayProps) => {
   }, [lines, currentAutoType]);
 
   useEffect(() => {
-    if (autoTypeDone && (step === "name" || step === "email" || step === "phone" || step === "event" || step === "team_name" || step === "team_leader_uid" || step === "team_uid" || step === "team_member_name" || step === "team_member_email" || step === "team_member_phone" || step === "team_review")) {
+    if (autoTypeDone && interactiveSteps.includes(step)) {
       setTimeout(() => inputRef.current?.focus(), 100);
     }
-  }, [autoTypeDone, step]);
+  }, [autoTypeDone, step, interactiveSteps]);
 
   useEffect(() => {
     if (!open) return;
@@ -486,18 +455,47 @@ const TerminalOverlay = ({ open, onClose }: TerminalOverlayProps) => {
 
         const appsScriptUrl = import.meta.env.VITE_GOOGLE_SHEET_APPS_SCRIPT_URL;
         if (appsScriptUrl) {
-          setIsSubmittingToSheets(true);
           try {
-            console.log("Submitting registration to Google Sheets:", registrationData);
-            console.log("Apps Script URL:", appsScriptUrl);
-            
-            const response = await fetch(appsScriptUrl, {
-              method: "POST",
-              mode: "no-cors",
-              body: JSON.stringify(registrationData)
-            });
-            
-            console.log("Fetch completed successfully");
+            if (import.meta.env.DEV) {
+              console.log("Submitting registration to Google Sheets:", registrationData);
+            }
+
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 10000);
+
+            let response: Response;
+            try {
+              response = await fetch(appsScriptUrl, {
+                method: "POST",
+                headers: { "Content-Type": "text/plain" }, // Apps Script needs this
+                body: JSON.stringify(registrationData),
+                signal: controller.signal,
+              });
+            } finally {
+              clearTimeout(timeoutId);
+            }
+
+            const contentType = response.headers.get("content-type") || "";
+            let result: { status?: string; message?: string } = {};
+
+            if (contentType.includes("application/json")) {
+              result = await response.json();
+            } else {
+              const textBody = await response.text();
+              result = { message: textBody };
+            }
+
+            if (!response.ok) {
+              throw new Error(result.message || `Request failed with status ${response.status}`);
+            }
+
+            if (result.status && result.status !== "success") {
+              throw new Error(result.message || "Unexpected response from spreadsheet service");
+            }
+
+            if (import.meta.env.DEV) {
+              console.log("Fetch completed successfully");
+            }
             addLine("> ✓ Registration data submitted to spreadsheet.", "cyan");
           } catch (e) {
             console.error("Failed to sync with spreadsheet:", e);
@@ -506,8 +504,6 @@ const TerminalOverlay = ({ open, onClose }: TerminalOverlayProps) => {
               `> Error syncing with spreadsheet: ${errorMsg}`,
               "red",
             );
-          } finally {
-            setIsSubmittingToSheets(false);
           }
         } else {
           console.warn("Google Sheets API URL not configured");
@@ -572,7 +568,7 @@ const TerminalOverlay = ({ open, onClose }: TerminalOverlayProps) => {
       submitData();
   };
 
-  const showInput = autoTypeDone && !currentAutoType && ["name", "email", "phone", "event", "team_name", "team_leader_uid", "team_uid", "team_member_name", "team_member_email", "team_member_phone", "team_review"].includes(step);
+  const showInput = autoTypeDone && !currentAutoType && interactiveSteps.includes(step);
 
   return (
     <AnimatePresence>

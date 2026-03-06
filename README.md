@@ -1,75 +1,98 @@
-# Welcome to your Lovable project
+# Tech Era 3.0
 
-## Project info
+Tech Era 3.0 is a Vite + React + TypeScript event website with an animated terminal-style registration flow.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## Stack
 
-## How can I edit this code?
+- Vite
+- React 18
+- TypeScript
+- Tailwind CSS
+- Framer Motion
+- shadcn/ui
 
-There are several ways of editing your application.
+## Local Setup
 
-**Use Lovable**
+1. Install dependencies:
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+```bash
+npm install
+```
 
-Changes made via Lovable will be committed automatically to this repo.
+2. Create env file:
 
-**Use your preferred IDE**
+```bash
+cp .env.example .env.local
+```
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+3. Set required variable in `.env.local`:
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+```env
+VITE_GOOGLE_SHEET_APPS_SCRIPT_URL=https://script.google.com/macros/s/your-script-id/exec
+```
 
-Follow these steps:
+4. Run development server:
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+```bash
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+## Build
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```bash
+npm run build
+```
 
-**Use GitHub Codespaces**
+Build output is generated in `dist/`.
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Deployment Notes
 
-## What technologies are used for this project?
+### Environment Variables
 
-This project is built with:
+Set this in your hosting provider:
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+- `VITE_GOOGLE_SHEET_APPS_SCRIPT_URL`
 
-## How can I deploy this project?
+Without this value, registration still completes locally in UI flow, but spreadsheet sync will fail.
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+### SPA Routing
 
-## Can I connect a custom domain to my Lovable project?
+This project uses `BrowserRouter`, so direct navigation to routes like `/team` needs fallback-to-`index.html`.
 
-Yes, you can!
+Configured in repo:
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+- `vercel.json` for Vercel rewrites
+- `public/_redirects` for Netlify redirects
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
-"# Tech-Era" 
-"# Tech-Era-3.0" 
+## Deploy Targets
+
+### Vercel
+
+1. Import repository in Vercel
+2. Framework preset: `Vite`
+3. Build command: `npm run build`
+4. Output directory: `dist`
+5. Add env variable: `VITE_GOOGLE_SHEET_APPS_SCRIPT_URL`
+6. Deploy
+
+### Netlify
+
+1. Import repository in Netlify
+2. Build command: `npm run build`
+3. Publish directory: `dist`
+4. Add env variable: `VITE_GOOGLE_SHEET_APPS_SCRIPT_URL`
+5. Deploy (`public/_redirects` handles SPA routes)
+
+### Any Static Host (S3/Cloudflare Pages/GitHub Pages)
+
+- Upload `dist/` contents
+- Configure fallback/rewrites so unknown routes serve `index.html`
+- Configure `VITE_GOOGLE_SHEET_APPS_SCRIPT_URL` at build time
+
+## Scripts
+
+- `npm run dev` - start dev server
+- `npm run build` - production build
+- `npm run preview` - preview production build
+- `npm run test` - run tests
+- `npm run lint` - lint code

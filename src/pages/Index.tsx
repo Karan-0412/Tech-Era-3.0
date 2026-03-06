@@ -69,7 +69,7 @@ const Index = () => {
                   <div id="schedule">
                     <ScheduleTimeline />
                   </div>
-                  <TerminalFooter onOpenTerminal={handleOpenTerminal} />
+                  <TerminalFooter />
                   {/* Team Showcase CTA (Meet the Legends) - moved here to bottom */}
                   <section className="py-4 px-4 flex flex-col items-center justify-center text-center bg-black/40 backdrop-blur-sm border-y border-white/5">
                     <motion.div
