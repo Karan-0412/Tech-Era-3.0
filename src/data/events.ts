@@ -13,7 +13,7 @@ export interface Event {
 
 export const EVENTS: Event[] = [
   {
-    id: "1",
+    id: "TE-1",
     name: "Neural Nexus",
     description: "Neural Nexus is a high-intensity Prompt Engineering Hackathon where participants design structured AI solutions to solve real-world problems. Teams compete through innovation, reasoning depth, and optimization skills to build impactful AI-driven outputs.",
     limit: 4,
@@ -29,7 +29,7 @@ export const EVENTS: Event[] = [
     ],
   },
   {
-    id: "2",
+    id: "TE-2",
     name: "InnovateX",
     description: "InnovateX is the innovation showcase of Tech Era 3.0 where students present working prototypes, AI systems, and technical solutions designed to solve real-world challenges and demonstrate creative engineering.",
     limit: 1,
@@ -42,7 +42,7 @@ export const EVENTS: Event[] = [
     ],
   },
   {
-    id: "3",
+    id: "TE-3",
     name: "CodeRave",
     description: "CodeRave is the ultimate competitive coding championship where participants tackle algorithmic challenges, data structures, and optimization problems while racing against time to demonstrate speed, accuracy, and logical thinking.",
     limit: 2,
@@ -56,7 +56,7 @@ export const EVENTS: Event[] = [
     ],
   },
   {
-    id: "4",
+    id: "TE-4",
     name: "Hack The Lock",
     description: "Hack The Lock is a technical escape challenge where teams solve logic puzzles, cryptographic clues, and algorithmic problems to unlock layers of digital mysteries within a limited time.",
     limit: 3,

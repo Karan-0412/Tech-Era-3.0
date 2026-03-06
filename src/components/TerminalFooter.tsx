@@ -11,7 +11,7 @@ const TerminalFooter = () => {
 
   useEffect(() => {
     let i = 0;
-    const textToType = `> LOADING PROTOCOL: ${selectedEvent.name.toUpperCase()}\n\n${selectedEvent.description}\n\n[EVENT_STATUS]: ACTIVE\n[CAPACITY]: MAX_${selectedEvent.limit}_NODES`;
+    const textToType = `> LOADING PROTOCOL: ${selectedEvent.name.toUpperCase()}\n\n${selectedEvent.description}\n\n[EVENT_STATUS]: ACTIVE\n[CAPACITY]: MAX_${selectedEvent.limit}_Participants`;
     setDisplayedText("");
     setIsTyping(true);
     
