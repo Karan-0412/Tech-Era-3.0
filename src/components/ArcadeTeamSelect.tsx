@@ -78,12 +78,12 @@ const CharacterCard = React.memo(({ member, isActive, onClick }: { member: TeamM
 
         {/* Fun Facts Section */}
         <div className="space-y-2 bg-gray-900/50 p-3 rounded-xl border border-cyan-500/20">
-          <p className="text-[10px] md:text-[11px] font-mono font-bold text-cyan-300 uppercase tracking-wider flex items-center gap-1.5">
+          <p className="text-[11px] md:text-[12px] font-mono font-bold text-cyan-300 uppercase tracking-wider flex items-center gap-1.5">
             <Quote className="w-3 h-3" /> Fun Facts
           </p>
-          <ul className="space-y-1.5">
+          <ul className="space-y-0.5">
             {member.funFacts.map((fact, i) => (
-              <li key={i} className="text-[9px] md:text-[11px] text-gray-300 leading-tight flex items-start gap-1.5">
+              <li key={i} className="text-[10px] md:text-[12px] text-gray-300 leading-snug flex items-start gap-1.5">
                 <span className="text-cyan-500 mt-1 shrink-0">•</span>
                 <span>{fact}</span>
               </li>

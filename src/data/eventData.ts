@@ -1,4 +1,4 @@
-export const EVENT_DATE = new Date("2026-03-15T09:00:00");
+export const EVENT_DATE = new Date("2026-03-26T09:00:00");
 
 export interface EventSpec {
   icon: string;

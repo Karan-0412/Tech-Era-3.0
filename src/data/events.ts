@@ -32,7 +32,7 @@ export const EVENTS: Event[] = [
     id: "2",
     name: "InnovateX",
     description: "InnovateX is the innovation showcase of Tech Era 3.0 where students present working prototypes, AI systems, and technical solutions designed to solve real-world challenges and demonstrate creative engineering.",
-    limit: 1,
+    limit: 4,
     schedule: [
       { time: "09:00", title: "CHECK-IN", desc: "Project registration", day: "DAY 1" },
       { time: "10:00", title: "OPENING", desc: "Welcome to InnovateX showcase", day: "DAY 1" },
@@ -44,22 +44,22 @@ export const EVENTS: Event[] = [
   {
     id: "3",
     name: "CodeRave",
-    description: "CodeRave is the ultimate competitive coding championship where participants tackle algorithmic challenges, data structures, and optimization problems while racing against time to demonstrate speed, accuracy, and logical thinking.",
-    limit: 2,
+    description: "CodeRave – Competitive Coding Championship : is the ultimate competitive coding showdown designed to test participants on core DSA concepts, speed-based implementation, and real-time logical thinking under pressure. The event gradually increases in difficulty across three elimination rounds, ensuring only the most consistent and strategic teams reach the finale.",
+    limit: 4,
     schedule: [
       { time: "09:00", title: "WELCOME", desc: "Competition briefing", day: "DAY 1" },
       { time: "09:30", title: "ROUND 1", desc: "Algorithmic challenge begins", day: "DAY 1" },
       { time: "11:00", title: "ROUND 2", desc: "Advanced problem solving", day: "DAY 1" },
       { time: "13:00", title: "BREAK", desc: "Short refreshment break", day: "DAY 1" },
-      { time: "14:00", title: "FINAL ROUND", desc: "High difficulty coding problems", day: "DAY 2" },
-      { time: "16:00", title: "RESULTS", desc: "Top coders announced", day: "DAY 2" },
+      { time: "14:00", title: "FINAL ROUND", desc: "High difficulty coding problems", day: "DAY 1" },
+      { time: "16:00", title: "RESULTS", desc: "Top coders announced", day: "DAY 1" },
     ],
   },
   {
     id: "4",
     name: "Hack The Lock",
-    description: "Hack The Lock is a technical escape challenge where teams solve logic puzzles, cryptographic clues, and algorithmic problems to unlock layers of digital mysteries within a limited time.",
-    limit: 3,
+    description: "Hack the lock is a fast-paced escape room competition focused exclusively on coding and programming. Participants must solve technical programming challenges, debug code, analyze algorithms, and unlock digital clues to “escape” before time runs out. This event is designed to test logical thinking, computational skills, teamwork, and the ability to apply programming knowledge under pressure.",
+    limit: 5,
     schedule: [
       { time: "08:00", title: "BRIEFING", desc: "Challenge rules explained", day: "DAY 1" },
       { time: "09:00", title: "LOCKDOWN START", desc: "Teams begin solving puzzles", day: "DAY 1" },
@@ -68,6 +68,20 @@ export const EVENTS: Event[] = [
       { time: "09:00", title: "FINAL STAGE", desc: "Last layer of the escape system", day: "DAY 2" },
       { time: "14:00", title: "SUBMISSIONS", desc: "Final unlock attempts", day: "DAY 2" },
       { time: "16:00", title: "WINNERS", desc: "Teams who escaped announced", day: "DAY 3" },
+    ],
+  },
+  {
+    id: "5",
+    name: "Pitch & Pop",
+    description: "Pitch & Pop is a fast-paced, multi-round competition that tests creativity, analytical thinking, and marketing skills. Participants tackle real-world business challenges through case studies, marketing strategies, and product promotion, showcasing their ability to ideate, plan, and execute innovative campaigns under pressure.",
+    limit: 4,
+    schedule: [
+      { time: "09:00", title: "REGISTRATION", desc: "Team check-in & briefing", day: "DAY 1" },
+      { time: "09:30", title: "ROUND 1", desc: "Case study analysis begins", day: "DAY 1" },
+      { time: "11:30", title: "ROUND 2", desc: "Marketing strategy design", day: "DAY 1" },
+      { time: "14:00", title: "BREAK", desc: "Networking & refreshments", day: "DAY 1" },
+      { time: "15:00", title: "FINAL PITCH", desc: "Product campaign presentations", day: "DAY 1" },
+      { time: "17:00", title: "RESULTS", desc: "Winners announcement", day: "DAY 1" },
     ],
   },
 ];

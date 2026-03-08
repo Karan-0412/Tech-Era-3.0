@@ -149,7 +149,7 @@ const HeroScreen = ({ onUnlock }: HeroScreenProps) => {
               transition={{ delay: 0.6, duration: 0.8 }}
               className="font-mono text-xs sm:text-sm text-gray-300/80 tracking-wider uppercase"
             >
-              March 15–17, 2026 • The Future Awaits
+              March 26–27, 2026 • The Future Awaits
             </motion.p>
 
             <motion.button

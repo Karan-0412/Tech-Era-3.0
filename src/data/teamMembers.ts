@@ -30,9 +30,9 @@ export const TEAM_MEMBERS: TeamMember[] = [
     role: "Joint Secretary",
     image: "/Team-Members/Aarsha.jpeg",
     funFacts: [
-      "Obsessed with perfect kerning.",
-      "Once designed a logo in 5 minutes.",
-      "Owns 50 pairs of cool sneakers."
+      "Debates faster than Eminem raps.",
+      "Argues so well that even Google starts doubting itself.",
+      "Talks so smoothly even time listens."
     ],
     links: { github: "#", linkedin: "#", email: "sarah@example.com" },
   },
@@ -42,9 +42,9 @@ export const TEAM_MEMBERS: TeamMember[] = [
     role: "Joint Secretary / Chaos Manager",
     image: "/Team-Members/Gurmillan.jpeg",
     funFacts: [
-      "Trained a model to pick his outfits.",
-      `Thinks "Secretary" is a Naruto rank.`,
-      "Drinks Lassi as pre-workout."
+      "AI picks his outfits.",
+      `"Secretary" sounds like a Naruto rank.`,
+      "Lassi = pre-workout."
     ],
     links: { github: "#", linkedin: "#", email: "jordan@example.com" },
   },
@@ -54,9 +54,9 @@ export const TEAM_MEMBERS: TeamMember[] = [
     role: "Management Head",
     image: "/Team-Members/Kaushik.jpeg",
     funFacts: [
-      "Sees patterns in static noise.",
-      "Trained a model to pick her outfits.",
-      "Has a pet owl named 'Logic'."
+      "Professional meeting starter.",
+      "Management = 90% vibes, 10% panic",
+      "Solution to every problem: 'Let's have a meeting.'"
     ],
     links: { github: "#", linkedin: "#", email: "maya@example.com" },
   },
@@ -66,9 +66,9 @@ export const TEAM_MEMBERS: TeamMember[] = [
     role: "Operations Lead",
     image: "/Team-Members/Sujal.jpeg",
     funFacts: [
-      "Found a zero-day in her toaster.",
+      "Street fighter",
       "Speaks 5 languages fluently.",
-      "Black belt in Brazilian Jiu-Jitsu."
+      "Runs operations like a military mission."
     ],
     links: { github: "#", linkedin: "#", email: "elena@example.com" },
   },
@@ -78,9 +78,9 @@ export const TEAM_MEMBERS: TeamMember[] = [
     role: "Director of Logistics",
     image: "/Team-Members/Prakhar.jpeg",
     funFacts: [
-      "Once wrote a whole app in one file.",
-      "Loves minimalist architecture.",
-      "Makes the best sushi in town."
+      "Checklist level: NASA.",
+      "Knows every cable and chair.",
+      "If something is missing, blame logistics."
     ],
     links: { github: "#", linkedin: "#", email: "hiroshi@example.com" },
   },
@@ -90,9 +90,9 @@ export const TEAM_MEMBERS: TeamMember[] = [
     role: "Documentation Head",
     image: "/Team-Members/Sakshi.jpeg",
     funFacts: [
-      "Once wrote a whole app in one file.",
-      "Loves minimalist architecture.",
-      "Makes the best sushi in town."
+      "Minutes longer than meetings.",
+      "Turns tasks into documents.",
+      "Probably documenting these facts."
     ],
     links: { github: "#", linkedin: "#", email: "hiroshi@example.com" },
   },
@@ -102,9 +102,9 @@ export const TEAM_MEMBERS: TeamMember[] = [
     role: "Design Lead",
     image: "/Team-Members/Kritika.jpeg",
     funFacts: [
-      "Once reached 1000 days of uptime.",
-      "Built his own server rack out of LEGO.",
-      "Fastest typist in the company."
+      "The vibe-check Authority",
+      "Runs the design kingdom.",
+      "Sees alignment issues no one else can."
     ],
     links: { github: "#", linkedin: "#", email: "leo@example.com" },
   },
@@ -114,10 +114,22 @@ export const TEAM_MEMBERS: TeamMember[] = [
     role: "Communication Director / PR Lead",
     image: "/Team-Members/Shivali.jpeg",
     funFacts: [
-      "Can animate with her eyes closed.",
-      "Has a collection of vintage film cameras.",
-      "Always has a sketchbook in hand."
+      "Turns chaos into PR.",
+      "The Real Chaos Manager.",
+      "Professional damage control."
     ],
     links: { github: "#", linkedin: "#", email: "sophie@example.com" },
   },
+  {
+    id: 10,
+    name: "Vansh Bansal",
+    role: "Sponsorship Head",
+    image: "/Team-Members/Vansh.jpeg",
+    funFacts: [
+      "Pitches to anyone with WiFi.",
+      "Favorite reply: 'We'll get back.'",
+      "Got sponsor with one emoji — still no cash"
+    ],
+    links: { github: "#", linkedin: "#", email: "sophie@example.com" },
+  }
 ];
