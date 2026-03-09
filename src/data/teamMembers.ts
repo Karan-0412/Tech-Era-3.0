@@ -22,7 +22,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
       "Bihar's GDP is 40% of his lunch.",
       `Only worries if the budget covers "Litti Chokha" or not.`
     ],
-    links: { github: "#", linkedin: "#", email: "alex@example.com" },
+    links: { github: "#", linkedin: "https://www.linkedin.com/in/umang-dokania/", email: "alex@example.com" },
   },
   {
     id: 2,
@@ -46,7 +46,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
       `"Secretary" sounds like a Naruto rank.`,
       "Lassi = pre-workout."
     ],
-    links: { github: "#", linkedin: "#", email: "jordan@example.com" },
+    links: { github: "#", linkedin: "https://www.linkedin.com/in/gurmillan-singh-928799290/", email: "jordan@example.com" },
   },
   {
     id: 4,
@@ -58,7 +58,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
       "Management = 90% vibes, 10% panic",
       "Solution to every problem: 'Let's have a meeting.'"
     ],
-    links: { github: "#", linkedin: "#", email: "maya@example.com" },
+    links: { github: "#", linkedin: "https://www.linkedin.com/in/kaushik-chaurasiya-704301288/", email: "maya@example.com" },
   },
   {
     id: 5,
@@ -70,7 +70,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
       "Speaks 5 languages fluently.",
       "Runs operations like a military mission."
     ],
-    links: { github: "#", linkedin: "#", email: "elena@example.com" },
+    links: { github: "#", linkedin: "https://www.linkedin.com/in/sujal-thakur-320243395/", email: "elena@example.com" },
   },
   {
     id: 6,
@@ -82,7 +82,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
       "Knows every cable and chair.",
       "If something is missing, blame logistics."
     ],
-    links: { github: "#", linkedin: "#", email: "hiroshi@example.com" },
+    links: { github: "#", linkedin: "https://www.linkedin.com/in/prakhar-nautiyal-711602290/", email: "hiroshi@example.com" },
   },
   {
     id: 7,
@@ -94,7 +94,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
       "Turns tasks into documents.",
       "Probably documenting these facts."
     ],
-    links: { github: "#", linkedin: "#", email: "hiroshi@example.com" },
+    links: { github: "#", linkedin: "https://www.linkedin.com/in/sakshi-singh-899a252b1/", email: "hiroshi@example.com" },
   },
   {
     id: 8,
@@ -106,7 +106,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
       "Runs the design kingdom.",
       "Sees alignment issues no one else can."
     ],
-    links: { github: "#", linkedin: "#", email: "leo@example.com" },
+    links: { github: "#", linkedin: "https://www.linkedin.com/in/ruhela-kritika/", email: "leo@example.com" },
   },
   {
     id: 9,
@@ -118,7 +118,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
       "The Real Chaos Manager.",
       "Professional damage control."
     ],
-    links: { github: "#", linkedin: "#", email: "sophie@example.com" },
+    links: { github: "#", linkedin: "https://www.linkedin.com/in/shivali-414408290/", email: "sophie@example.com" },
   },
   {
     id: 10,
@@ -130,6 +130,18 @@ export const TEAM_MEMBERS: TeamMember[] = [
       "Favorite reply: 'We'll get back.'",
       "Got sponsor with one emoji — still no cash"
     ],
-    links: { github: "#", linkedin: "#", email: "sophie@example.com" },
+    links: { github: "#", linkedin: "https://www.linkedin.com/in/vansh-bansal-92b335271/", email: "sophie@example.com" },
+  },
+  {
+    id: 11,
+    name: "Akshat Gupta",
+    role: "Technical Support",
+    image: "/Team-Members/Akshat.jpeg",
+    funFacts: [
+      "Fixes bugs that he probably created.",
+      "Laughs first, fixes the problem later.",
+      "The happiest tech support you'll ever meet."
+    ],
+    links: { github: "#", linkedin: "https://www.linkedin.com/in/akshat-gupta-60357b3a6/", email: "sophie@example.com" },
   }
 ];

@@ -174,9 +174,6 @@ const ZeroGravitySponsors = () => {
           viewport={{ once: true }}
           className="text-center"
         >
-          <p className="font-mono text-[10px] text-primary tracking-[0.4em] mb-1.5 uppercase">
-            // ECOSYSTEM_NODES
-          </p>
           <h2 className="font-mono text-2xl sm:text-3xl font-bold text-foreground">
             OUR <span className="text-primary text-glow-cyan">SPONSORS</span>
           </h2>
