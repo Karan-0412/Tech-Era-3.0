@@ -227,6 +227,20 @@ const MissionBriefing = ({ visible, onRegister }: MissionBriefingProps) => {
           </motion.button>
         </motion.div>
       </div>
+
+      <motion.div
+        initial={{ opacity: 0, y: -4 }}
+        animate={isInView ? { opacity: [0.45, 0.9, 0.45], y: [0, 6, 0] } : {}}
+        transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+        className="pointer-events-none absolute bottom-6 left-1/2 z-20 -translate-x-1/2 flex flex-col items-center gap-1"
+      >
+        <span className="font-mono text-[9px] sm:text-[10px] tracking-[0.34em] uppercase text-cyan-300/90">
+          Swipe Down
+        </span>
+        <span aria-hidden className="text-cyan-300/90 text-xs leading-none">
+          v
+        </span>
+      </motion.div>
     </section>
   );
 };
