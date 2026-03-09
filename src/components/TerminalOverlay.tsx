@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useToast } from "@/hooks/use-toast";
 import { EVENTS } from "@/data/events";
@@ -15,7 +15,6 @@ interface TeamMember {
 interface TerminalLine {
   text: string;
   color: "green" | "cyan" | "red" | "dim";
-  typing?: boolean;
 }
 
 interface TerminalOverlayProps {
@@ -24,6 +23,19 @@ interface TerminalOverlayProps {
 }
 
 const AUTO_TYPE_SPEED = 35;
+const INTERACTIVE_STEPS: Step[] = [
+  "name",
+  "email",
+  "phone",
+  "event",
+  "team_name",
+  "team_leader_uid",
+  "team_uid",
+  "team_member_name",
+  "team_member_email",
+  "team_member_phone",
+  "team_review",
+];
 
 const useAutoType = (text: string, onDone: () => void, active: boolean) => {
   const [displayed, setDisplayed] = useState("");
@@ -94,22 +106,6 @@ const TypingLine = ({
 
 const TerminalOverlay = ({ open, onClose }: TerminalOverlayProps) => {
   const { toast } = useToast();
-  const interactiveSteps = useMemo(
-    () => [
-      "name",
-      "email",
-      "phone",
-      "event",
-      "team_name",
-      "team_leader_uid",
-      "team_uid",
-      "team_member_name",
-      "team_member_email",
-      "team_member_phone",
-      "team_review",
-    ] as Step[],
-    [],
-  );
   const [step, setStep] = useState<Step>("init");
   const [lines, setLines] = useState<TerminalLine[]>([]);
   const [inputValue, setInputValue] = useState("");
@@ -163,10 +159,10 @@ const TerminalOverlay = ({ open, onClose }: TerminalOverlayProps) => {
   }, [lines, currentAutoType]);
 
   useEffect(() => {
-    if (autoTypeDone && interactiveSteps.includes(step)) {
+    if (autoTypeDone && INTERACTIVE_STEPS.includes(step)) {
       setTimeout(() => inputRef.current?.focus(), 100);
     }
-  }, [autoTypeDone, step, interactiveSteps]);
+  }, [autoTypeDone, step]);
 
   useEffect(() => {
     if (!open) return;
@@ -568,7 +564,7 @@ const TerminalOverlay = ({ open, onClose }: TerminalOverlayProps) => {
       submitData();
   };
 
-  const showInput = autoTypeDone && !currentAutoType && interactiveSteps.includes(step);
+  const showInput = autoTypeDone && !currentAutoType && INTERACTIVE_STEPS.includes(step);
 
   return (
     <AnimatePresence>
@@ -593,7 +589,7 @@ const TerminalOverlay = ({ open, onClose }: TerminalOverlayProps) => {
             </div>
             <button
               onClick={onClose}
-              className="font-mono text-xs text-muted-foreground hover:text-destructive transition-colors tracking-wider"
+              className="font-mono text-xs text-red-400 hover:text-red-300 transition-colors tracking-wider"
             >
               [ESC] CLOSE
             </button>

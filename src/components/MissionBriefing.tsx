@@ -1,5 +1,5 @@
-import { useRef, useEffect, useState, memo } from "react";
-import { AnimatePresence, motion, useInView, useMotionValue, useSpring } from "framer-motion";
+import { useRef, useEffect, useState, useMemo, memo } from "react";
+import { AnimatePresence, motion, useInView } from "framer-motion";
 import { EVENT_DATE } from "@/data/eventData";
 
 /* ── Main Component ─────────────────────────────────── */
@@ -88,23 +88,17 @@ CountdownTimer.displayName = "CountdownTimer";
 const MissionBriefing = ({ visible, onRegister }: MissionBriefingProps) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
-  const cardX = useMotionValue(0);
-  const cardY = useMotionValue(0);
-  const smoothX = useSpring(cardX, { stiffness: 120, damping: 20, mass: 0.3 });
-  const smoothY = useSpring(cardY, { stiffness: 120, damping: 20, mass: 0.3 });
-
-  const handleCardMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
-    const rect = event.currentTarget.getBoundingClientRect();
-    const x = (event.clientX - rect.left - rect.width / 2) / rect.width;
-    const y = (event.clientY - rect.top - rect.height / 2) / rect.height;
-    cardX.set(x * 10);
-    cardY.set(y * 10);
-  };
-
-  const handleCardMouseLeave = () => {
-    cardX.set(0);
-    cardY.set(0);
-  };
+  const particles = useMemo(
+    () =>
+      Array.from({ length: 12 }).map((_, i) => ({
+        id: i,
+        left: `${10 + ((i * 7) % 80)}%`,
+        top: `${15 + ((i * 9) % 70)}%`,
+        duration: 18 + i,
+        delay: i * 0.4,
+      })),
+    [],
+  );
 
   if (!visible) return null;
 
@@ -134,15 +128,15 @@ const MissionBriefing = ({ visible, onRegister }: MissionBriefingProps) => {
         }}
       />
 
-      {Array.from({ length: 12 }).map((_, i) => (
+      {particles.map((particle) => (
         <motion.div
-          key={i}
+          key={particle.id}
           className="pointer-events-none absolute rounded-full bg-white/8"
           style={{
             width: 2,
             height: 2,
-            left: `${10 + ((i * 7) % 80)}%`,
-            top: `${15 + ((i * 9) % 70)}%`,
+            left: particle.left,
+            top: particle.top,
           }}
           initial={{ opacity: 0 }}
           animate={{
@@ -150,10 +144,10 @@ const MissionBriefing = ({ visible, onRegister }: MissionBriefingProps) => {
             y: [-6, 6, -6],
           }}
           transition={{
-            duration: 18 + i,
+            duration: particle.duration,
             repeat: Infinity,
             ease: [0.22, 0.61, 0.36, 1],
-            delay: i * 0.4,
+            delay: particle.delay,
           }}
         />
       ))}
@@ -229,15 +223,15 @@ const MissionBriefing = ({ visible, onRegister }: MissionBriefingProps) => {
       </div>
 
       <motion.div
-        initial={{ opacity: 0, y: -4 }}
-        animate={isInView ? { opacity: [0.45, 0.9, 0.45], y: [0, 6, 0] } : {}}
+        initial={false}
+        animate={isInView ? { y: [0, 6, 0] } : { y: 0 }}
         transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-        className="pointer-events-none absolute inset-x-0 bottom-6 z-20 flex flex-col items-center gap-1 text-center"
+        className="pointer-events-none absolute inset-x-0 bottom-10 sm:bottom-8 z-20 flex flex-col items-center gap-1 text-center"
       >
-        <span className="font-mono text-[10px] sm:text-[11px] tracking-[0.34em] uppercase text-cyan-300/90">
-          Swipe Down
+        <span className="font-mono text-[12px] sm:text-[13px] tracking-[0.32em] uppercase text-white font-semibold">
+          Scroll Down
         </span>
-        <span aria-hidden className="text-cyan-300/90 text-xs leading-none">
+        <span aria-hidden className="text-white text-sm leading-none">
           v
         </span>
       </motion.div>

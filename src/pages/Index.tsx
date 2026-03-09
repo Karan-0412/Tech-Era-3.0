@@ -1,4 +1,4 @@
-import { useState, useCallback, Suspense, lazy, useEffect } from "react";
+import { useState, useCallback, Suspense, lazy } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import BootSequence from "@/components/BootSequence";
 import HeroScreen from "@/components/HeroScreen";
@@ -37,7 +37,6 @@ const Index = () => {
     sessionUnlocked = true;
   }, []);
   const handleRegister = useCallback(() => setTerminalOpen(true), []);
-  const handleOpenTerminal = useCallback(() => setTerminalOpen(true), []);
   const handleCloseTerminal = useCallback(() => setTerminalOpen(false), []);
 
   return (
@@ -61,11 +60,10 @@ const Index = () => {
                 <>
                   <MissionBriefing visible={unlocked} onRegister={handleRegister} />
                   <ZeroGravitySponsors />
+                  <TeamSection onRegister={handleRegister} />
                   <AboutSection />
 
                   {/* Team Showcase CTA moved to bottom of content */}
-
-                  <TeamSection onRegister={handleRegister} />
                   <div id="schedule">
                     <ScheduleTimeline />
                   </div>
