@@ -23,6 +23,9 @@ interface TerminalOverlayProps {
 }
 
 const AUTO_TYPE_SPEED = 35;
+const EMAIL_REGEX = /^(?=.{1,254}$)(?=.{1,64}@)([A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+)*)@((?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)+[A-Za-z]{2,63})$/;
+const PHONE_REGEX = /^\+?\d{7,15}$/;
+const UID_REGEX = /^\d{2}[A-Za-z]{3}\d{5}$/;
 const INTERACTIVE_STEPS: Step[] = [
   "name",
   "email",
@@ -202,7 +205,29 @@ const TerminalOverlay = ({ open, onClose }: TerminalOverlayProps) => {
     }
   }, [step, autoTypeDone, currentAutoType, addLine, startAutoType]);
 
-  const validateEmail = (e: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
+  const validateEmail = (e: string) => {
+    const trimmed = e.trim();
+    if (!trimmed || trimmed.startsWith("@")) {
+      return false;
+    }
+    return EMAIL_REGEX.test(trimmed);
+  };
+
+  const validatePhone = (p: string) => {
+    const trimmed = p.trim();
+    if (!trimmed) {
+      return false;
+    }
+
+    // Only digits are allowed, with one optional leading plus sign.
+    if (!PHONE_REGEX.test(trimmed)) {
+      return false;
+    }
+
+    const digitsOnly = trimmed.startsWith("+") ? trimmed.slice(1) : trimmed;
+    return digitsOnly.length >= 7 && digitsOnly.length <= 15;
+  };
+  const validateUid = (u: string) => UID_REGEX.test(u.trim());
 
   const triggerError = (msg: string) => {
     addLine(`> Error: ${msg}`, "red");
@@ -237,8 +262,8 @@ const TerminalOverlay = ({ open, onClose }: TerminalOverlayProps) => {
       setStep("phone");
       setTimeout(() => startAutoType("> Please enter your phone number:", "green"), 300);
     } else if (step === "phone") {
-      if (val.length < 7) {
-        triggerError("Phone number is not valid. Please try again.");
+      if (!validatePhone(val)) {
+        triggerError("Phone number must contain only digits, with optional leading +.");
         return;
       }
       addLine(`> ${val}`, "green");
@@ -270,12 +295,13 @@ const TerminalOverlay = ({ open, onClose }: TerminalOverlayProps) => {
       setStep("team_leader_uid");
       setTimeout(() => startAutoType("> Please enter the team leader UID:", "green"), 300);
     } else if (step === "team_leader_uid") {
-      if (val.length < 2) {
-        triggerError("Leader UID is not valid. Please try again.");
+      if (!validateUid(val)) {
+        triggerError("Leader UID must match format XXABCXXXXX.");
         return;
       }
-      addLine(`> ${val}`, "green");
-      setLeaderUid(val);
+      const normalizedUid = val.toUpperCase();
+      addLine(`> ${normalizedUid}`, "green");
+      setLeaderUid(normalizedUid);
       setInputValue("");
       
       if (selectedEvent?.limit === 1) {
@@ -345,12 +371,13 @@ const TerminalOverlay = ({ open, onClose }: TerminalOverlayProps) => {
         return;
       }
 
-      if (val.length < 2) {
-        triggerError("Member ID is not valid. Please try again.");
+      if (!validateUid(val)) {
+        triggerError("Member UID must match format XXABCXXXXX.");
         return;
       }
-      addLine(`> ${val}`, "green");
-      setCurrentMemberData(prev => ({ ...prev, uid: val }));
+      const normalizedUid = val.toUpperCase();
+      addLine(`> ${normalizedUid}`, "green");
+      setCurrentMemberData(prev => ({ ...prev, uid: normalizedUid }));
       setInputValue("");
       setMemberFieldStep("name");
       setStep("team_member_name");
@@ -381,8 +408,8 @@ const TerminalOverlay = ({ open, onClose }: TerminalOverlayProps) => {
       setStep("team_member_phone");
       setTimeout(() => startAutoType("> Please enter the member phone number:", "green"), 300);
     } else if (step === "team_member_phone") {
-      if (val.length < 7) {
-        triggerError("Member phone number is not valid. Please try again.");
+      if (!validatePhone(val)) {
+        triggerError("Member phone must contain only digits, with optional leading +.");
         return;
       }
       addLine(`> ${val}`, "green");
@@ -687,6 +714,8 @@ const TerminalOverlay = ({ open, onClose }: TerminalOverlayProps) => {
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
                     autoFocus
+                    inputMode={step === "phone" || step === "team_member_phone" ? "tel" : "text"}
+                    pattern={step === "phone" || step === "team_member_phone" ? "^\\+?\\d{7,15}$" : undefined}
                     className="flex-1 bg-transparent border-none outline-none text-accent font-mono text-xs sm:text-sm caret-accent placeholder:text-muted-foreground/40"
                     placeholder={
                       step === "name"
@@ -694,7 +723,7 @@ const TerminalOverlay = ({ open, onClose }: TerminalOverlayProps) => {
                         : step === "email"
                         ? "your@email.com"
                         : step === "phone"
-                        ? "+XX XXXXX-XXXXX"
+                        ? "+1234567890"
                         : step === "event"
                         ? "Event ID"
                         : step === "team_name"
@@ -708,7 +737,7 @@ const TerminalOverlay = ({ open, onClose }: TerminalOverlayProps) => {
                         : step === "team_member_email"
                         ? "member@email.com"
                         : step === "team_member_phone"
-                        ? "+XX XXXXX-XXXXX"
+                        ? "+1234567890"
                         : "confirm"
                     }
                   />
