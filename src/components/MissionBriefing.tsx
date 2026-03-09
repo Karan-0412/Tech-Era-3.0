@@ -228,10 +228,10 @@ const MissionBriefing = ({ visible, onRegister }: MissionBriefingProps) => {
         transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
         className="pointer-events-none absolute inset-x-0 bottom-10 sm:bottom-8 z-20 flex flex-col items-center gap-1 text-center"
       >
-        <span className="font-mono text-[12px] sm:text-[13px] tracking-[0.32em] uppercase text-white font-semibold">
+        <span className="font-mono text-[12px] sm:text-[13px] tracking-[0.32em] uppercase text-primary font-semibold">
           Scroll Down
         </span>
-        <span aria-hidden className="text-white text-sm leading-none">
+        <span aria-hidden className="text-primary text-sm leading-none">
           v
         </span>
       </motion.div>
