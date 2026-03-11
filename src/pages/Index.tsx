@@ -123,6 +123,12 @@ const Index = () => {
                 </svg>
               </a>
             </div>
+            <a
+              href="mailto:apex.techno.warriors@gmail.com"
+              className="font-mono text-sm text-muted-foreground hover:text-primary transition-colors"
+            >
+              apex.techno.warriors@gmail.com
+            </a>
           </div>
         </div>
                       <p className="font-mono text-[10px] text-muted-foreground/40 tracking-widest uppercase text-center">

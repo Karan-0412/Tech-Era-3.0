@@ -50,6 +50,17 @@ export const TEAM_MEMBERS: TeamMember[] = [
   },
   {
     id: 4,
+    name: "Karan",
+    role: "Technical Lead",
+    image: "/Team-Members/Karan.jpg",
+    funFacts: [
+      "Developer.",
+      "Powered by caffeine."
+    ],
+    links: { github: "#", linkedin: "https://www.linkedin.com/in/karan-kumar-5075aa261/", email: "#" },
+  },
+  {
+    id: 5,
     name: "Kaushik Chaurasiya",
     role: "Management Head",
     image: "/Team-Members/Kaushik.jpeg",
@@ -61,7 +72,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     links: { github: "#", linkedin: "https://www.linkedin.com/in/kaushik-chaurasiya-704301288/", email: "maya@example.com" },
   },
   {
-    id: 5,
+    id: 6,
     name: "Sujal",
     role: "Operations Lead",
     image: "/Team-Members/Sujal.jpeg",
@@ -73,7 +84,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     links: { github: "#", linkedin: "https://www.linkedin.com/in/sujal-thakur-320243395/", email: "elena@example.com" },
   },
   {
-    id: 6,
+    id: 7,
     name: "Prakhar Nautiyal",
     role: "Director of Logistics",
     image: "/Team-Members/Prakhar.jpeg",
@@ -85,7 +96,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     links: { github: "#", linkedin: "https://www.linkedin.com/in/prakhar-nautiyal-711602290/", email: "hiroshi@example.com" },
   },
   {
-    id: 7,
+    id: 8,
     name: "Sakshi",
     role: "Documentation Head",
     image: "/Team-Members/Sakshi.jpeg",
@@ -97,7 +108,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     links: { github: "#", linkedin: "https://www.linkedin.com/in/sakshi-singh-899a252b1/", email: "hiroshi@example.com" },
   },
   {
-    id: 8,
+    id: 9,
     name: "Kritika Ruhela",
     role: "Design Lead",
     image: "/Team-Members/Kritika.jpeg",
@@ -109,7 +120,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     links: { github: "#", linkedin: "https://www.linkedin.com/in/ruhela-kritika/", email: "leo@example.com" },
   },
   {
-    id: 9,
+    id: 10,
     name: "Shivali",
     role: "Communication Director / PR Lead",
     image: "/Team-Members/Shivali.jpeg",
@@ -121,7 +132,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     links: { github: "#", linkedin: "https://www.linkedin.com/in/shivali-414408290/", email: "sophie@example.com" },
   },
   {
-    id: 10,
+    id: 11,
     name: "Vansh Bansal",
     role: "Sponsorship Head",
     image: "/Team-Members/Vansh.jpeg",
@@ -133,7 +144,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     links: { github: "#", linkedin: "https://www.linkedin.com/in/vansh-bansal-92b335271/", email: "sophie@example.com" },
   },
   {
-    id: 11,
+    id: 12,
     name: "Akshat Gupta",
     role: "Technical Support",
     image: "/Team-Members/Akshat.jpeg",
